@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+
+@theme {
+  /* 1. Set default font for the whole app */
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+
+  /* 2. REMOVE ALL default Tailwind colors and text sizes */
+  --color-*: initial;
+  --text-*: initial;
+
+  /* 3. ADD ONLY your Kanban specific colors */
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-main-purple: #635fc7;
+  --color-main-purple-hover: #a8a4ff;
+  --color-white: #ffffff;
+  --color-black: #000112;
+  --color-very-dark-grey: #1e1e1e;
+  --color-dark-grey: #2b2c37;
+  --color-lines: #3e3f4e;
+  --color-medium-grey: #828fa3;
+  --color-lines-light: #e4ebfa;
+  --color-light-grey: #f4f7fd;
+  --color-red: #ea5555;
+  --color-red-hover: #ff9898;
+
+  /* 4. ADD ONLY your Kanban specific typography */
+  --text-heading-s: 0.75rem;
+  --text-heading-s--font-weight: 700;
+
+  --text-heading-m: 0.9rem;
+  --text-heading-m--font-weight: 700;
+
+  --text-heading-l: 1.125rem;
+  --text-heading-l--font-weight: 700;
+
+  --text-heading-xl: 1.5rem;
+  --text-heading-xl--font-weight: 700;
+
+  --text-body-m: 0.75rem;
+  --text-body-m--font-weight: 700;
+
+  --text-body-l: 0.8125rem;
+  --text-body-l--font-weight: 500;
+}
