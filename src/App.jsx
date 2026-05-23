@@ -1,18 +1,9 @@
-import DropdownPrimitive from './components/DropdownPrimitive';
-import Button from '@components/Button';
+import Header from './components/Header';
 
 function App() {
   return (
     <div>
-      <DropdownPrimitive
-        items={{
-          edit: {
-            label: 'Delete',
-            onClick: () => console.log('Delete'),
-          },
-        }}
-        triggerComponent={() => <Button variant="secondary">Actions</Button>}
-      />
+      <Header />
     </div>
   );
 }
