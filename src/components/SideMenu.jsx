@@ -3,6 +3,15 @@ import { useState } from 'react';
 import DialogPrimitive from './DialogPrimitive';
 import { cn } from '../utils/helpers';
 
+/**
+ *
+ * @param {Object} props
+ * @param {Array} props.data - An array of board objects, where each object has the following structure:
+ * @param {Number}props.selectedBoardIndex - The index of the currently selected board.
+ * @param {Function}props.setSelectedBoardIndex - A function to update the selected board index.
+ * @returns {JSX.Element}
+ */
+
 const SideMenu = ({ data = [], selectedBoardIndex, setSelectedBoardIndex }) => {
   const [open, setOpen] = useState(false);
   return (

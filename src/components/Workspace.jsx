@@ -1,6 +1,16 @@
 import Column from './Column';
 
-const Workspace = ({ columns }) => {
+/**
+ *
+ * @param {Object} props
+ * @param {Array} props.columns - An array of column objects, where each object has the following structure:
+ * @param {Object} props.columns[].id - The unique identifier for the column.
+ * @param {Array} props.columns[].title - The title of the column.
+ * @param {string} props.columns[].tasks - An array of task objects, where each object has the following structure:
+ * @returns {JSX.Element}
+ */
+
+const Workspace = ({ columns = [] }) => {
   return (
     <div className="bg-light-grey flex h-[calc(100vh-97px)] flex-1 gap-6 overflow-auto p-6">
       {columns.map((item) => (
