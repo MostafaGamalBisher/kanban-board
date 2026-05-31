@@ -1,19 +1,22 @@
 import iconBoard from '../assets/img/icons/icon-board.svg';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import DialogPrimitive from './DialogPrimitive';
 import { cn } from '../utils/helpers';
+import { DataContext } from '../Datacontext';
+import AddNewBoardForm from './AddNewBoardForm';
 
 /**
  *
  * @param {Object} props
- * @param {Array} props.data - An array of board objects, where each object has the following structure:
+ 
  * @param {Number}props.selectedBoardIndex - The index of the currently selected board.
  * @param {Function}props.setSelectedBoardIndex - A function to update the selected board index.
  * @returns {JSX.Element}
  */
 
-const SideMenu = ({ data = [], selectedBoardIndex, setSelectedBoardIndex }) => {
+const SideMenu = ({ selectedBoardIndex, setSelectedBoardIndex }) => {
   const [open, setOpen] = useState(false);
+  const { data } = React.useContext(DataContext);
   return (
     <aside className="side-menu border-lines-light -mt-px w-75 border-r bg-white">
       <p className="text-heading-s px-8 py-4">ALL BOARDS ({data.length})</p>
@@ -46,7 +49,9 @@ const SideMenu = ({ data = [], selectedBoardIndex, setSelectedBoardIndex }) => {
                 <img src={iconBoard} alt="" />+ Create New Board
               </button>
             }
-          ></DialogPrimitive>
+          >
+            <AddNewBoardForm />
+          </DialogPrimitive>
         </li>
       </ul>
     </aside>
