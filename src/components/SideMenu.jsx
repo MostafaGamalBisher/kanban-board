@@ -17,6 +17,7 @@ import AddNewBoardForm from './AddNewBoardForm';
 const SideMenu = ({ selectedBoardIndex, setSelectedBoardIndex }) => {
   const [open, setOpen] = useState(false);
   const { data } = React.useContext(DataContext);
+
   return (
     <aside className="side-menu border-lines-light -mt-px w-75 border-r bg-white">
       <p className="text-heading-s px-8 py-4">ALL BOARDS ({data.length})</p>

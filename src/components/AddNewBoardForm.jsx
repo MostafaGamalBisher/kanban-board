@@ -46,7 +46,7 @@ const AddNewBoardForm = ({ boardId }) => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const boardName = formData.get('boarName');
+    const boardName = formData.get('boardName');
     const NewColumnsArray = createNewColumnsArray(
       formData,
       columnsArray,
@@ -60,7 +60,7 @@ const AddNewBoardForm = ({ boardId }) => {
     <form onSubmit={handleFormSubmit}>
       <div>
         <h3 className="text-body-m text-medium-grey pt-6 pb-2">Name</h3>
-        <TextField placeholder="e.g Web Design" name="BoardName" required />
+        <TextField placeholder="e.g Web Design" name="boardName" required />
       </div>
       <div className="flex flex-col gap-2">
         <h3 className="text-body-m text-medium-grey pt-6">Columns</h3>
