@@ -182,7 +182,8 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
   `globals.css`.
 - Contrast (WCAG AA, 4.5:1 in both themes): coloured **text** uses `text-primary-text` / `text-destructive-text`;
   `primary` / `destructive` are for fills (buttons, the checkbox). Secondary text is `text-muted-foreground`. A new
-  text colour needs its ratio checked against every background it sits on, in both themes.
+  text colour needs its ratio checked against every background it sits on, in both themes. The same applies to a fill
+  that carries a label (a button): 4.5:1 between label and fill, at rest **and on hover**, so hover shades darken.
 - Touch targets are at least 44×44px. A control drawn smaller (an icon button, a switch) gets the `touch-target`
   utility (`globals.css`), which enlarges its hit area without changing the layout; rows and menu items get the
   height directly (`min-h-11`, `py-3`).

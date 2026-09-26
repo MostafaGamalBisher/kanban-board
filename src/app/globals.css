@@ -72,6 +72,7 @@
   --color-destructive-text: var(--destructive-text);
   --color-secondary: var(--secondary);
   --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-hover-foreground: var(--secondary-hover-foreground);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
@@ -120,7 +121,10 @@
 :root {
   /* 1. Brand palette */
   --kanban-main-purple: #635fc7;
-  --kanban-main-purple-hover: #a8a4ff;
+  /* Fills that carry white labels (purple hover, red, red hover) keep
+   * 4.5:1 against #fff (8.1); hover darkens instead of the brief's lighter
+   * shades. */
+  --kanban-main-purple-hover: #524eb9; /* 6.7:1; brief #a8a4ff (2.2:1) */
   --kanban-black: #000112;
   --kanban-very-dark-grey: #20212c;
   --kanban-dark-grey: #2b2c37;
@@ -129,8 +133,8 @@
   --kanban-lines-light: #e4ebfa;
   --kanban-light-grey: #f4f7fd;
   --kanban-white: #ffffff;
-  --kanban-red: #ea5555;
-  --kanban-red-hover: #ff9898;
+  --kanban-red: #cf4444; /* 4.6:1; brief #ea5555 (3.5:1) */
+  --kanban-red-hover: #b83535; /* 5.8:1; brief #ff9898 (2.1:1) */
   --kanban-new-column: #e9effa;
 
   /* Text shades that meet WCAG AA (4.5:1) on this theme's surfaces: the
@@ -170,6 +174,8 @@
     transparent
   );
   --secondary-foreground: var(--kanban-main-purple);
+  /* Darker label on the stronger hover tint: 4.7:1 (the brief's purple is 3.7:1). */
+  --secondary-hover-foreground: var(--kanban-main-purple-hover);
   --muted: var(--kanban-light-grey);
   --muted-foreground: var(--kanban-grey-text-light);
   --primary-text: var(--kanban-main-purple);
