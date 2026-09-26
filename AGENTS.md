@@ -50,8 +50,10 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
 
 ## Routing, languages and fonts
 
-- Every page lives under `src/app/[locale]/` (the root layout). `/en` and `/ar` are prerendered; `dynamicParams =
-false` makes any other first segment a 404. The layout renders `<html lang dir>` on the server.
+- Every page lives under `src/app/[locale]/` (the root layout). `/en` and `/ar` are prerendered; the proxy plus the
+  layout's `isLocale()` check make any other first segment a 404. The layout renders `<html lang dir>` on the server.
+- Never set `dynamicParams = false` in the `[locale]` layout: child segments inherit it, and the board route must
+  render IDs it did not prerender (boards created in the session). Build in-app URLs with `routes` (`src/lib/routes.ts`).
 - `src/proxy.ts` (Next 16's name for middleware) redirects URLs without a locale: cookie → `Accept-Language` →
   default, via the pure `negotiateLocale()` in `src/lib/locale-negotiation.ts`. Assets (any path with a dot) and
   `_next` are skipped.
@@ -88,6 +90,11 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
 - Every change goes through the pure functions in `core/board/operations.ts` (`(boards, input) → boards`). They never
   mutate, keep unchanged objects identical, and throw `NotFoundError` for unknown IDs. Creating operations take an
   `IdFactory`: pass `createId` from `src/lib/ids.ts` in the app, a counter in tests.
+- The client applies changes through `boardsReducer` (`core/board/actions.ts`). A reducer must be pure (Strict Mode
+  calls it twice), so actions that create entities carry an `idSeed` generated before dispatching; `seededIds(seed)`
+  derives every new ID from it, and the created entity's ID is the seed itself.
+- Components read boards with `useBoards()` / `useBoard(id)` and change them with `useBoardActions()`
+  (`src/features/boards/BoardsProvider.tsx`). Never keep a second copy of board data in component state.
 - Stored data enters the app only through `parseBoards()` (`core/board/parse.ts`), which throws `InvalidDataError`
   listing every problem. `src/server/boards/queries.ts` parses the seed once and caches it; pages call `getBoards()` /
   `getBoard(id)` (`undefined` for an unknown ID).

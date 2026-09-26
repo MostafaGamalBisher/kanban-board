@@ -23,6 +23,8 @@ export const ar: Dictionary = {
     darkTheme: 'الوضع الداكن',
   },
   board: {
+    noBoards: 'لا توجد لوحات بعد.',
+    notFound: 'هذه اللوحة غير موجودة.',
     allBoards: 'كل اللوحات ({count})',
     taskCount: arabicPlural({
       zero: 'لا توجد مهام',

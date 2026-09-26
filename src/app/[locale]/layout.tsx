@@ -4,9 +4,11 @@ import { notFound } from 'next/navigation';
 import { AppProviders } from '@/components/providers';
 import { isLocale, LOCALE_DIRECTION, LOCALES } from '@/config/i18n';
 import { siteConfig } from '@/config/site';
+import { BoardsProvider } from '@/features/boards/BoardsProvider';
 import { themeScript } from '@/features/preferences/theme-script';
 import { getDictionary, getI18n } from '@/i18n/server';
 import { cn } from '@/lib/utils';
+import { getBoards } from '@/server/boards/queries';
 
 import { fontArabic, fontSans } from '../fonts';
 import '../globals.css';
@@ -16,13 +18,16 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: siteConfig.name, description: dict.meta.description };
 }
 
-/** Prerender /en and /ar at build time. */
+/**
+ * Prerender /en and /ar at build time. No `dynamicParams = false` here:
+ * child segments inherit it, and the board route must render IDs it did
+ * not prerender (boards created in the session). An unknown locale is
+ * still a 404: proxy.ts redirects it under a real locale (/xx →
+ * /en/xx), and the isLocale() check below catches anything else.
+ */
 export function generateStaticParams() {
   return LOCALES.map((locale) => ({ locale }));
 }
-
-/** Any other first segment (/xx) is a 404, not a page rendered on demand. */
-export const dynamicParams = false;
 
 /**
  * Root layout. The locale comes from the URL (/en, /ar): proxy.ts has
@@ -32,6 +37,11 @@ export const dynamicParams = false;
  *
  * The server always renders the default theme (dark), so pages stay
  * static; themeScript applies a saved preference before the first paint.
+ *
+ * The boards are read here, on the server, straight from the data layer
+ * (no HTTP request), and handed to BoardsProvider, which keeps the
+ * session's copy. Being in the layout, that copy survives navigation
+ * between boards.
  */
 export default async function LocaleLayout({
   children,
@@ -58,7 +68,9 @@ export default async function LocaleLayout({
       </head>
       <body className="antialiased">
         <AppProviders locale={locale} dictionary={dictionary}>
-          {children}
+          <BoardsProvider initialBoards={getBoards()}>
+            {children}
+          </BoardsProvider>
         </AppProviders>
       </body>
     </html>

@@ -37,7 +37,7 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 - [x] **3.2** Typed dictionaries, `useT()`, Arabic plurals
 - [x] **3.3** RTL rules + physical-class check
 - [x] **3.4** Theme cookie + toggle; language switcher
-- [ ] **4.1** `BoardsProvider` seeded from the server
+- [x] **4.1** `BoardsProvider` seeded from the server
 - [ ] **4.2** Header + mobile board switcher
 - [ ] **4.3** Sidebar with hide/show
 - [ ] **4.4** Board view, empty and not-found states
@@ -176,9 +176,9 @@ app/[locale]/layout.tsx (Server)  root layout: <html lang dir class>, dictionary
       │ props
       ▼
 features/boards/BoardsProvider    (Client) useReducer, seeded from the server data
-      │                           the reducer delegates to pure functions in core/board/operations.ts
+      │                           boardsReducer (core/board/actions.ts) delegates to core/board/operations.ts
       ▼
-UI components                     read via useBoards(), change via dispatch(action)
+UI components                     read via useBoards() / useBoard(id), change via useBoardActions()
 ```
 
 **Navigating between boards keeps edits.** The `[locale]` layout stays mounted while the locale stays the same.
@@ -231,7 +231,7 @@ src/
       boards/[boardId]/page.tsx
       not-found.tsx  error.tsx
   core/board/
-    ids.ts  limits.ts  schema.ts  parse.ts  operations.ts  operations.test.ts
+    ids.ts  limits.ts  schema.ts  parse.ts  operations.ts  actions.ts  (+ *.test.ts)
   core/errors.ts  core/validation.ts
   data/boards.json
   server/boards/queries.ts
@@ -300,12 +300,12 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 
 ### Phase 4 — Shell and board view (read-only)
 
-| Node | Work                                                                                                                                                                                                                                                                                                                                                 | Done when                                                      |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| 4.1  | `BoardsProvider` seeded in the `[locale]` layout; `useBoards()`; `/[locale]` → first board.                                                                                                                                                                                                                                                          | Board names render from the JSON via the provider.             |
-| 4.2  | Header + mobile board switcher, built at 375px first.                                                                                                                                                                                                                                                                                                | Correct at 375px in both languages.                            |
-| 4.3  | Sidebar with hide/show at ≥ 768px.                                                                                                                                                                                                                                                                                                                   | Correct at 768px and 1440px in both languages.                 |
-| 4.4  | Board view: columns (dot, name, count), task cards, horizontal scroll with snap on mobile, empty-board and not-found views. **Localized 404:** a catch-all `[locale]/[...notFound]/page.tsx` that calls `notFound()`, plus `[locale]/not-found.tsx`, because unmatched URLs otherwise get Next's bare default 404 outside our layout (found in 3.1). | Matches the brief; no string or data literal in any component. |
+| Node | Work                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Done when                                                      |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| 4.1  | `BoardsProvider` seeded in the `[locale]` layout; `useBoards()`; `/[locale]` → first board. **Delivered:** `boardsReducer` in `core/board/actions.ts` (actions carry a pre-generated `idSeed`, so the reducer stays pure under Strict Mode); `useBoards` / `useBoard` / `useBoardActions`; `/[locale]/boards/[boardId]`; `lib/routes.ts`. The layout no longer sets `dynamicParams = false`: child segments inherit it, which made session-created boards 404. An unknown board renders an in-page view (HTTP 200) in Part A, because only the browser knows the session's boards. The showcase moved to `/[locale]/showcase` until 8.1. | Board names render from the JSON via the provider.             |
+| 4.2  | Header + mobile board switcher, built at 375px first.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Correct at 375px in both languages.                            |
+| 4.3  | Sidebar with hide/show at ≥ 768px.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Correct at 768px and 1440px in both languages.                 |
+| 4.4  | Board view: columns (dot, name, count), task cards, horizontal scroll with snap on mobile, empty-board and not-found views. **Localized 404:** a catch-all `[locale]/[...notFound]/page.tsx` that calls `notFound()`, plus `[locale]/not-found.tsx`, because unmatched URLs otherwise get Next's bare default 404 outside our layout (found in 3.1).                                                                                                                                                                                                                                                                                     | Matches the brief; no string or data literal in any component. |
 
 ### Phase 5 — Board CRUD
 
@@ -333,11 +333,11 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 
 ### Phase 8 — Hardening and sign-off
 
-| Node | Work                                                                                                       | Done when                                                       |
-| ---- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| 8.1  | Audit: labels, dialog focus, contrast in both themes, 44px touch targets, Lighthouse mobile.               | Lighthouse mobile ≥ 90, or each shortfall explained.            |
-| 8.2  | Replace the template `README.md`; add `docs/ARCHITECTURE.md` (layers, data flow, the no-hard-coding rule). | Someone else can clone and run the project.                     |
-| 8.3  | Production deploy on Vercel.                                                                               | **You sign off Part A.** That unlocks the detailed Part B plan. |
+| Node | Work                                                                                                                                | Done when                                                       |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| 8.1  | Audit: labels, dialog focus, contrast in both themes, 44px touch targets, Lighthouse mobile. Delete the `/[locale]/showcase` route. | Lighthouse mobile ≥ 90, or each shortfall explained.            |
+| 8.2  | Replace the template `README.md`; add `docs/ARCHITECTURE.md` (layers, data flow, the no-hard-coding rule).                          | Someone else can clone and run the project.                     |
+| 8.3  | Production deploy on Vercel.                                                                                                        | **You sign off Part A.** That unlocks the detailed Part B plan. |
 
 **Environment variables in Part A:** none. Nothing reads a secret or an environment-specific value.
 
@@ -348,7 +348,7 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 | Step | Work                                                                                                                                                                                                                                                                                                                           |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | B1   | **Mutations via Server Actions.** They reuse the same zod schemas and `core/` operations, persist the result, and call `revalidatePath`.                                                                                                                                                                                       |
-| B2   | **`useOptimistic`** replaces the Part A reducer as the instant-UI layer, running the same `core/` operations. The language-switch guard is deleted, since data now survives the switch.                                                                                                                                        |
+| B2   | **`useOptimistic`** replaces the Part A reducer as the instant-UI layer, running the same `core/` operations. The language-switch guard is deleted, since data now survives the switch. The board route answers a real 404 (`notFound()` on the server) for unknown IDs.                                                       |
 | B3   | **A repository port + adapter** behind `server/`; the queries read through it.                                                                                                                                                                                                                                                 |
 | B4   | **Environment variables**, zod-validated in `lib/env.ts`: `DATA_DRIVER`, then `DATABASE_URL` / `DATABASE_AUTH_TOKEN`. Set per environment in Vercel.                                                                                                                                                                           |
 | B5   | **Route handlers only where genuinely needed** (e.g. an external client). None planned by default.                                                                                                                                                                                                                             |
