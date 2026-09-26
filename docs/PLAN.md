@@ -32,7 +32,7 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 - [x] **2.2** Seed data (`data/boards.json`) + server queries (`server-only`)
 - [x] **2.3** Pure board operations + HTTP-safe ids
 - [x] **2.4** `node:test` suite for the operations
-- [ ] **2.5** `config/` constants
+- [x] **2.5** `config/` constants
 - [ ] **3.1** `[locale]` root layout + `proxy.ts` negotiation
 - [ ] **3.2** Typed dictionaries, `useT()`, Arabic plurals
 - [ ] **3.3** RTL rules + physical-class check
@@ -235,7 +235,7 @@ src/
   core/errors.ts  core/validation.ts
   data/boards.json
   server/boards/queries.ts
-  config/                       # board.ts (column colors), layout.ts, theme.ts, i18n.ts (locales, default)
+  config/                       # site.ts, board.ts (column-dot mapping), theme.ts, i18n.ts (locales, direction, cookie)
   i18n/                         # dictionaries/{en,ar}.ts, get-dictionary.ts, provider.tsx, plural.ts
   features/
     shell/                      # Header, Sidebar, MobileBoardSwitcher, ThemeToggle, LanguageSwitcher
@@ -278,13 +278,13 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 
 ### Phase 2 — Data and domain
 
-| Node | Work                                                                                                                                                                                                             | Done when                                                                                                                     |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| 2.1  | `core/board/schema.ts`: entity schemas + form input schemas. A task's status **is** its column.                                                                                                                  | `typecheck` passes.                                                                                                           |
-| 2.2  | `data/boards.json` (three seed boards) + `server/boards/queries.ts` (validated at load, `import 'server-only'` on line 1).                                                                                       | A broken seed fails with a readable error. A planted client-side import of `queries.ts` fails `build` (shown, then reverted). |
-| 2.3  | `core/board/operations.ts`: createBoard, updateBoard, deleteBoard, addTask, updateTask, deleteTask, moveTask, setSubtaskCompleted — all pure functions. `lib/ids.ts` with a fallback that works over plain HTTP. | `typecheck` passes; `core/` has no React or Next imports.                                                                     |
-| 2.4  | `operations.test.ts` (`node:test`): moves (same column, across columns, edge positions), column-removal cascade, subtask toggle, not-found cases, **input immutability**.                                        | `npm test` green.                                                                                                             |
-| 2.5  | `config/*.ts`: column colors, layout constants, locales, default theme.                                                                                                                                          | `typecheck` passes.                                                                                                           |
+| Node | Work                                                                                                                                                                                                                                                                                                      | Done when                                                                                                                     |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 2.1  | `core/board/schema.ts`: entity schemas + form input schemas. A task's status **is** its column.                                                                                                                                                                                                           | `typecheck` passes.                                                                                                           |
+| 2.2  | `data/boards.json` (three seed boards) + `server/boards/queries.ts` (validated at load, `import 'server-only'` on line 1).                                                                                                                                                                                | A broken seed fails with a readable error. A planted client-side import of `queries.ts` fails `build` (shown, then reverted). |
+| 2.3  | `core/board/operations.ts`: createBoard, updateBoard, deleteBoard, addTask, updateTask, deleteTask, moveTask, setSubtaskCompleted — all pure functions. `lib/ids.ts` with a fallback that works over plain HTTP.                                                                                          | `typecheck` passes; `core/` has no React or Next imports.                                                                     |
+| 2.4  | `operations.test.ts` (`node:test`): moves (same column, across columns, edge positions), column-removal cascade, subtask toggle, not-found cases, **input immutability**.                                                                                                                                 | `npm test` green.                                                                                                             |
+| 2.5  | `config/`: languages + direction + cookie (`i18n.ts`), themes + cookie (`theme.ts`), column-dot mapping (`board.ts`). Layout sizes and dot colours are Tailwind tokens in `globals.css` (`w-sidebar`, `h-header`, `bg-column-1`…) because components use them as classes; `config/layout.ts` was dropped. | Tests pass; the dots render on the showcase.                                                                                  |
 
 ### Phase 3 — Language, direction, theme
 

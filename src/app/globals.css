@@ -67,6 +67,25 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
+  /* Column status dots: assigned by column position (src/config/board.ts) */
+  --color-column-1: var(--kanban-column-1);
+  --color-column-2: var(--kanban-column-2);
+  --color-column-3: var(--kanban-column-3);
+  --color-column-4: var(--kanban-column-4);
+  --color-column-5: var(--kanban-column-5);
+  --color-column-6: var(--kanban-column-6);
+
+  /* Layout sizes → w-sidebar, h-header, ps-sidebar, w-column, …
+   * Breakpoints are Tailwind defaults: md = 768px (tablet), xl = 1280px
+   * (desktop; the brief draws it at 1440px, but 1366px laptops need it too).
+   * Mobile first: the unprefixed header size is the phone one. */
+  --spacing-header: 4rem; /* 64px, < 768px */
+  --spacing-header-md: 5.0625rem; /* 81px, md: 768–1279px */
+  --spacing-header-xl: 6.0625rem; /* 97px, xl: ≥ 1280px */
+  --spacing-sidebar: 16.3125rem; /* 261px, md: 768–1279px */
+  --spacing-sidebar-xl: 18.75rem; /* 300px, xl: ≥ 1280px */
+  --spacing-column: 17.5rem; /* 280px */
+
   /* Radii: cards 8px (lg), dialogs ~6px (md), inputs ~5px (sm) */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -91,6 +110,14 @@
   --kanban-white: #ffffff;
   --kanban-red: #ea5555;
   --kanban-red-hover: #ff9898;
+
+  /* Column dots. 1–3 from the style guide (as recalled); 4–6 chosen to match. */
+  --kanban-column-1: #49c4e5;
+  --kanban-column-2: #8471f2;
+  --kanban-column-3: #67e2ae;
+  --kanban-column-4: #e5a449;
+  --kanban-column-5: #e5627f;
+  --kanban-column-6: #4d7cf2;
 
   --radius: 0.5rem;
 

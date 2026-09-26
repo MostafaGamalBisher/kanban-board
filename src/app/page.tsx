@@ -38,6 +38,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { COLUMN_DOT_CLASSES, columnDotClass } from '@/config/board';
 import { siteConfig } from '@/config/site';
 
 import { showcase } from './_showcase/content';
@@ -69,6 +70,22 @@ export default function ShowcasePage() {
               />
               <span className="text-body-m text-muted-foreground">
                 {swatch.name}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section title={sections.columnDots}>
+        <ul className="flex flex-wrap gap-4">
+          {Array.from({ length: COLUMN_DOT_CLASSES.length + 2 }, (_, index) => (
+            <li key={index} className="flex items-center gap-2">
+              <span
+                className={`size-4 rounded-full ${columnDotClass(index)}`}
+                aria-hidden
+              />
+              <span className="text-body-m text-muted-foreground">
+                {index + 1}
               </span>
             </li>
           ))}

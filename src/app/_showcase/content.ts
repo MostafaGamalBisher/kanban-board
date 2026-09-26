@@ -11,6 +11,7 @@ export const showcase = {
 
   sections: {
     palette: 'Semantic colors',
+    columnDots: 'Column dots (repeat after six)',
     type: 'Type scale',
     buttons: 'Buttons',
     forms: 'Form controls',

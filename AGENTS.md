@@ -78,7 +78,9 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
 - Board data: `src/data/boards.json`, read on the server via `src/server/`, validated with zod.
 - UI text: the i18n dictionaries. ESLint rejects string literals in JSX text and in `aria-label`, `placeholder`,
   `title` and non-empty `alt`.
-- Constants (colors, layout sizes, locales, defaults): `src/config/`.
+- Values used as CSS classes (colours, layout sizes such as `w-sidebar`, `h-header`, `w-column`, `bg-column-1`) are
+  Tailwind tokens in `src/app/globals.css`. Values used by TypeScript (locales and their direction, themes, cookie
+  names, the column-dot mapping) live in `src/config/`. Breakpoints are Tailwind defaults: `md` 768px, `xl` 1280px.
 
 ## Conventions
 
