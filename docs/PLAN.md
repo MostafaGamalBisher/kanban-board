@@ -29,7 +29,7 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 - [x] **1.3** shadcn/ui init, Kanban tokens, dark by default, primitives
 - [x] **1.4** Vercel connected; first preview build verified
 - [x] **2.1** Domain schemas (`core/board/schema.ts`)
-- [ ] **2.2** Seed data (`data/boards.json`) + server queries (`server-only`)
+- [x] **2.2** Seed data (`data/boards.json`) + server queries (`server-only`)
 - [ ] **2.3** Pure board operations + HTTP-safe ids
 - [ ] **2.4** `node:test` suite for the operations
 - [ ] **2.5** `config/` constants
@@ -231,8 +231,8 @@ src/
       boards/[boardId]/page.tsx
       not-found.tsx  error.tsx
   core/board/
-    schema.ts  operations.ts  operations.test.ts
-  core/errors.ts
+    ids.ts  limits.ts  schema.ts  parse.ts  operations.ts  operations.test.ts
+  core/errors.ts  core/validation.ts
   data/boards.json
   server/boards/queries.ts
   config/                       # board.ts (column colors), layout.ts, theme.ts, i18n.ts (locales, default)

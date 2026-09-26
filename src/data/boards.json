@@ -1,0 +1,277 @@
+[
+  {
+    "id": "platform-launch",
+    "name": "Platform Launch",
+    "columns": [
+      {
+        "id": "pl-todo",
+        "name": "Todo",
+        "tasks": [
+          {
+            "id": "pl-t1",
+            "title": "Write the pricing page copy",
+            "description": "Three tiers with a clear upgrade path. Keep each tier to five bullet points and one call to action.",
+            "subtasks": [
+              {
+                "id": "pl-t1-s1",
+                "title": "Draft tier names and prices",
+                "isCompleted": false
+              },
+              {
+                "id": "pl-t1-s2",
+                "title": "Write feature bullets",
+                "isCompleted": false
+              },
+              {
+                "id": "pl-t1-s3",
+                "title": "Review with sales",
+                "isCompleted": false
+              }
+            ]
+          },
+          {
+            "id": "pl-t2",
+            "title": "Set up error monitoring",
+            "description": "Capture front-end errors in production with release tags, so a spike can be traced to a deploy.",
+            "subtasks": [
+              {
+                "id": "pl-t2-s1",
+                "title": "Choose a provider",
+                "isCompleted": true
+              },
+              {
+                "id": "pl-t2-s2",
+                "title": "Add release tagging to the build",
+                "isCompleted": false
+              }
+            ]
+          },
+          {
+            "id": "pl-t3",
+            "title": "Plan the launch announcement",
+            "description": "Coordinate the blog post, the email to the waitlist and the social posts for the same morning.",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": "pl-doing",
+        "name": "Doing",
+        "tasks": [
+          {
+            "id": "pl-t4",
+            "title": "Build the onboarding flow",
+            "description": "A three-step flow: create a workspace, invite teammates, create the first board. Each step can be skipped.",
+            "subtasks": [
+              {
+                "id": "pl-t4-s1",
+                "title": "Workspace step",
+                "isCompleted": true
+              },
+              {
+                "id": "pl-t4-s2",
+                "title": "Invite step",
+                "isCompleted": true
+              },
+              {
+                "id": "pl-t4-s3",
+                "title": "First board step",
+                "isCompleted": false
+              },
+              {
+                "id": "pl-t4-s4",
+                "title": "Skip and resume logic",
+                "isCompleted": false
+              }
+            ]
+          },
+          {
+            "id": "pl-t5",
+            "title": "Audit accessibility",
+            "description": "Keyboard navigation, focus order and colour contrast on every public page, in both themes.",
+            "subtasks": [
+              {
+                "id": "pl-t5-s1",
+                "title": "Keyboard walkthrough",
+                "isCompleted": true
+              },
+              {
+                "id": "pl-t5-s2",
+                "title": "Contrast check",
+                "isCompleted": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "pl-done",
+        "name": "Done",
+        "tasks": [
+          {
+            "id": "pl-t6",
+            "title": "Choose the hosting platform",
+            "description": "Compared three providers on preview deployments, cold-start times and cost at our expected traffic.",
+            "subtasks": [
+              {
+                "id": "pl-t6-s1",
+                "title": "Compare features",
+                "isCompleted": true
+              },
+              {
+                "id": "pl-t6-s2",
+                "title": "Estimate monthly cost",
+                "isCompleted": true
+              }
+            ]
+          },
+          {
+            "id": "pl-t7",
+            "title": "Register the domain",
+            "description": "",
+            "subtasks": [
+              {
+                "id": "pl-t7-s1",
+                "title": "Check availability",
+                "isCompleted": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "marketing-plan",
+    "name": "Marketing Plan",
+    "columns": [
+      {
+        "id": "mp-todo",
+        "name": "Todo",
+        "tasks": [
+          {
+            "id": "mp-t1",
+            "title": "Define the target audience",
+            "description": "Two primary personas with their main problem, where they look for solutions, and what would make them switch.",
+            "subtasks": [
+              {
+                "id": "mp-t1-s1",
+                "title": "Interview five customers",
+                "isCompleted": false
+              },
+              {
+                "id": "mp-t1-s2",
+                "title": "Write persona summaries",
+                "isCompleted": false
+              }
+            ]
+          },
+          {
+            "id": "mp-t2",
+            "title": "Draft the content calendar",
+            "description": "One long-form article and two short posts a week for the first quarter.",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": "mp-doing",
+        "name": "Doing",
+        "tasks": [
+          {
+            "id": "mp-t3",
+            "title": "Redesign the newsletter template",
+            "description": "Mobile first, one column, and a single primary link per issue.",
+            "subtasks": [
+              {
+                "id": "mp-t3-s1",
+                "title": "Wireframe",
+                "isCompleted": true
+              },
+              {
+                "id": "mp-t3-s2",
+                "title": "Build in the email tool",
+                "isCompleted": false
+              },
+              {
+                "id": "mp-t3-s3",
+                "title": "Test in three mail clients",
+                "isCompleted": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mp-done",
+        "name": "Done",
+        "tasks": []
+      }
+    ]
+  },
+  {
+    "id": "roadmap",
+    "name": "Roadmap",
+    "columns": [
+      {
+        "id": "rm-now",
+        "name": "Now",
+        "tasks": [
+          {
+            "id": "rm-t1",
+            "title": "Arabic and English interface",
+            "description": "Full right-to-left support, translated interface text and Arabic plural rules.",
+            "subtasks": [
+              {
+                "id": "rm-t1-s1",
+                "title": "Translation dictionaries",
+                "isCompleted": false
+              },
+              {
+                "id": "rm-t1-s2",
+                "title": "Right-to-left layout",
+                "isCompleted": false
+              }
+            ]
+          },
+          {
+            "id": "rm-t2",
+            "title": "Drag and drop on touch screens",
+            "description": "Moving cards must work with a finger without blocking normal scrolling.",
+            "subtasks": []
+          }
+        ]
+      },
+      {
+        "id": "rm-next",
+        "name": "Next",
+        "tasks": [
+          {
+            "id": "rm-t3",
+            "title": "Saving boards to a database",
+            "description": "Replace the in-memory data with persistent storage so changes survive a reload.",
+            "subtasks": [
+              {
+                "id": "rm-t3-s1",
+                "title": "Choose a database",
+                "isCompleted": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "rm-later",
+        "name": "Later",
+        "tasks": [
+          {
+            "id": "rm-t4",
+            "title": "Shared boards",
+            "description": "Invite others to a board with view or edit access.",
+            "subtasks": []
+          }
+        ]
+      }
+    ]
+  }
+]

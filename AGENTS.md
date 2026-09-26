@@ -21,14 +21,14 @@ Next.js 16 (App Router) · TypeScript 6.0 · Tailwind CSS 4 · AR/EN with RTL. T
 
 ## Commands
 
-| Command             | Does                                                                                              |
-| ------------------- | ------------------------------------------------------------------------------------------------- |
-| `npm run dev`       | Dev server on http://localhost:3000                                                               |
-| `npm run check`     | typecheck → lint → format:check → test → build. The gate for every commit.                        |
-| `npm run typecheck` | `tsc --noEmit` (strict, `noUncheckedIndexedAccess`, `verbatimModuleSyntax`, `erasableSyntaxOnly`) |
-| `npm run lint`      | ESLint, including the architecture and i18n rules below                                           |
-| `npm test`          | `node:test` over `src/**/*.test.ts` — Node ≥ 22.18 runs TypeScript natively, no test framework    |
-| `npm run format`    | Prettier (with the Tailwind class-sorting plugin)                                                 |
+| Command             | Does                                                                                                                                      |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`       | Dev server on http://localhost:3000                                                                                                       |
+| `npm run check`     | typecheck → lint → format:check → test → build. The gate for every commit.                                                                |
+| `npm run typecheck` | `next typegen` (fresh route types) then `tsc --noEmit` (strict, `noUncheckedIndexedAccess`, `verbatimModuleSyntax`, `erasableSyntaxOnly`) |
+| `npm run lint`      | ESLint, including the architecture and i18n rules below                                                                                   |
+| `npm test`          | `node:test` over `src/**/*.test.ts` — Node ≥ 22.18 runs TypeScript natively, no test framework                                            |
+| `npm run format`    | Prettier (with the Tailwind class-sorting plugin)                                                                                         |
 
 ## Architecture — enforced by `eslint.config.mjs`
 
@@ -57,6 +57,9 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
 - Validation messages are `ValidationKey` codes (`src/core/validation.ts`), never sentences. The UI translates them;
   map unknown messages with `toValidationKey()`.
 - Input schemas (what forms submit) are separate from entity schemas: new items carry no ID.
+- Stored data enters the app only through `parseBoards()` (`core/board/parse.ts`), which throws `InvalidDataError`
+  listing every problem. `src/server/boards/queries.ts` parses the seed once and caches it; pages call `getBoards()` /
+  `getBoard(id)` (`undefined` for an unknown ID).
 
 ## Data and text are never hard-coded in components
 
