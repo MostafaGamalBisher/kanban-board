@@ -1,0 +1,20 @@
+import * as React from 'react';
+import { cn } from '@/lib/utils';
+
+function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
+  return (
+    <input
+      type={type}
+      data-slot="input"
+      className={cn(
+        'border-input file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 text-body-l h-10 w-full min-w-0 rounded-sm border bg-transparent px-4 py-2 shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-3 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-3',
+        className
+      )}
+      // User-typed text: lay it out by its own direction (overridable).
+      dir="auto"
+      {...props}
+    />
+  );
+}
+
+export { Input };
