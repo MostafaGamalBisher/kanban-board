@@ -33,7 +33,7 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 - [x] **2.3** Pure board operations + HTTP-safe ids
 - [x] **2.4** `node:test` suite for the operations
 - [x] **2.5** `config/` constants
-- [ ] **3.1** `[locale]` root layout + `proxy.ts` negotiation
+- [x] **3.1** `[locale]` root layout + `proxy.ts` negotiation
 - [ ] **3.2** Typed dictionaries, `useT()`, Arabic plurals
 - [ ] **3.3** RTL rules + physical-class check
 - [ ] **3.4** Theme cookie + toggle; language switcher
@@ -299,12 +299,12 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 
 ### Phase 4 — Shell and board view (read-only)
 
-| Node | Work                                                                                                                        | Done when                                                      |
-| ---- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| 4.1  | `BoardsProvider` seeded in the `[locale]` layout; `useBoards()`; `/[locale]` → first board.                                 | Board names render from the JSON via the provider.             |
-| 4.2  | Header + mobile board switcher, built at 375px first.                                                                       | Correct at 375px in both languages.                            |
-| 4.3  | Sidebar with hide/show at ≥ 768px.                                                                                          | Correct at 768px and 1440px in both languages.                 |
-| 4.4  | Board view: columns (dot, name, count), task cards, horizontal scroll with snap on mobile, empty-board and not-found views. | Matches the brief; no string or data literal in any component. |
+| Node | Work                                                                                                                                                                                                                                                                                                                                                 | Done when                                                      |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| 4.1  | `BoardsProvider` seeded in the `[locale]` layout; `useBoards()`; `/[locale]` → first board.                                                                                                                                                                                                                                                          | Board names render from the JSON via the provider.             |
+| 4.2  | Header + mobile board switcher, built at 375px first.                                                                                                                                                                                                                                                                                                | Correct at 375px in both languages.                            |
+| 4.3  | Sidebar with hide/show at ≥ 768px.                                                                                                                                                                                                                                                                                                                   | Correct at 768px and 1440px in both languages.                 |
+| 4.4  | Board view: columns (dot, name, count), task cards, horizontal scroll with snap on mobile, empty-board and not-found views. **Localized 404:** a catch-all `[locale]/[...notFound]/page.tsx` that calls `notFound()`, plus `[locale]/not-found.tsx`, because unmatched URLs otherwise get Next's bare default 404 outside our layout (found in 3.1). | Matches the brief; no string or data literal in any component. |
 
 ### Phase 5 — Board CRUD
 

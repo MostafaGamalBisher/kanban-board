@@ -18,9 +18,15 @@
 
 @theme inline {
   /* Fonts: variables are set by next/font in src/app/fonts.ts */
-  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  /* One stack for both languages, chosen per character: Latin from
+   * Plus Jakarta Sans; Arabic (which Jakarta lacks) from IBM Plex Sans
+   * Arabic. So an English board name looks the same on /en and /ar, and an
+   * Arabic one renders correctly on /en too. Plex Arabic is fetched only
+   * when Arabic characters appear. */
+  --font-sans:
+    var(--font-jakarta), var(--font-plex-arabic), ui-sans-serif, system-ui,
+    sans-serif;
   --font-heading: var(--font-sans);
-  --font-arabic: var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
 
   /* Type scale (challenge style guide) */
   --text-heading-xl: 1.5rem;

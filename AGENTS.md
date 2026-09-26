@@ -48,6 +48,16 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
   any built-in text (e.g. a dialog's screen-reader "Close") is a required prop such as `closeLabel`. After
   `npx shadcn add`, re-check new files for text and physical direction classes.
 
+## Routing, languages and fonts
+
+- Every page lives under `src/app/[locale]/` (the root layout). `/en` and `/ar` are prerendered; `dynamicParams =
+false` makes any other first segment a 404. The layout renders `<html lang dir>` on the server.
+- `src/proxy.ts` (Next 16's name for middleware) redirects URLs without a locale: cookie → `Accept-Language` →
+  default, via the pure `negotiateLocale()` in `src/lib/locale-negotiation.ts`. Assets (any path with a dot) and
+  `_next` are skipped.
+- One font stack for both languages, chosen per character: Plus Jakarta Sans for Latin, IBM Plex Sans Arabic for
+  Arabic (fetched only when Arabic text is present). Do not switch fonts by locale.
+
 ## Domain model (`src/core/board/`)
 
 - `schema.ts` is the single source of truth: zod schemas give both validation and types. Never hand-write a type that

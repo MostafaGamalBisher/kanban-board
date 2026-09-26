@@ -14,8 +14,9 @@ export const fontSans = Plus_Jakarta_Sans({
 });
 
 /**
- * Arabic UI font. Plus Jakarta Sans has no Arabic glyphs.
- * Not preloaded: it is only needed on /ar, which node 3.1 wires up.
+ * Arabic glyphs. Plus Jakarta Sans has none, so the shared font stack in
+ * globals.css falls through to this font for Arabic characters only.
+ * Not preloaded: it is fetched only when Arabic text is on the page.
  */
 export const fontArabic = IBM_Plex_Sans_Arabic({
   subsets: ['arabic'],
