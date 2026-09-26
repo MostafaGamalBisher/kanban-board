@@ -109,6 +109,20 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
   listing every problem. `src/server/boards/queries.ts` parses the seed once and caches it; pages call `getBoards()` /
   `getBoard(id)` (`undefined` for an unknown ID).
 
+## Forms and dialogs
+
+- A form validates with its schema from `core/` (e.g. `BoardFormSchema`) and turns issues into per-field messages with
+  `fieldErrors()` → `dict.validation[key]`. Show errors after the first submit, then live; on a failed submit, focus the
+  first invalid field. Inputs carry a `name` equal to the issue path (`columns.1.name`) so focus can find them.
+- When an action removes the focused element (removing a row, closing a menu that opened a dialog), move focus
+  somewhere meaningful; never leave it on `<body>`.
+- A message placed inside a field follows the field's text direction (`textDirection()` in `src/lib/`), not the
+  page's.
+- Board dialogs have one instance each in `BoardDialogsProvider` (inside `AppShell`); open them with
+  `useBoardDialogs()`.
+- Until Part B, a language switch discards session changes: `LanguageSwitcher` asks first when
+  `useSessionChanges().hasChanges`, and leaves a session-created board for the home page.
+
 ## Tests
 
 - `node:test` + `node:assert/strict`, next to the code (`*.test.ts`). No test framework.

@@ -27,10 +27,14 @@ import { cn } from '@/lib/utils';
 export function MobileBoardSwitcher({ board }: { board: Board | undefined }) {
   const [open, setOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const { dict } = useI18n();
 
   const trigger = (
-    <DialogTrigger className="text-heading-l focus-visible:ring-ring/50 flex max-w-full min-w-0 items-center gap-2 rounded-sm outline-none focus-visible:ring-3">
+    <DialogTrigger
+      ref={triggerRef}
+      className="text-heading-l focus-visible:ring-ring/50 flex max-w-full min-w-0 items-center gap-2 rounded-sm outline-none focus-visible:ring-3"
+    >
       {/* dir="auto": an English name in /ar truncates at its own end. */}
       <span dir="auto" className="truncate">
         {board?.name ?? dict.board.switcher}
@@ -69,6 +73,7 @@ export function MobileBoardSwitcher({ board }: { board: Board | undefined }) {
         <BoardNav
           currentBoardId={board?.id}
           onNavigate={() => setOpen(false)}
+          returnFocusTo={triggerRef}
         />
         <div className="flex flex-col gap-4 px-4">
           <ThemeToggle />

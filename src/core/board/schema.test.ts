@@ -3,6 +3,7 @@ import { describe, test } from 'node:test';
 
 import { toValidationKey } from '../validation.ts';
 import {
+  BoardFormSchema,
   CreateBoardInputSchema,
   CreateTaskInputSchema,
   MoveTaskInputSchema,
@@ -62,6 +63,32 @@ describe('UpdateBoardInputSchema (the Edit Board form)', () => {
       columns: [{ id: 'c1', name: 'Done' }, { name: 'DONE' }],
     });
     assert.deepEqual(problems(result), ['columns.1.name: duplicateName']);
+  });
+});
+
+describe('BoardFormSchema (the shared Add/Edit Board form)', () => {
+  test('reports every empty field and duplicate at its own path', () => {
+    const result = BoardFormSchema.safeParse({
+      name: ' ',
+      columns: [{ name: 'Todo' }, { name: '' }, { name: 'todo' }],
+    });
+    assert.deepEqual(problems(result), [
+      'name: required',
+      'columns.1.name: required',
+      'columns.2.name: duplicateName',
+    ]);
+  });
+
+  test('keeps the IDs of existing columns', () => {
+    const result = BoardFormSchema.safeParse({
+      name: 'Launch',
+      columns: [{ id: 'c1', name: 'Todo' }, { name: 'Review' }],
+    });
+    assert.ok(result.success);
+    assert.deepEqual(result.data.columns, [
+      { id: 'c1', name: 'Todo' },
+      { name: 'Review' },
+    ]);
   });
 });
 

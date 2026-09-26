@@ -25,6 +25,10 @@ export const ar: Dictionary = {
     darkTheme: 'الوضع الداكن',
     hideSidebar: 'إخفاء الشريط الجانبي',
     showSidebar: 'إظهار الشريط الجانبي',
+    switchLanguageTitle: 'تغيير اللغة؟',
+    switchLanguageBody:
+      'تُحفظ التغييرات التي أجريتها في هذه الجلسة حتى إعادة تحميل الصفحة أو تغيير اللغة فقط. تغيير اللغة الآن يتجاهلها.',
+    switchLanguageConfirm: 'التغيير وتجاهل التعديلات',
   },
   board: {
     noBoards: 'لا توجد لوحات بعد.',
@@ -38,6 +42,15 @@ export const ar: Dictionary = {
     empty: 'هذه اللوحة فارغة. أنشئ عمودًا جديدًا للبدء.',
     addColumn: 'إضافة عمود جديد',
     newColumn: 'عمود جديد',
+    createBoard: '+ إنشاء لوحة جديدة',
+    addBoardTitle: 'إضافة لوحة جديدة',
+    createBoardSubmit: 'إنشاء اللوحة',
+    nameLabel: 'اسم اللوحة',
+    namePlaceholder: 'مثال: تصميم المواقع',
+    columnsLabel: 'أعمدة اللوحة',
+    columnInput: 'العمود {number}',
+    removeColumn: 'حذف العمود {number}',
+    defaultColumns: ['للتنفيذ', 'قيد التنفيذ'],
     allBoards: 'كل اللوحات ({count})',
     taskCount: arabicPlural({
       zero: 'لا توجد مهام',

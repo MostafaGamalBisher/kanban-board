@@ -179,18 +179,26 @@ export const CreateBoardInputSchema = z
   })
   .superRefine(columnNamesUnique);
 
+/** Name + columns, as the Add/Edit Board form holds them. */
+const boardFormShape = z.object({
+  ...boardFields,
+  columns: z.array(
+    z.object({
+      id: ColumnIdSchema.optional(),
+      name: requiredText(LIMITS.columnName),
+    })
+  ),
+});
+
+/**
+ * What the shared board form validates, for both Add and Edit Board. New
+ * columns have no `id`; on Add every column is new.
+ */
+export const BoardFormSchema = boardFormShape.superRefine(columnNamesUnique);
+
 /** Columns with an `id` are kept (and may be renamed); without one they are new; missing ones are removed. */
-export const UpdateBoardInputSchema = z
-  .object({
-    boardId: BoardIdSchema,
-    ...boardFields,
-    columns: z.array(
-      z.object({
-        id: ColumnIdSchema.optional(),
-        name: requiredText(LIMITS.columnName),
-      })
-    ),
-  })
+export const UpdateBoardInputSchema = boardFormShape
+  .extend({ boardId: BoardIdSchema })
   .superRefine(columnNamesUnique);
 
 export const DeleteBoardInputSchema = z.object({ boardId: BoardIdSchema });
@@ -242,6 +250,7 @@ export const SetSubtaskCompletedInputSchema = z.object({
 
 export type CreateBoardInput = z.infer<typeof CreateBoardInputSchema>;
 export type UpdateBoardInput = z.infer<typeof UpdateBoardInputSchema>;
+export type BoardFormValues = z.infer<typeof BoardFormSchema>;
 export type DeleteBoardInput = z.infer<typeof DeleteBoardInputSchema>;
 export type CreateTaskInput = z.infer<typeof CreateTaskInputSchema>;
 export type UpdateTaskInput = z.infer<typeof UpdateTaskInputSchema>;

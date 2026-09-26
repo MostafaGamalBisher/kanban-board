@@ -2,9 +2,12 @@
 
 import { redirect } from 'next/navigation';
 
+import { Button } from '@/components/ui/button';
+
 import { useI18n } from '@/i18n/provider';
 import { routes } from '@/lib/routes';
 
+import { useBoardDialogs } from './BoardDialogs';
 import { useBoards } from './BoardsProvider';
 
 /**
@@ -17,6 +20,7 @@ import { useBoards } from './BoardsProvider';
 export function BoardsHome() {
   const boards = useBoards();
   const { locale, dict } = useI18n();
+  const { openCreateBoard } = useBoardDialogs();
 
   const first = boards[0];
   if (first) {
@@ -24,8 +28,13 @@ export function BoardsHome() {
   }
 
   return (
-    <main className="text-muted-foreground text-heading-l grid flex-1 place-items-center p-6 text-center">
-      <p>{dict.board.noBoards}</p>
+    <main className="flex flex-1 flex-col items-center justify-center gap-6 p-6 text-center">
+      <p className="text-heading-l text-muted-foreground">
+        {dict.board.noBoards}
+      </p>
+      <Button size="lg" onClick={() => openCreateBoard()}>
+        {dict.board.createBoard}
+      </Button>
     </main>
   );
 }

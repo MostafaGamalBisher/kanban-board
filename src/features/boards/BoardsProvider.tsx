@@ -43,8 +43,17 @@ export interface BoardActions {
   setSubtaskCompleted(input: SetSubtaskCompletedInput): void;
 }
 
+/** How this session's boards differ from the ones the server sent. */
+export interface SessionChanges {
+  /** True once any change has been made (a language switch discards it). */
+  readonly hasChanges: boolean;
+  /** True if the board came from the server (it survives a reload). */
+  isSeedBoard(id: string): boolean;
+}
+
 const BoardsContext = createContext<Boards | null>(null);
 const BoardActionsContext = createContext<BoardActions | null>(null);
+const SessionChangesContext = createContext<SessionChanges | null>(null);
 
 /**
  * Holds the boards for the session, seeded from the server's data by the
@@ -102,9 +111,24 @@ export function BoardsProvider({
     []
   );
 
+  // Operations return the same array when nothing changed, so identity
+  // is an exact "has anything changed" test.
+  const hasChanges = boards !== initialBoards;
+  const session = useMemo<SessionChanges>(
+    () => ({
+      hasChanges,
+      isSeedBoard: (id) => initialBoards.some((board) => board.id === id),
+    }),
+    [hasChanges, initialBoards]
+  );
+
   return (
     <BoardsContext value={boards}>
-      <BoardActionsContext value={actions}>{children}</BoardActionsContext>
+      <BoardActionsContext value={actions}>
+        <SessionChangesContext value={session}>
+          {children}
+        </SessionChangesContext>
+      </BoardActionsContext>
     </BoardsContext>
   );
 }
@@ -134,4 +158,14 @@ export function useBoardActions(): BoardActions {
     throw new Error('useBoardActions() must be used inside <BoardsProvider>.');
   }
   return actions;
+}
+
+export function useSessionChanges(): SessionChanges {
+  const session = useContext(SessionChangesContext);
+  if (!session) {
+    throw new Error(
+      'useSessionChanges() must be used inside <BoardsProvider>.'
+    );
+  }
+  return session;
 }
