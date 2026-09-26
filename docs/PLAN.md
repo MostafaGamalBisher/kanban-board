@@ -28,7 +28,7 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 - [x] **1.2** Strict TS, ESLint (layer rules, `jsx-no-literals`), Prettier, `check` script
 - [x] **1.3** shadcn/ui init, Kanban tokens, dark by default, primitives
 - [x] **1.4** Vercel connected; first preview build verified
-- [ ] **2.1** Domain schemas (`core/board/schema.ts`)
+- [x] **2.1** Domain schemas (`core/board/schema.ts`)
 - [ ] **2.2** Seed data (`data/boards.json`) + server queries (`server-only`)
 - [ ] **2.3** Pure board operations + HTTP-safe ids
 - [ ] **2.4** `node:test` suite for the operations

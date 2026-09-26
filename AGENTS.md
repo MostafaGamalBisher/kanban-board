@@ -47,6 +47,17 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
   any built-in text (e.g. a dialog's screen-reader "Close") is a required prop such as `closeLabel`. After
   `npx shadcn add`, re-check new files for text and physical direction classes.
 
+## Domain model (`src/core/board/`)
+
+- `schema.ts` is the single source of truth: zod schemas give both validation and types. Never hand-write a type that
+  a schema already infers.
+- IDs are branded (`BoardId`, `ColumnId`, `TaskId`, `SubtaskId`): obtain them by parsing, never by casting strings.
+- Entities are readonly (typed and frozen when parsed). Operations return new objects; nothing mutates in place.
+- A task has no `status` field: its status is the column containing it.
+- Validation messages are `ValidationKey` codes (`src/core/validation.ts`), never sentences. The UI translates them;
+  map unknown messages with `toValidationKey()`.
+- Input schemas (what forms submit) are separate from entity schemas: new items carry no ID.
+
 ## Data and text are never hard-coded in components
 
 - Board data: `src/data/boards.json`, read on the server via `src/server/`, validated with zod.
