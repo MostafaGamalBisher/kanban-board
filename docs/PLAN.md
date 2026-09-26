@@ -24,7 +24,7 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 **Part A — Front-end**
 
 - [x] **0.1** Commit this plan as `docs/PLAN.md`
-- [ ] **1.1** Scaffold Next 16 + TS 6.0; remove the Vite app; icons, fonts, Node version pin
+- [x] **1.1** Scaffold Next 16 + TS 6.0; remove the Vite app; icons, fonts, Node version pin
 - [ ] **1.2** Strict TS, ESLint (layer rules, `jsx-no-literals`), Prettier, `check` script
 - [ ] **1.3** shadcn/ui init, Kanban tokens, dark by default, primitives
 - [ ] **1.4** Vercel connected; first preview build verified
@@ -60,11 +60,11 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 
 ## Revision history
 
-| Rev | Change |
-|---|---|
-| 5 | **Language lives in the URL** (`/en`, `/ar`), per your decision. The known consequence: before Part B, switching language resets in-session edits. It is handled explicitly (§2.1): a confirmation dialog appears when there are edits, and there is a safe landing page if the current board was created in the session. `server-only` approved. Design source defined (no Figma available). |
-| 4 | `dir="auto"` on user content; `core/` may import `zod`; HTTP-safe id generation for phone testing over LAN; stable `DndContext` id (hydration); Node ≥ 22.18 pinned for native TS tests; `jsx-no-literals` scope stated honestly, plus an attribute-literal grep; node 4.2 split; plan tracked in `docs/PLAN.md`. |
-| 3 | Front-end first; server-side direct reads; TanStack Query dropped. |
+| Rev | Change                                                                                                                                                                                                                                                                                                                                                                                        |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 5   | **Language lives in the URL** (`/en`, `/ar`), per your decision. The known consequence: before Part B, switching language resets in-session edits. It is handled explicitly (§2.1): a confirmation dialog appears when there are edits, and there is a safe landing page if the current board was created in the session. `server-only` approved. Design source defined (no Figma available). |
+| 4   | `dir="auto"` on user content; `core/` may import `zod`; HTTP-safe id generation for phone testing over LAN; stable `DndContext` id (hydration); Node ≥ 22.18 pinned for native TS tests; `jsx-no-literals` scope stated honestly, plus an attribute-literal grep; node 4.2 split; plan tracked in `docs/PLAN.md`.                                                                             |
+| 3   | Front-end first; server-side direct reads; TanStack Query dropped.                                                                                                                                                                                                                                                                                                                            |
 
 ---
 
@@ -72,30 +72,30 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 
 ### 1.1 Routes
 
-| Route | Purpose |
-|---|---|
-| `/` | `proxy.ts` redirects to `/en` or `/ar`, using: the remembered choice (cookie) → browser language → `en`. |
-| `/[locale]` | Redirects to the first board, or shows the "no boards yet" empty state. An unknown locale gives a 404. |
-| `/[locale]/boards/[boardId]` | The board view. The main screen. |
-| `not-found` / `error` | Unknown board or locale; unexpected render error. |
+| Route                        | Purpose                                                                                                  |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `/`                          | `proxy.ts` redirects to `/en` or `/ar`, using: the remembered choice (cookie) → browser language → `en`. |
+| `/[locale]`                  | Redirects to the first board, or shows the "no boards yet" empty state. An unknown locale gives a 404.   |
+| `/[locale]/boards/[boardId]` | The board view. The main screen.                                                                         |
+| `not-found` / `error`        | Unknown board or locale; unexpected render error.                                                        |
 
 ### 1.2 Layout
 
-| Piece | Behavior |
-|---|---|
-| **Header** | Logo, current board name, "+ Add New Task" (icon-only on mobile), board menu (Edit / Delete). |
-| **Sidebar** (≥ 768px) | "All boards (n)", board links, "+ Create New Board", theme toggle, language switch, hide-sidebar button. |
-| **Show-sidebar button** | Floating button, shown when the sidebar is hidden. |
-| **Mobile board switcher** (< 768px) | Header dropdown containing the sidebar's content. |
+| Piece                               | Behavior                                                                                                 |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Header**                          | Logo, current board name, "+ Add New Task" (icon-only on mobile), board menu (Edit / Delete).            |
+| **Sidebar** (≥ 768px)               | "All boards (n)", board links, "+ Create New Board", theme toggle, language switch, hide-sidebar button. |
+| **Show-sidebar button**             | Floating button, shown when the sidebar is hidden.                                                       |
+| **Mobile board switcher** (< 768px) | Header dropdown containing the sidebar's content.                                                        |
 
 ### 1.3 Board screen
 
-| Piece | Behavior |
-|---|---|
-| **Column** | Colored dot, name, task count, list of task cards. |
-| **Task card** | Title, "x of y subtasks". Opens the task detail. Draggable. |
-| **"+ New Column"** | Opens Edit Board with a new empty column row. |
-| **Empty board** | Message plus a "+ Add New Column" button. |
+| Piece              | Behavior                                                    |
+| ------------------ | ----------------------------------------------------------- |
+| **Column**         | Colored dot, name, task count, list of task cards.          |
+| **Task card**      | Title, "x of y subtasks". Opens the task detail. Draggable. |
+| **"+ New Column"** | Opens Edit Board with a new empty column row.               |
+| **Empty board**    | Message plus a "+ Add New Column" button.                   |
 
 ### 1.4 Dialogs (8, built on 2 shared forms)
 
@@ -117,27 +117,27 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 
 ### 1.6 Data, content and config — none of it in components
 
-| What | Where | Format |
-|---|---|---|
-| Boards / columns / tasks / subtasks | `src/data/boards.json` | JSON seed. Replaceable by a database without touching TypeScript. |
-| Shape and validation | `src/core/board/schema.ts` | zod schemas → inferred types. |
-| UI text (labels, messages, aria text) | `src/i18n/dictionaries/{en,ar}.ts` | TS. `ar` is typed from `en`, so a missing key is a compile error. |
-| Column dot colors, layout constants, locales, default theme | `src/config/*.ts` | Typed constants. |
-| Colors, fonts, type scale | `src/app/globals.css` | Tailwind v4 + shadcn tokens. |
-| Icons | `public/icons/*.svg`, `lucide-react` | Assets. |
+| What                                                        | Where                                | Format                                                            |
+| ----------------------------------------------------------- | ------------------------------------ | ----------------------------------------------------------------- |
+| Boards / columns / tasks / subtasks                         | `src/data/boards.json`               | JSON seed. Replaceable by a database without touching TypeScript. |
+| Shape and validation                                        | `src/core/board/schema.ts`           | zod schemas → inferred types.                                     |
+| UI text (labels, messages, aria text)                       | `src/i18n/dictionaries/{en,ar}.ts`   | TS. `ar` is typed from `en`, so a missing key is a compile error. |
+| Column dot colors, layout constants, locales, default theme | `src/config/*.ts`                    | Typed constants.                                                  |
+| Colors, fonts, type scale                                   | `src/app/globals.css`                | Tailwind v4 + shadcn tokens.                                      |
+| Icons                                                       | `public/icons/*.svg`, `lucide-react` | Assets.                                                           |
 
 ### 1.7 Dependencies — the complete Part A list
 
-| Package | Why |
-|---|---|
-| `next` 16.3, `react` / `react-dom` 19 | Framework. |
-| `typescript` **~6.0.3** | Pinned: npm `latest` is 7.0, which the ESLint TypeScript parser does not support (`<6.1`). |
-| `tailwindcss` 4.3 + `@tailwindcss/postcss` | Styling. |
-| shadcn/ui → `@radix-ui/*`, `clsx`, `tailwind-merge`, `class-variance-authority`, `lucide-react` | Accessible primitives. |
-| `@dnd-kit/core` 6.3, `@dnd-kit/sortable` 10, `@dnd-kit/utilities` | Drag and drop with touch and keyboard support. |
-| `zod` 4 | Validates the seed at load and forms at submit, with one schema per shape. |
-| `server-only` 0.0.1 | First line of every `server/` module. If browser code imports it, directly or through a chain of imports, the **build fails**. Zero runtime cost. |
-| dev: `eslint`, `eslint-config-next`, `prettier`, `prettier-plugin-tailwindcss`, `@types/*` | Tooling. |
+| Package                                                                                         | Why                                                                                                                                               |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `next` 16.3, `react` / `react-dom` 19                                                           | Framework.                                                                                                                                        |
+| `typescript` **~6.0.3**                                                                         | Pinned: npm `latest` is 7.0, which the ESLint TypeScript parser does not support (`<6.1`).                                                        |
+| `tailwindcss` 4.3 + `@tailwindcss/postcss`                                                      | Styling.                                                                                                                                          |
+| shadcn/ui → `@radix-ui/*`, `clsx`, `tailwind-merge`, `class-variance-authority`, `lucide-react` | Accessible primitives.                                                                                                                            |
+| `@dnd-kit/core` 6.3, `@dnd-kit/sortable` 10, `@dnd-kit/utilities`                               | Drag and drop with touch and keyboard support.                                                                                                    |
+| `zod` 4                                                                                         | Validates the seed at load and forms at submit, with one schema per shape.                                                                        |
+| `server-only` 0.0.1                                                                             | First line of every `server/` module. If browser code imports it, directly or through a chain of imports, the **build fails**. Zero runtime cost. |
+| dev: `eslint`, `eslint-config-next`, `prettier`, `prettier-plugin-tailwindcss`, `@types/*`      | Tooling.                                                                                                                                          |
 
 **Built in, no dependency:** `next/font` (Plus Jakarta Sans + IBM Plex Sans Arabic), `Intl.PluralRules`,
 `useReducer`, `node:test`, Web Crypto.
@@ -149,12 +149,12 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 The challenge's design files are Pro tier. The design is rebuilt from what the repo already holds, which came from the
 challenge's style guide:
 
-| Source in the current repo | Carried into |
-|---|---|
+| Source in the current repo                                                                                                              | Carried into                    |
+| --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
 | Palette in `src/index.css`: main-purple, dark-grey, very-dark-grey, lines, lines-light, light-grey, medium-grey, red, plus hover shades | `globals.css` tokens (node 1.3) |
-| Type scale in `src/index.css` (`heading-xl/l/m/s`, `body-l/m`) | `globals.css` (node 1.3) |
-| Header 97px (`Header.jsx`), sidebar 300px (`SideMenu.jsx`), column 288px (`Column.jsx`), dialog 480px (`DialogPrimitive.jsx`) | `config/layout.ts` (node 2.5) |
-| 11 SVG icons in `src/assets/img/icons/` | `public/icons/` (node 1.1) |
+| Type scale in `src/index.css` (`heading-xl/l/m/s`, `body-l/m`)                                                                          | `globals.css` (node 1.3)        |
+| Header 97px (`Header.jsx`), sidebar 300px (`SideMenu.jsx`), column 288px (`Column.jsx`), dialog 480px (`DialogPrimitive.jsx`)           | `config/layout.ts` (node 2.5)   |
+| 11 SVG icons in `src/assets/img/icons/`                                                                                                 | `public/icons/` (node 1.1)      |
 
 The layout follows the brief's structure. **It will be close to the original, but not pixel-exact.** Wherever the brief
 is silent (spacing, the Arabic layout, focus states), I decide and flag each decision in that node's report.
@@ -194,10 +194,10 @@ behave predictably:
    So the switcher sends you to `/[newLocale]` (the first board) instead of a 404.
 
 The switcher also stores the choice in a `NEXT_LOCALE` cookie, so the next visit to `/` opens in that language. That
-cookie is a *preference*; the URL remains the source of truth.
+cookie is a _preference_; the URL remains the source of truth.
 
 **Other limitation of front-end-only:** a hard refresh restores the seed. Part B removes both limitations. Once the
-data lives on the server, a language switch reloads the *same* data, and the guard dialog is deleted.
+data lives on the server, a language switch reloads the _same_ data, and the guard dialog is deleted.
 
 **Why the reducer delegates to `core/`:** in Part B, the same pure functions run on the server inside Server Actions,
 and on the client inside `useOptimistic`. The UI does not change.
@@ -208,12 +208,12 @@ and on the client inside `useOptimistic`. The UI does not change.
 app/ (routes)  ──►  features/ (UI)  ──►  core/ (pure domain)  ◄──  server/ (data access)
 ```
 
-| Layer | Contains | May import | May not import |
-|---|---|---|---|
-| `core/` | schemas, types, pure operations, errors | `core/` (relative imports), `zod` | `react`, `next`, `@/…` |
-| `server/` | queries (in Part B also actions and repositories) | `core/`, `data/` | `features/`, `react` |
-| `features/` | components, hooks, providers | `core/`, `components/`, `config/`, `i18n/`, `lib/` | `server/`, `data/` |
-| `app/` | routes and layouts; thin composition only | all of the above | — |
+| Layer       | Contains                                          | May import                                         | May not import         |
+| ----------- | ------------------------------------------------- | -------------------------------------------------- | ---------------------- |
+| `core/`     | schemas, types, pure operations, errors           | `core/` (relative imports), `zod`                  | `react`, `next`, `@/…` |
+| `server/`   | queries (in Part B also actions and repositories) | `core/`, `data/`                                   | `features/`, `react`   |
+| `features/` | components, hooks, providers                      | `core/`, `components/`, `config/`, `i18n/`, `lib/` | `server/`, `data/`     |
+| `app/`      | routes and layouts; thin composition only         | all of the above                                   | —                      |
 
 There are two guards. ESLint `no-restricted-imports` blocks direct imports that cross a layer. `server-only` catches
 indirect import chains at build time.
@@ -263,80 +263,80 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 
 ### Phase 0 — Tracking
 
-| Node | Work | Done when |
-|---|---|---|
-| 0.1 | Commit this plan as `docs/PLAN.md` with a status checkbox per node. | The plan is in the repo and reviewable on GitHub. |
+| Node | Work                                                                | Done when                                         |
+| ---- | ------------------------------------------------------------------- | ------------------------------------------------- |
+| 0.1  | Commit this plan as `docs/PLAN.md` with a status checkbox per node. | The plan is in the repo and reviewable on GitHub. |
 
 ### Phase 1 — Foundation
 
-| Node | Work | Done when |
-|---|---|---|
-| 1.1 | Scaffold Next 16 + TS 6.0 in place. Delete the Vite app (it stays in git history). Move icons → `public/icons/`. Fonts via `next/font`. Add `engines` + `.nvmrc`. | `npm run dev` serves a placeholder page. |
-| 1.2 | Strict `tsconfig`. ESLint: `eslint-config-next` + layer rules + `jsx-no-literals`. Prettier. Scripts: `dev` `build` `lint` `typecheck` `test` `format` `check`. | `check` is green; a planted violation of each rule fails, then is reverted. |
-| 1.3 | `shadcn init`; map the Kanban palette and type scale onto shadcn tokens; dark by default. Add primitives: Button, Dialog, AlertDialog, DropdownMenu, Input, Textarea, Label, Checkbox, Select. | The placeholder shows the palette and every primitive, in dark and light. |
-| 1.4 | **Your action:** import the repo into Vercel. I verify the first preview build. | The preview URL loads on your phone. |
+| Node | Work                                                                                                                                                                                           | Done when                                                                   |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 1.1  | Scaffold Next 16 + TS 6.0 in place. Delete the Vite app (it stays in git history). Move icons → `public/icons/`. Fonts via `next/font`. Add `engines` + `.nvmrc`.                              | `npm run dev` serves a placeholder page.                                    |
+| 1.2  | Strict `tsconfig`. ESLint: `eslint-config-next` + layer rules + `jsx-no-literals`. Prettier. Scripts: `dev` `build` `lint` `typecheck` `test` `format` `check`.                                | `check` is green; a planted violation of each rule fails, then is reverted. |
+| 1.3  | `shadcn init`; map the Kanban palette and type scale onto shadcn tokens; dark by default. Add primitives: Button, Dialog, AlertDialog, DropdownMenu, Input, Textarea, Label, Checkbox, Select. | The placeholder shows the palette and every primitive, in dark and light.   |
+| 1.4  | **Your action:** import the repo into Vercel. I verify the first preview build.                                                                                                                | The preview URL loads on your phone.                                        |
 
 ### Phase 2 — Data and domain
 
-| Node | Work | Done when |
-|---|---|---|
-| 2.1 | `core/board/schema.ts`: entity schemas + form input schemas. A task's status **is** its column. | `typecheck` passes. |
-| 2.2 | `data/boards.json` (three seed boards) + `server/boards/queries.ts` (validated at load, `import 'server-only'` on line 1). | A broken seed fails with a readable error. A planted client-side import of `queries.ts` fails `build` (shown, then reverted). |
-| 2.3 | `core/board/operations.ts`: createBoard, updateBoard, deleteBoard, addTask, updateTask, deleteTask, moveTask, setSubtaskCompleted — all pure functions. `lib/ids.ts` with a fallback that works over plain HTTP. | `typecheck` passes; `core/` has no React or Next imports. |
-| 2.4 | `operations.test.ts` (`node:test`): moves (same column, across columns, edge positions), column-removal cascade, subtask toggle, not-found cases, **input immutability**. | `npm test` green. |
-| 2.5 | `config/*.ts`: column colors, layout constants, locales, default theme. | `typecheck` passes. |
+| Node | Work                                                                                                                                                                                                             | Done when                                                                                                                     |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 2.1  | `core/board/schema.ts`: entity schemas + form input schemas. A task's status **is** its column.                                                                                                                  | `typecheck` passes.                                                                                                           |
+| 2.2  | `data/boards.json` (three seed boards) + `server/boards/queries.ts` (validated at load, `import 'server-only'` on line 1).                                                                                       | A broken seed fails with a readable error. A planted client-side import of `queries.ts` fails `build` (shown, then reverted). |
+| 2.3  | `core/board/operations.ts`: createBoard, updateBoard, deleteBoard, addTask, updateTask, deleteTask, moveTask, setSubtaskCompleted — all pure functions. `lib/ids.ts` with a fallback that works over plain HTTP. | `typecheck` passes; `core/` has no React or Next imports.                                                                     |
+| 2.4  | `operations.test.ts` (`node:test`): moves (same column, across columns, edge positions), column-removal cascade, subtask toggle, not-found cases, **input immutability**.                                        | `npm test` green.                                                                                                             |
+| 2.5  | `config/*.ts`: column colors, layout constants, locales, default theme.                                                                                                                                          | `typecheck` passes.                                                                                                           |
 
 ### Phase 3 — Language, direction, theme
 
-| Node | Work | Done when |
-|---|---|---|
-| 3.1 | `[locale]` segment as the root layout (`<html lang dir>` rendered on the server); an unknown locale gives a 404. `proxy.ts`: `NEXT_LOCALE` cookie → `Accept-Language` → `en`, excluding `_next`, icons and static files. | `/` redirects correctly; `/ar` renders `dir="rtl"`; `/xx` gives a 404. |
-| 3.2 | Typed dictionaries; `getDictionary()` on the server; `I18nProvider` + `useT()` on the client; Arabic plurals via `Intl.PluralRules`. | A missing `ar` key fails `typecheck`; Arabic counts 0 / 1 / 2 / 3 / 11 / 100 read correctly. |
-| 3.3 | RTL rules: logical utilities only, mirrored directional icons, Radix `DirectionProvider`, `dir="auto"` on user content. `check` greps for physical `ml-/mr-/pl-/pr-/left-/right-` classes. | A planted `ml-4` fails `check`. |
-| 3.4 | Theme cookie (no cookie → dark) + `ThemeToggle`. `LanguageSwitcher` keeps the current path and sets `NEXT_LOCALE`. (The guard dialog arrives at 5.1, once there are edits to protect.) | No flash on reload; both preferences survive a reload. |
+| Node | Work                                                                                                                                                                                                                     | Done when                                                                                    |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| 3.1  | `[locale]` segment as the root layout (`<html lang dir>` rendered on the server); an unknown locale gives a 404. `proxy.ts`: `NEXT_LOCALE` cookie → `Accept-Language` → `en`, excluding `_next`, icons and static files. | `/` redirects correctly; `/ar` renders `dir="rtl"`; `/xx` gives a 404.                       |
+| 3.2  | Typed dictionaries; `getDictionary()` on the server; `I18nProvider` + `useT()` on the client; Arabic plurals via `Intl.PluralRules`.                                                                                     | A missing `ar` key fails `typecheck`; Arabic counts 0 / 1 / 2 / 3 / 11 / 100 read correctly. |
+| 3.3  | RTL rules: logical utilities only, mirrored directional icons, Radix `DirectionProvider`, `dir="auto"` on user content. `check` greps for physical `ml-/mr-/pl-/pr-/left-/right-` classes.                               | A planted `ml-4` fails `check`.                                                              |
+| 3.4  | Theme cookie (no cookie → dark) + `ThemeToggle`. `LanguageSwitcher` keeps the current path and sets `NEXT_LOCALE`. (The guard dialog arrives at 5.1, once there are edits to protect.)                                   | No flash on reload; both preferences survive a reload.                                       |
 
 **Your decision at 3.2:** Arabic-Indic (٣) or Western (3) digits. I'll show you both.
 
 ### Phase 4 — Shell and board view (read-only)
 
-| Node | Work | Done when |
-|---|---|---|
-| 4.1 | `BoardsProvider` seeded in the `[locale]` layout; `useBoards()`; `/[locale]` → first board. | Board names render from the JSON via the provider. |
-| 4.2 | Header + mobile board switcher, built at 375px first. | Correct at 375px in both languages. |
-| 4.3 | Sidebar with hide/show at ≥ 768px. | Correct at 768px and 1440px in both languages. |
-| 4.4 | Board view: columns (dot, name, count), task cards, horizontal scroll with snap on mobile, empty-board and not-found views. | Matches the brief; no string or data literal in any component. |
+| Node | Work                                                                                                                        | Done when                                                      |
+| ---- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| 4.1  | `BoardsProvider` seeded in the `[locale]` layout; `useBoards()`; `/[locale]` → first board.                                 | Board names render from the JSON via the provider.             |
+| 4.2  | Header + mobile board switcher, built at 375px first.                                                                       | Correct at 375px in both languages.                            |
+| 4.3  | Sidebar with hide/show at ≥ 768px.                                                                                          | Correct at 768px and 1440px in both languages.                 |
+| 4.4  | Board view: columns (dot, name, count), task cards, horizontal scroll with snap on mobile, empty-board and not-found views. | Matches the brief; no string or data literal in any component. |
 
 ### Phase 5 — Board CRUD
 
-| Node | Work | Done when |
-|---|---|---|
-| 5.1 | Shared `BoardForm` (name + dynamic columns, zod, localized errors); Add Board dialog; "+ New Column" → Edit Board. **Language-switch guard:** `hasSessionChanges` in the provider, the confirmation dialog, and the safe landing page for session-created boards. | A new board appears and opens; the dialog closes and resets. Switching language with edits asks first. Switching from a session-created board lands on the first board, never a 404. |
-| 5.2 | Edit Board: rename; add, remove or rename columns, with the removal cascade. | Edits show immediately. |
-| 5.3 | Delete Board confirmation, then navigate to the next board or the empty state. | Never shows the wrong board afterwards. |
+| Node | Work                                                                                                                                                                                                                                                              | Done when                                                                                                                                                                            |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 5.1  | Shared `BoardForm` (name + dynamic columns, zod, localized errors); Add Board dialog; "+ New Column" → Edit Board. **Language-switch guard:** `hasSessionChanges` in the provider, the confirmation dialog, and the safe landing page for session-created boards. | A new board appears and opens; the dialog closes and resets. Switching language with edits asks first. Switching from a session-created board lands on the first board, never a 404. |
+| 5.2  | Edit Board: rename; add, remove or rename columns, with the removal cascade.                                                                                                                                                                                      | Edits show immediately.                                                                                                                                                              |
+| 5.3  | Delete Board confirmation, then navigate to the next board or the empty state.                                                                                                                                                                                    | Never shows the wrong board afterwards.                                                                                                                                              |
 
 ### Phase 6 — Tasks
 
-| Node | Work | Done when |
-|---|---|---|
-| 6.1 | View Task: description, subtask checkboxes, status select (also the non-drag path for accessibility). | Toggles and moves update the card counts live. |
-| 6.2 | Shared `TaskForm`: Add Task and Edit Task, dynamic subtasks, status. | Create and edit work; validation messages are localized. |
-| 6.3 | Delete Task confirmation. | The task is removed; counts update. |
+| Node | Work                                                                                                  | Done when                                                |
+| ---- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| 6.1  | View Task: description, subtask checkboxes, status select (also the non-drag path for accessibility). | Toggles and moves update the card counts live.           |
+| 6.2  | Shared `TaskForm`: Add Task and Edit Task, dynamic subtasks, status.                                  | Create and edit work; validation messages are localized. |
+| 6.3  | Delete Task confirmation.                                                                             | The task is removed; counts update.                      |
 
 ### Phase 7 — Drag and drop
 
-| Node | Work | Done when |
-|---|---|---|
-| 7.1 | `DndContext` with a **stable `id`**; pointer, touch (press delay, so scrolling isn't hijacked) and keyboard sensors; one `SortableContext` per column; `DragOverlay`. | Cards lift and drop visually; no hydration warning in the console. |
-| 7.2 | Moves within and across columns dispatch `moveTask`. | Order is correct after moves in both directions. |
-| 7.3 | Correct horizontal behavior under RTL; localized screen-reader announcements; keyboard-only walkthrough. | A complete move with keyboard alone, in `/en` and `/ar`. |
+| Node | Work                                                                                                                                                                  | Done when                                                          |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| 7.1  | `DndContext` with a **stable `id`**; pointer, touch (press delay, so scrolling isn't hijacked) and keyboard sensors; one `SortableContext` per column; `DragOverlay`. | Cards lift and drop visually; no hydration warning in the console. |
+| 7.2  | Moves within and across columns dispatch `moveTask`.                                                                                                                  | Order is correct after moves in both directions.                   |
+| 7.3  | Correct horizontal behavior under RTL; localized screen-reader announcements; keyboard-only walkthrough.                                                              | A complete move with keyboard alone, in `/en` and `/ar`.           |
 
 ### Phase 8 — Hardening and sign-off
 
-| Node | Work | Done when |
-|---|---|---|
-| 8.1 | Audit: labels, dialog focus, contrast in both themes, 44px touch targets, Lighthouse mobile. | Lighthouse mobile ≥ 90, or each shortfall explained. |
-| 8.2 | Replace the template `README.md`; add `docs/ARCHITECTURE.md` (layers, data flow, the no-hard-coding rule). | Someone else can clone and run the project. |
-| 8.3 | Production deploy on Vercel. | **You sign off Part A.** That unlocks the detailed Part B plan. |
+| Node | Work                                                                                                       | Done when                                                       |
+| ---- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| 8.1  | Audit: labels, dialog focus, contrast in both themes, 44px touch targets, Lighthouse mobile.               | Lighthouse mobile ≥ 90, or each shortfall explained.            |
+| 8.2  | Replace the template `README.md`; add `docs/ARCHITECTURE.md` (layers, data flow, the no-hard-coding rule). | Someone else can clone and run the project.                     |
+| 8.3  | Production deploy on Vercel.                                                                               | **You sign off Part A.** That unlocks the detailed Part B plan. |
 
 **Environment variables in Part A:** none. Nothing reads a secret or an environment-specific value.
 
@@ -344,14 +344,14 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 
 ## PART B — BACKEND (outline; planned in detail after Part A sign-off)
 
-| Step | Work |
-|---|---|
-| B1 | **Mutations via Server Actions.** They reuse the same zod schemas and `core/` operations, persist the result, and call `revalidatePath`. |
-| B2 | **`useOptimistic`** replaces the Part A reducer as the instant-UI layer, running the same `core/` operations. The language-switch guard is deleted, since data now survives the switch. |
-| B3 | **A repository port + adapter** behind `server/`; the queries read through it. |
-| B4 | **Environment variables**, zod-validated in `lib/env.ts`: `DATA_DRIVER`, then `DATABASE_URL` / `DATABASE_AUTH_TOKEN`. Set per environment in Vercel. |
-| B5 | **Route handlers only where genuinely needed** (e.g. an external client). None planned by default. |
-| B6 | **Persistence, after deployment is confirmed.** A local SQLite file **does not work on Vercel**: the filesystem is read-only, and `/tmp` is temporary and separate per instance. The SQLite-compatible option on Vercel is **Turso (libSQL)**; the alternative is Postgres (Neon). Either one means one adapter plus env vars. |
+| Step | Work                                                                                                                                                                                                                                                                                                                           |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| B1   | **Mutations via Server Actions.** They reuse the same zod schemas and `core/` operations, persist the result, and call `revalidatePath`.                                                                                                                                                                                       |
+| B2   | **`useOptimistic`** replaces the Part A reducer as the instant-UI layer, running the same `core/` operations. The language-switch guard is deleted, since data now survives the switch.                                                                                                                                        |
+| B3   | **A repository port + adapter** behind `server/`; the queries read through it.                                                                                                                                                                                                                                                 |
+| B4   | **Environment variables**, zod-validated in `lib/env.ts`: `DATA_DRIVER`, then `DATABASE_URL` / `DATABASE_AUTH_TOKEN`. Set per environment in Vercel.                                                                                                                                                                           |
+| B5   | **Route handlers only where genuinely needed** (e.g. an external client). None planned by default.                                                                                                                                                                                                                             |
+| B6   | **Persistence, after deployment is confirmed.** A local SQLite file **does not work on Vercel**: the filesystem is read-only, and `/tmp` is temporary and separate per instance. The SQLite-compatible option on Vercel is **Turso (libSQL)**; the alternative is Postgres (Neon). Either one means one adapter plus env vars. |
 
 ---
 
@@ -365,20 +365,20 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 
 ## Decisions locked
 
-| Decision | Choice |
-|---|---|
-| Sequencing | Part A front-end completed and signed off before any backend work. |
-| Reads | Server Components import from the data layer directly. |
-| Data source | `data/boards.json`, zod-validated; nothing hard-coded in components. |
-| Client state | A `useReducer` provider in the `[locale]` layout, over pure `core/` operations. No TanStack Query. |
-| Locale | **In the URL** (`/en`, `/ar`), with a `NEXT_LOCALE` cookie remembering the preference. In-session edits reset on a language switch, behind a confirmation guard, until Part B. |
-| Server boundary | `server-only` + ESLint layer rules. |
-| User content | Not translated; rendered with `dir="auto"`. |
-| Writes (Part B) | Server Actions + `useOptimistic`; route handlers only if needed. |
-| DnD | `@dnd-kit/core` + `sortable`. |
-| Theme | Dark by default; the preference is stored in a cookie. No localStorage. |
-| Design | Rebuilt from the repo's existing tokens, dimensions and icons; close to the original, not pixel-exact. |
-| Scope | Full Frontend Mentor brief. |
-| Tests | `node:test` over the pure domain operations. |
-| Migration | Clean rewrite; the old code stays in git history. |
-| Deploy | A Vercel preview per node, from Phase 1 on. |
+| Decision        | Choice                                                                                                                                                                         |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Sequencing      | Part A front-end completed and signed off before any backend work.                                                                                                             |
+| Reads           | Server Components import from the data layer directly.                                                                                                                         |
+| Data source     | `data/boards.json`, zod-validated; nothing hard-coded in components.                                                                                                           |
+| Client state    | A `useReducer` provider in the `[locale]` layout, over pure `core/` operations. No TanStack Query.                                                                             |
+| Locale          | **In the URL** (`/en`, `/ar`), with a `NEXT_LOCALE` cookie remembering the preference. In-session edits reset on a language switch, behind a confirmation guard, until Part B. |
+| Server boundary | `server-only` + ESLint layer rules.                                                                                                                                            |
+| User content    | Not translated; rendered with `dir="auto"`.                                                                                                                                    |
+| Writes (Part B) | Server Actions + `useOptimistic`; route handlers only if needed.                                                                                                               |
+| DnD             | `@dnd-kit/core` + `sortable`.                                                                                                                                                  |
+| Theme           | Dark by default; the preference is stored in a cookie. No localStorage.                                                                                                        |
+| Design          | Rebuilt from the repo's existing tokens, dimensions and icons; close to the original, not pixel-exact.                                                                         |
+| Scope           | Full Frontend Mentor brief.                                                                                                                                                    |
+| Tests           | `node:test` over the pure domain operations.                                                                                                                                   |
+| Migration       | Clean rewrite; the old code stays in git history.                                                                                                                              |
+| Deploy          | A Vercel preview per node, from Phase 1 on.                                                                                                                                    |

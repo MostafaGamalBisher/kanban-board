@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+
+/*
+ * Node 1.1: fonts only. The Kanban palette, type scale and dark-first
+ * theme tokens arrive with shadcn/ui in node 1.3.
+ */
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: var(--font-plex-arabic), ui-sans-serif, system-ui, sans-serif;
+}
