@@ -45,6 +45,7 @@ export const en = {
     menu: 'Board options',
     edit: 'Edit Board',
     delete: 'Delete Board',
+    deleteTitle: 'Delete this board?',
     columnHeading: '{name} ({count})',
     empty: 'This board is empty. Create a new column to get started.',
     addColumn: 'Add New Column',

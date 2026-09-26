@@ -32,7 +32,8 @@ export function BoardsHome() {
       <p className="text-heading-l text-muted-foreground">
         {dict.board.noBoards}
       </p>
-      <Button size="lg" onClick={() => openCreateBoard()}>
+      {/* Focus lands here after the last board is deleted. */}
+      <Button size="lg" autoFocus onClick={() => openCreateBoard()}>
         {dict.board.createBoard}
       </Button>
     </main>

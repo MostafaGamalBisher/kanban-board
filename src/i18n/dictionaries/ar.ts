@@ -38,6 +38,7 @@ export const ar: Dictionary = {
     menu: 'خيارات اللوحة',
     edit: 'تعديل اللوحة',
     delete: 'حذف اللوحة',
+    deleteTitle: 'حذف هذه اللوحة؟',
     columnHeading: '{name} ({count})',
     empty: 'هذه اللوحة فارغة. أنشئ عمودًا جديدًا للبدء.',
     addColumn: 'إضافة عمود جديد',

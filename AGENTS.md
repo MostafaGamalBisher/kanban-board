@@ -121,6 +121,9 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
 - Board dialogs have one instance each in `BoardDialogsProvider` (inside `AppShell`); open them with
   `useBoardDialogs()`. The provider returns focus to whatever was focused when a dialog opened; a caller that
   disappears as the dialog opens (a menu, the mobile switcher) passes `returnFocusTo`.
+- A change that also navigates (create, delete) runs the navigation and the dispatch in one `startTransition`, so
+  React commits them together and the page being left never renders the new data on its own. After a delete, use
+  `router.replace` so Back cannot return to the deleted item.
 - Until Part B, a language switch discards session changes: `LanguageSwitcher` asks first when
   `useSessionChanges().hasChanges`, and leaves a session-created board for the home page.
 

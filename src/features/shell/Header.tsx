@@ -26,12 +26,11 @@ import { MobileBoardSwitcher } from './MobileBoardSwitcher';
  * cell lines up with the sidebar. Only one of the two headings is ever
  * displayed, so assistive technology sees a single <h1>.
  *
- * Add task and Delete stay disabled until their dialogs exist (nodes 6.2
- * and 5.3).
+ * Add task stays disabled until its dialog exists (node 6.2).
  */
 export function Header({ board }: { board: Board | undefined }) {
   const { dict } = useI18n();
-  const { openEditBoard } = useBoardDialogs();
+  const { openEditBoard, openDeleteBoard } = useBoardDialogs();
   // The menu closes as its dialog opens; focus comes back to ⋮ afterwards.
   const menuTrigger = useRef<HTMLButtonElement>(null);
 
@@ -85,7 +84,14 @@ export function Header({ board }: { board: Board | undefined }) {
                 >
                   {dict.board.edit}
                 </DropdownMenuItem>
-                <DropdownMenuItem disabled variant="destructive">
+                <DropdownMenuItem
+                  variant="destructive"
+                  onSelect={() =>
+                    openDeleteBoard(board.id, {
+                      returnFocusTo: menuTrigger.current,
+                    })
+                  }
+                >
                   {dict.board.delete}
                 </DropdownMenuItem>
               </DropdownMenuContent>

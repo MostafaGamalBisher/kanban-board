@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import {
   createContext,
+  startTransition,
   useContext,
   useMemo,
   useRef,
@@ -10,12 +11,23 @@ import {
   type ReactNode,
 } from 'react';
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import type { BoardId } from '@/core/board/ids';
+import { boardToOpenAfterDeleting } from '@/core/board/navigation';
 import { useI18n } from '@/i18n/provider';
 import { routes } from '@/lib/routes';
 
 import { BoardFormDialog } from './BoardFormDialog';
-import { useBoard, useBoardActions } from './BoardsProvider';
+import { useBoard, useBoardActions, useBoards } from './BoardsProvider';
 
 /**
  * Opens the board dialogs from anywhere in the app frame.
@@ -33,11 +45,16 @@ export interface BoardDialogs {
     boardId: BoardId,
     options?: { addColumn?: boolean; returnFocusTo?: HTMLElement | null }
   ): void;
+  openDeleteBoard(
+    boardId: BoardId,
+    options?: { returnFocusTo?: HTMLElement | null }
+  ): void;
 }
 
 type OpenDialog =
   | { type: 'createBoard' }
   | { type: 'editBoard'; boardId: BoardId; addColumn: boolean }
+  | { type: 'deleteBoard'; boardId: BoardId }
   | null;
 
 const BoardDialogsContext = createContext<BoardDialogs | null>(null);
@@ -45,7 +62,6 @@ const BoardDialogsContext = createContext<BoardDialogs | null>(null);
 /**
  * One instance of each board dialog for the whole frame, opened from the
  * sidebar, the mobile switcher, the header menu or the board itself.
- * Delete Board joins it in node 5.3.
  */
 export function BoardDialogsProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState<OpenDialog>(null);
@@ -70,6 +86,10 @@ export function BoardDialogsProvider({ children }: { children: ReactNode }) {
           boardId,
           addColumn: options?.addColumn ?? false,
         });
+      },
+      openDeleteBoard: (boardId, options) => {
+        rememberFocus(options?.returnFocusTo);
+        setOpen({ type: 'deleteBoard', boardId });
       },
     };
   }, []);
@@ -97,6 +117,11 @@ export function BoardDialogsProvider({ children }: { children: ReactNode }) {
         onOpenChange={close}
         onCloseAutoFocus={restoreFocus}
       />
+      <DeleteBoardDialog
+        boardId={open?.type === 'deleteBoard' ? open.boardId : undefined}
+        onOpenChange={close}
+        onCloseAutoFocus={restoreFocus}
+      />
     </BoardDialogsContext>
   );
 }
@@ -118,7 +143,9 @@ interface DialogProps {
 
 /**
  * Add New Board, prefilled with the brief's two default columns (in the
- * interface language). On success the new board opens.
+ * interface language). On success the new board opens; creating and
+ * navigating share one transition, so the page being left never renders
+ * the new board list on its own (the empty home page would redirect).
  */
 function CreateBoardDialog({
   open,
@@ -139,12 +166,14 @@ function CreateBoardDialog({
         columns: dict.board.defaultColumns.map((name) => ({ name })),
       }}
       onSubmit={(values) => {
-        const id = createBoard({
-          name: values.name,
-          columns: values.columns.map(({ name }) => ({ name })),
-        });
         props.onOpenChange(false);
-        router.push(routes.board(locale, id));
+        startTransition(() => {
+          const id = createBoard({
+            name: values.name,
+            columns: values.columns.map(({ name }) => ({ name })),
+          });
+          router.push(routes.board(locale, id));
+        });
       }}
     />
   );
@@ -184,5 +213,61 @@ function EditBoardDialog({
         props.onOpenChange(false);
       }}
     />
+  );
+}
+
+/**
+ * Delete Board: a confirmation, then the next board opens (or the previous
+ * one, or the "no boards" page; see boardToOpenAfterDeleting in core/).
+ *
+ * Navigating and deleting happen in one transition, so React commits them
+ * together once the next page is ready: the deleted board's page is never
+ * shown as "not found" in between. `replace`, so Back does not return to
+ * the deleted board.
+ */
+function DeleteBoardDialog({
+  boardId,
+  onOpenChange,
+  onCloseAutoFocus,
+}: DialogProps & { boardId: BoardId | undefined }) {
+  const { dict, format, locale } = useI18n();
+  const boards = useBoards();
+  const board = useBoard(boardId);
+  const { deleteBoard } = useBoardActions();
+  const router = useRouter();
+
+  const confirm = () => {
+    if (!board) return;
+    const next = boardToOpenAfterDeleting(boards, board.id);
+    startTransition(() => {
+      router.replace(next ? routes.board(locale, next) : routes.home(locale));
+      deleteBoard({ boardId: board.id });
+    });
+  };
+
+  return (
+    <AlertDialog open={board !== undefined} onOpenChange={onOpenChange}>
+      <AlertDialogContent
+        onCloseAutoFocus={onCloseAutoFocus}
+        className="sm:p-8"
+      >
+        <AlertDialogHeader>
+          <AlertDialogTitle className="text-destructive">
+            {dict.board.deleteTitle}
+          </AlertDialogTitle>
+          <AlertDialogDescription className="text-body-l text-muted-foreground">
+            {format(dict.board.deleteConfirm, { name: board?.name ?? '' })}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogAction variant="destructive" onClick={confirm}>
+            {dict.common.delete}
+          </AlertDialogAction>
+          <AlertDialogCancel variant="secondary">
+            {dict.common.cancel}
+          </AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
