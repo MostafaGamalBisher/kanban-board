@@ -54,6 +54,9 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
   layout's `isLocale()` check make any other first segment a 404. The layout renders `<html lang dir>` on the server.
 - Never set `dynamicParams = false` in the `[locale]` layout: child segments inherit it, and the board route must
   render IDs it did not prerender (boards created in the session). Build in-app URLs with `routes` (`src/lib/routes.ts`).
+- Do not call `notFound()` under `[locale]`: with a dynamic root layout, Next.js cannot server-render it (blank error
+  shell, drawn by the browser). Unknown pages go to the catch-all `(app)/[...notFound]`, which renders `NotFoundView`
+  with `noindex` (status 200, owner's decision); an unknown board renders the same view from `BoardScreen`.
 - Board pages live in the `(app)` route group, whose layout renders `AppShell` (`src/features/shell/`). The shell reads
   the current board with `useParams()`; it sits above `[boardId]` so it is not remounted when the board changes. Keep
   shell state (menus, the sidebar) there, never in a board page.

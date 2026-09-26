@@ -79,6 +79,11 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-new-column-from: var(--new-column-from);
+  --color-new-column-to: var(--new-column-to);
+
+  /* Task cards: the brief's soft blue shadow */
+  --shadow-card: 0 4px 6px rgb(54 78 126 / 0.1);
 
   /* Column status dots: assigned by column position (src/config/board.ts) */
   --color-column-1: var(--kanban-column-1);
@@ -123,6 +128,7 @@
   --kanban-white: #ffffff;
   --kanban-red: #ea5555;
   --kanban-red-hover: #ff9898;
+  --kanban-new-column: #e9effa;
 
   /* Column dots. 1–3 from the style guide (as recalled); 4–6 chosen to match. */
   --kanban-column-1: #49c4e5;
@@ -161,6 +167,12 @@
   --border: var(--kanban-lines-light);
   --input: color-mix(in oklab, var(--kanban-medium-grey) 25%, transparent);
   --ring: var(--kanban-main-purple);
+  --new-column-from: var(--kanban-new-column);
+  --new-column-to: color-mix(
+    in oklab,
+    var(--kanban-new-column) 50%,
+    transparent
+  );
 }
 
 /* 2. Semantic roles — dark theme (the default) */
@@ -179,6 +191,16 @@
   --accent-foreground: var(--kanban-white);
   --border: var(--kanban-lines-dark);
   --input: var(--kanban-lines-dark);
+  --new-column-from: color-mix(
+    in oklab,
+    var(--kanban-dark-grey) 25%,
+    transparent
+  );
+  --new-column-to: color-mix(
+    in oklab,
+    var(--kanban-dark-grey) 12.5%,
+    transparent
+  );
 }
 
 /* Native UI (scrollbars, form controls, autofill) follows the theme too. */

@@ -11,6 +11,8 @@ export const ar: Dictionary = {
     cancel: 'إلغاء',
     delete: 'حذف',
     save: 'حفظ التغييرات',
+    notFound: 'هذه الصفحة غير موجودة.',
+    goHome: 'الانتقال إلى لوحاتك',
   },
   validation: {
     required: 'لا يمكن أن يكون فارغًا',
@@ -32,6 +34,10 @@ export const ar: Dictionary = {
     menu: 'خيارات اللوحة',
     edit: 'تعديل اللوحة',
     delete: 'حذف اللوحة',
+    columnHeading: '{name} ({count})',
+    empty: 'هذه اللوحة فارغة. أنشئ عمودًا جديدًا للبدء.',
+    addColumn: 'إضافة عمود جديد',
+    newColumn: 'عمود جديد',
     allBoards: 'كل اللوحات ({count})',
     taskCount: arabicPlural({
       zero: 'لا توجد مهام',

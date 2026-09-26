@@ -8,9 +8,8 @@ import { negotiateLocale } from '@/lib/locale-negotiation';
  * (e.g. `/` or `/boards/x`) is redirected to the negotiated locale:
  * remembered cookie → browser Accept-Language → default (see
  * lib/locale-negotiation.ts). Unknown paths therefore always land under a
- * locale (/foo → /en/foo → 404). Note: an unmatched URL currently gets
- * Next's bare default 404 page, outside our layout; node 4.4 adds a
- * catch-all route and a localized [locale]/not-found page.
+ * locale (/foo → /en/foo), where the catch-all route renders the
+ * localized "page not found" view (app/[locale]/(app)/[...notFound]).
  */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
