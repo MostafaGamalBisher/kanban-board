@@ -199,11 +199,20 @@ export function deleteTask(boards: Boards, input: DeleteTaskInput): Boards {
  * Moves a task to `toIndex` in `toColumnId`, within the same column or
  * across columns. `toIndex` is the task's position after the move; values
  * past the end are clamped to the end, so a drop below the last card works.
+ * A move to where the task already is returns the same array (nothing
+ * changed).
  */
 export function moveTask(boards: Boards, input: MoveTaskInput): Boards {
   return replaceBoard(boards, input.boardId, (board) => {
     const { columnIndex, taskIndex, task } = locateTask(board, input.taskId);
     const targetIndex = findColumnIndex(board, input.toColumnId);
+
+    if (targetIndex === columnIndex) {
+      const lastIndex = (board.columns[columnIndex]?.tasks.length ?? 1) - 1;
+      if (Math.min(input.toIndex, lastIndex) === taskIndex) {
+        return board;
+      }
+    }
 
     const withoutTask = replaceColumnAt(board, columnIndex, (column) => ({
       ...column,

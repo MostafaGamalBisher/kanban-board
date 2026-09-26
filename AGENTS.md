@@ -137,6 +137,11 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
 - `@dnd-kit/core` + `sortable` (owner's choice). `BoardDnd` wraps a board: `DndContext` with `id={useId()}` (dnd-kit's
   own IDs differ between server and browser), sensors, `DragOverlay`. Cards are `SortableTaskCard`; the title button
   is the drag handle. Every draggable and droppable carries `DndData` (`type`, `columnId`).
+- During a drag, keep only the intended drop position (`DropPosition`), never a copy of the board: the board shown is
+  `previewMove()` and the drop dispatches the same `moveTask`. Where a drop lands is decided in `core/board/drag.ts`
+  (tested); the UI only measures (pointer, rectangles).
+- Collision detection is column-first (`boardCollisionDetection`), and Left/Right keys move between columns as seen
+  on screen (`boardKeyboardCoordinates`, live DOM measurements). Keep both if the layout changes.
 - Libraries must not put English in the page: pass dnd-kit's `screenReaderInstructions`, `announcements` and
   `roleDescription` from the dictionaries (`dnd.*`). Check any new library for built-in text.
 

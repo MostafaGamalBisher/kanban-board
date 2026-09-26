@@ -39,24 +39,26 @@ export function BoardView({ board }: { board: Board }) {
 
   return (
     <BoardDnd board={board}>
-      <DndScrollArea className="flex min-h-0 flex-1 snap-x snap-mandatory scroll-ps-4 gap-6 overflow-auto p-4 pt-6 data-dragging:snap-none md:snap-none md:p-6">
-        {board.columns.map((column, index) => (
-          <BoardColumn
-            key={column.id}
-            boardId={board.id}
-            column={column}
-            index={index}
-          />
-        ))}
-        <button
-          type="button"
-          onClick={addColumn}
-          className="w-column text-heading-xl text-muted-foreground from-new-column-from to-new-column-to hover:text-primary focus-visible:ring-ring/50 mt-10 flex shrink-0 snap-start items-center justify-center gap-2 rounded-md bg-linear-to-b outline-none focus-visible:ring-3"
-        >
-          <IconAddTask className="size-3" />
-          {dict.board.newColumn}
-        </button>
-      </DndScrollArea>
+      {(shown) => (
+        <DndScrollArea className="flex min-h-0 flex-1 snap-x snap-mandatory scroll-ps-4 gap-6 overflow-auto p-4 pt-6 data-dragging:snap-none md:snap-none md:p-6">
+          {shown.columns.map((column, index) => (
+            <BoardColumn
+              key={column.id}
+              boardId={shown.id}
+              column={column}
+              index={index}
+            />
+          ))}
+          <button
+            type="button"
+            onClick={addColumn}
+            className="w-column text-heading-xl text-muted-foreground from-new-column-from to-new-column-to hover:text-primary focus-visible:ring-ring/50 mt-10 flex shrink-0 snap-start items-center justify-center gap-2 rounded-md bg-linear-to-b outline-none focus-visible:ring-3"
+          >
+            <IconAddTask className="size-3" />
+            {dict.board.newColumn}
+          </button>
+        </DndScrollArea>
+      )}
     </BoardDnd>
   );
 }

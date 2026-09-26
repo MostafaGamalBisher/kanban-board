@@ -19,8 +19,9 @@ import { cn } from '@/lib/utils';
  * One column: status dot, "NAME (count)", then its tasks in order. The dot
  * colour comes from the column's position (config/board.ts). An empty
  * column keeps its height as a dashed area, so it is still visible and a
- * place to drop a task. The task list is a sortable list, and the column
- * a drop target (needed when it is empty).
+ * place to drop a task. The task list is a sortable list, and the whole
+ * column a drop target: dropping below the last card, or into an empty
+ * column, lands at the end.
  */
 export function BoardColumn({
   boardId,
@@ -38,6 +39,7 @@ export function BoardColumn({
 
   return (
     <section
+      ref={setNodeRef}
       aria-labelledby={headingId}
       className="w-column flex shrink-0 snap-start flex-col gap-6"
     >
@@ -65,7 +67,7 @@ export function BoardColumn({
         strategy={verticalListSortingStrategy}
       >
         {column.tasks.length > 0 ? (
-          <ul ref={setNodeRef} className="flex flex-col gap-5">
+          <ul className="flex flex-col gap-5">
             {column.tasks.map((task) => (
               <li key={task.id}>
                 <SortableTaskCard
@@ -77,10 +79,7 @@ export function BoardColumn({
             ))}
           </ul>
         ) : (
-          <div
-            ref={setNodeRef}
-            className="border-border h-40 rounded-lg border-2 border-dashed"
-          />
+          <div className="border-border h-40 rounded-lg border-2 border-dashed" />
         )}
       </SortableContext>
     </section>

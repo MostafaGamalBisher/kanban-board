@@ -94,7 +94,8 @@ export const en = {
       'To move a task, press Space to pick it up, use the arrow keys to move it, then press Space to drop it or Escape to cancel. Press Enter to open the task.',
     pickedUp: 'Picked up task {title}.',
     over: 'Task {title} is over column {column}.',
-    dropped: 'Dropped task {title}.',
+    dropped:
+      'Moved task {title} to column {column}, position {position} of {total}.',
     cancelled: 'Move cancelled. Task {title} is back in its place.',
   },
 };

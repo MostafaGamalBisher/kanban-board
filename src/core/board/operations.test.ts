@@ -131,14 +131,24 @@ describe('moveTask', () => {
     assert.deepEqual(layout(result).Todo, ['t3', 't1', 't2']);
   });
 
-  test('moving to its own position leaves the order unchanged', () => {
+  test('moving to its own position returns the same array (no-op)', () => {
     const result = moveTask(fixture, {
       boardId: b1,
       taskId: t1,
       toColumnId: todo,
       toIndex: 0,
     });
-    assert.deepEqual(layout(result), layout(fixture));
+    assert.equal(result, fixture);
+  });
+
+  test('moving the last task past the end of its column is a no-op', () => {
+    const result = moveTask(fixture, {
+      boardId: b1,
+      taskId: t3,
+      toColumnId: todo,
+      toIndex: 99,
+    });
+    assert.equal(result, fixture);
   });
 
   test('moves across columns to a given position', () => {
