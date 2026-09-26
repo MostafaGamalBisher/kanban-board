@@ -178,8 +178,9 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
 - Icons are the brief's SVGs as components in `src/components/icons.tsx`, painted with `currentColor` so tokens set
   their colour. Add new ones there; do not use `<img>` for icons whose colour changes.
 - Radix reads direction from `Direction.Provider` (in `src/components/providers.tsx`), not from `<html dir>`.
-- Import `cn` from `@/lib/utils`, never from the `cn` package (ESLint enforces it). `lib/utils.ts` registers the
-  custom text sizes (`text-heading-*`, `text-body-*`); without that, merging drops color classes. Keep its list in
+- Import `cn` from `@/lib/utils`, never from the `cn` package (ESLint enforces it). The package is the class merger
+  (shadcn's `tailwind-merge` role); `lib/utils.ts` is the one module that imports it, via `cn/config`, and registers
+  the custom text sizes (`text-heading-*`, `text-body-*`); without that, merging drops color classes. Keep its list in
   sync with the `--text-*` tokens in `src/app/globals.css`.
 - Styling uses semantic tokens (`bg-primary`, `border-border`, …). Raw brand colors (`--kanban-*`) are private to
   `globals.css`.
