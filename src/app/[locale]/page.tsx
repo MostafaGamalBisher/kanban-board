@@ -40,6 +40,8 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { COLUMN_DOT_CLASSES, columnDotClass } from '@/config/board';
 import { siteConfig } from '@/config/site';
+import { LanguageSwitcher } from '@/features/preferences/LanguageSwitcher';
+import { ThemeToggle } from '@/features/preferences/ThemeToggle';
 import { getI18n } from '@/i18n/server';
 
 import { showcase } from './_showcase/content';
@@ -56,11 +58,17 @@ export default async function ShowcasePage() {
 
   return (
     <main className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8 md:px-8">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-heading-xl">{siteConfig.name}</h1>
+      <header className="flex flex-col gap-4">
+        <div className="flex items-center justify-between gap-4">
+          <h1 className="text-heading-xl">{siteConfig.name}</h1>
+          <LanguageSwitcher />
+        </div>
         <p className="text-body-l text-muted-foreground">
           {showcase.subheading}
         </p>
+        <div className="max-w-64">
+          <ThemeToggle />
+        </div>
       </header>
 
       <Section title={sections.palette}>

@@ -26,6 +26,9 @@ export const en = {
     duplicateId: 'Duplicate entry',
     invalid: 'Invalid value',
   } satisfies Record<ValidationKey, string>,
+  preferences: {
+    darkTheme: 'Dark theme',
+  },
   board: {
     allBoards: 'All boards ({count})',
     taskCount: englishPlural({ one: '{count} task', other: '{count} tasks' }),

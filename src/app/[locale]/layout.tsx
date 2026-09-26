@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { AppProviders } from '@/components/providers';
 import { isLocale, LOCALE_DIRECTION, LOCALES } from '@/config/i18n';
 import { siteConfig } from '@/config/site';
+import { themeScript } from '@/features/preferences/theme-script';
 import { getDictionary, getI18n } from '@/i18n/server';
 import { cn } from '@/lib/utils';
 
@@ -29,7 +30,8 @@ export const dynamicParams = false;
  * on the server, so Arabic is right-to-left from the first byte, with no
  * layout flip after loading.
  *
- * `dark` is hard-set until node 3.4 reads the theme cookie.
+ * The server always renders the default theme (dark), so pages stay
+ * static; themeScript applies a saved preference before the first paint.
  */
 export default async function LocaleLayout({
   children,
@@ -46,7 +48,14 @@ export default async function LocaleLayout({
       lang={locale}
       dir={LOCALE_DIRECTION[locale]}
       className={cn('dark', fontSans.variable, fontArabic.variable)}
+      // themeScript may change the class before React hydrates (a saved
+      // light theme). Suppresses the warning for this element only.
+      suppressHydrationWarning
     >
+      <head>
+        {/* Must run before the first paint: applies the saved theme. */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="antialiased">
         <AppProviders locale={locale} dictionary={dictionary}>
           {children}

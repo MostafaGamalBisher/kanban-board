@@ -19,6 +19,9 @@ export const ar: Dictionary = {
     duplicateId: 'عنصر مكرر',
     invalid: 'قيمة غير صالحة',
   },
+  preferences: {
+    darkTheme: 'الوضع الداكن',
+  },
   board: {
     allBoards: 'كل اللوحات ({count})',
     taskCount: arabicPlural({

@@ -58,6 +58,13 @@ false` makes any other first segment a 404. The layout renders `<html lang dir>`
 - One font stack for both languages, chosen per character: Plus Jakarta Sans for Latin, IBM Plex Sans Arabic for
   Arabic (fetched only when Arabic text is present). Do not switch fonts by locale.
 
+## Preferences (`src/features/preferences/`)
+
+- Theme and language choices are cookies (`THEME_COOKIE`, `LOCALE_COOKIE`), written with `writePreferenceCookie()`.
+  No localStorage.
+- Never read cookies in a layout or page: it would make every page dynamic. The theme is applied by `themeScript`
+  (inline in `<head>`, before paint); components read it with `useTheme()`. The language is in the URL.
+
 ## Interface text (`src/i18n/`)
 
 - `dictionaries/en.ts` is the source of truth; `ar.ts` is typed from it (missing or extra keys fail to compile).
