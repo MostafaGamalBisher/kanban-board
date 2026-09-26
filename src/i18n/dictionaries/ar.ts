@@ -25,6 +25,11 @@ export const ar: Dictionary = {
   board: {
     noBoards: 'لا توجد لوحات بعد.',
     notFound: 'هذه اللوحة غير موجودة.',
+    switcher: 'اختر لوحة',
+    addTask: 'إضافة مهمة جديدة',
+    menu: 'خيارات اللوحة',
+    edit: 'تعديل اللوحة',
+    delete: 'حذف اللوحة',
     allBoards: 'كل اللوحات ({count})',
     taskCount: arabicPlural({
       zero: 'لا توجد مهام',

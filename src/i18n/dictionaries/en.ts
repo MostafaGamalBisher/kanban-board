@@ -32,6 +32,11 @@ export const en = {
   board: {
     noBoards: 'There are no boards yet.',
     notFound: 'This board doesn’t exist.',
+    switcher: 'Choose a board',
+    addTask: 'Add New Task',
+    menu: 'Board options',
+    edit: 'Edit Board',
+    delete: 'Delete Board',
     allBoards: 'All boards ({count})',
     taskCount: englishPlural({ one: '{count} task', other: '{count} tasks' }),
     subtaskProgress: '{done} of {total} subtasks',

@@ -54,6 +54,9 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
   layout's `isLocale()` check make any other first segment a 404. The layout renders `<html lang dir>` on the server.
 - Never set `dynamicParams = false` in the `[locale]` layout: child segments inherit it, and the board route must
   render IDs it did not prerender (boards created in the session). Build in-app URLs with `routes` (`src/lib/routes.ts`).
+- Board pages live in the `(app)` route group, whose layout renders `AppShell` (`src/features/shell/`). The shell reads
+  the current board with `useParams()`; it sits above `[boardId]` so it is not remounted when the board changes. Keep
+  shell state (menus, the sidebar) there, never in a board page.
 - `src/proxy.ts` (Next 16's name for middleware) redirects URLs without a locale: cookie → `Accept-Language` →
   default, via the pure `negotiateLocale()` in `src/lib/locale-negotiation.ts`. Assets (any path with a dot) and
   `_next` are skipped.
@@ -126,6 +129,8 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
 - User content (board/column/task names, descriptions) may be in either language: render it standalone in `<bdi>`
   (inline) or with `dir="auto"` (block). Inside translated sentences, always insert it through `format()`, which
   isolates it. `Input` and `Textarea` already default to `dir="auto"`.
+- Icons are the brief's SVGs as components in `src/components/icons.tsx`, painted with `currentColor` so tokens set
+  their colour. Add new ones there; do not use `<img>` for icons whose colour changes.
 - Radix reads direction from `Direction.Provider` (in `src/components/providers.tsx`), not from `<html dir>`.
 - Import `cn` from `@/lib/utils`, never from the `cn` package (ESLint enforces it). `lib/utils.ts` registers the
   custom text sizes (`text-heading-*`, `text-body-*`); without that, merging drops color classes. Keep its list in

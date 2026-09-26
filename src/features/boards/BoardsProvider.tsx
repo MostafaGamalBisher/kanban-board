@@ -120,10 +120,12 @@ export function useBoards(): Boards {
 
 /**
  * One board, or `undefined` if no board has this ID (a mistyped URL, or a
- * board deleted in this session). Takes the raw URL segment.
+ * board deleted in this session) or no ID is given. Takes the raw URL
+ * segment.
  */
-export function useBoard(id: string): Board | undefined {
-  return useBoards().find((board) => board.id === id);
+export function useBoard(id: string | undefined): Board | undefined {
+  const boards = useBoards();
+  return id === undefined ? undefined : boards.find((board) => board.id === id);
 }
 
 export function useBoardActions(): BoardActions {

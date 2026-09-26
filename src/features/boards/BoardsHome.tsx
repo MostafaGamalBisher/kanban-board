@@ -24,7 +24,7 @@ export function BoardsHome() {
   }
 
   return (
-    <main className="text-muted-foreground text-heading-l grid min-h-dvh place-items-center p-6 text-center">
+    <main className="text-muted-foreground text-heading-l grid flex-1 place-items-center p-6 text-center">
       <p>{dict.board.noBoards}</p>
     </main>
   );
