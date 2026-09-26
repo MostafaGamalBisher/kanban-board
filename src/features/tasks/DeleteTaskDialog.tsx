@@ -44,7 +44,7 @@ export function DeleteTaskDialog({
         className="sm:p-8"
       >
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-destructive">
+          <AlertDialogTitle className="text-destructive-text">
             {dict.task.deleteTitle}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-body-l text-muted-foreground">

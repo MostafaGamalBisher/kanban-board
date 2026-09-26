@@ -50,7 +50,7 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 - [x] **7.1** DnD context, sensors, overlay
 - [x] **7.2** Moves within and across columns
 - [x] **7.3** RTL behavior, announcements, keyboard walkthrough
-- [ ] **8.1** Accessibility and Lighthouse audit
+- [x] **8.1** Accessibility and Lighthouse audit
 - [ ] **8.2** README + `docs/ARCHITECTURE.md`
 - [ ] **8.3** Production deploy — Part A sign-off
 
@@ -117,14 +117,14 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 
 ### 1.6 Data, content and config — none of it in components
 
-| What                                                        | Where                                | Format                                                            |
-| ----------------------------------------------------------- | ------------------------------------ | ----------------------------------------------------------------- |
-| Boards / columns / tasks / subtasks                         | `src/data/boards.json`               | JSON seed. Replaceable by a database without touching TypeScript. |
-| Shape and validation                                        | `src/core/board/schema.ts`           | zod schemas → inferred types.                                     |
-| UI text (labels, messages, aria text)                       | `src/i18n/dictionaries/{en,ar}.ts`   | TS. `ar` is typed from `en`, so a missing key is a compile error. |
-| Column dot colors, layout constants, locales, default theme | `src/config/*.ts`                    | Typed constants.                                                  |
-| Colors, fonts, type scale                                   | `src/app/globals.css`                | Tailwind v4 + shadcn tokens.                                      |
-| Icons                                                       | `public/icons/*.svg`, `lucide-react` | Assets.                                                           |
+| What                                                        | Where                                      | Format                                                              |
+| ----------------------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------- |
+| Boards / columns / tasks / subtasks                         | `src/data/boards.json`                     | JSON seed. Replaceable by a database without touching TypeScript.   |
+| Shape and validation                                        | `src/core/board/schema.ts`                 | zod schemas → inferred types.                                       |
+| UI text (labels, messages, aria text)                       | `src/i18n/dictionaries/{en,ar}.ts`         | TS. `ar` is typed from `en`, so a missing key is a compile error.   |
+| Column dot colors, layout constants, locales, default theme | `src/config/*.ts`                          | Typed constants.                                                    |
+| Colors, fonts, type scale                                   | `src/app/globals.css`                      | Tailwind v4 + shadcn tokens.                                        |
+| Icons                                                       | `src/components/icons.tsx`, `lucide-react` | Components painted with `currentColor`; favicon `src/app/icon.svg`. |
 
 ### 1.7 Dependencies — the complete Part A list
 
@@ -230,8 +230,8 @@ src/
       (app)/layout.tsx          # AppShell: header (and sidebar), kept mounted across boards
       (app)/page.tsx            # → first board or empty state
       (app)/boards/[boardId]/page.tsx
-      showcase/                 # primitives review, deleted in 8.1
-      not-found.tsx  error.tsx
+      (app)/[...notFound]/page.tsx  # localized not-found view (status 200, noindex)
+    icon.svg                    # favicon
   core/board/
     ids.ts  limits.ts  schema.ts  parse.ts  operations.ts  actions.ts  (+ *.test.ts)
   core/errors.ts  core/validation.ts
@@ -335,11 +335,11 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 
 ### Phase 8 — Hardening and sign-off
 
-| Node | Work                                                                                                                                | Done when                                                       |
-| ---- | ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| 8.1  | Audit: labels, dialog focus, contrast in both themes, 44px touch targets, Lighthouse mobile. Delete the `/[locale]/showcase` route. | Lighthouse mobile ≥ 90, or each shortfall explained.            |
-| 8.2  | Replace the template `README.md`; add `docs/ARCHITECTURE.md` (layers, data flow, the no-hard-coding rule).                          | Someone else can clone and run the project.                     |
-| 8.3  | Production deploy on Vercel.                                                                                                        | **You sign off Part A.** That unlocks the detailed Part B plan. |
+| Node | Work                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Done when                                                       |
+| ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| 8.1  | Audit: labels, dialog focus, contrast in both themes, 44px touch targets, Lighthouse mobile. Delete the `/[locale]/showcase` route. **Delivered:** AA text colours (owner's choice: text only, fills keep the brief's colours): `text-primary-text`, `text-destructive-text` and a darker/lighter `muted-foreground` per theme. 44px hit areas via a `touch-target` utility (icon buttons, switch, selects, remove buttons) and taller menu items and subtask rows. Favicon (`app/icon.svg`); theme-toggle icons as `currentColor` components; `/showcase` and the unused `public/icons` deleted. Lighthouse mobile (board page): en/ar, dark/light, all categories ≥ 93, accessibility 100. axe-core on every dialog (2 languages × 2 themes × 2 widths): focus starts inside each dialog; **known shortfall:** white on the brief's red Delete button is 3.5:1 (fill kept by decision); Radix's portalled menu trips axe's best-practice `region` rule (not WCAG). | Lighthouse mobile ≥ 90, or each shortfall explained.            |
+| 8.2  | Replace the template `README.md`; add `docs/ARCHITECTURE.md` (layers, data flow, the no-hard-coding rule).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Someone else can clone and run the project.                     |
+| 8.3  | Production deploy on Vercel.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | **You sign off Part A.** That unlocks the detailed Part B plan. |
 
 **Environment variables in Part A:** none. Nothing reads a secret or an environment-specific value.
 

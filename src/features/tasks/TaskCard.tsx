@@ -60,7 +60,7 @@ export function TaskCard({
         overlay && 'rotate-2 cursor-grabbing shadow-lg'
       )}
     >
-      <h3 className="text-heading-m group-hover:text-primary">
+      <h3 className="text-heading-m group-hover:text-primary-text">
         {overlay ? (
           title
         ) : (

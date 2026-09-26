@@ -70,7 +70,7 @@ export function BoardNav({
               onNavigate?.();
               openCreateBoard(returnFocusTo?.current);
             }}
-            className="text-heading-m text-primary hover:bg-secondary focus-visible:ring-ring/50 flex w-full items-center gap-3 rounded-e-full px-6 py-3.5 text-start outline-none focus-visible:ring-3 xl:px-8"
+            className="text-heading-m text-primary-text hover:bg-secondary hover:text-primary focus-visible:ring-ring/50 flex w-full items-center gap-3 rounded-e-full px-6 py-3.5 text-start outline-none focus-visible:ring-3 xl:px-8"
           >
             <IconBoard className="shrink-0" />
             {dict.board.createBoard}

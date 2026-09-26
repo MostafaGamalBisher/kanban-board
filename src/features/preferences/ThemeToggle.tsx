@@ -1,5 +1,6 @@
 'use client';
 
+import { IconDarkTheme, IconLightTheme } from '@/components/icons';
 import { Switch } from '@/components/ui/switch';
 import { useI18n } from '@/i18n/provider';
 
@@ -12,16 +13,14 @@ export function ThemeToggle() {
 
   return (
     <div className="bg-background flex items-center justify-center gap-6 rounded-md py-3.5">
-      {/* eslint-disable-next-line @next/next/no-img-element -- static decorative SVG */}
-      <img src="/icons/icon-light-theme.svg" alt="" width={19} height={19} />
+      <IconLightTheme className="text-muted-foreground" />
       <Switch
         checked={theme === 'dark'}
         onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
         aria-label={dict.preferences.darkTheme}
         className="data-unchecked:bg-primary"
       />
-      {/* eslint-disable-next-line @next/next/no-img-element -- static decorative SVG */}
-      <img src="/icons/icon-dark-theme.svg" alt="" width={16} height={16} />
+      <IconDarkTheme className="text-muted-foreground" />
     </div>
   );
 }

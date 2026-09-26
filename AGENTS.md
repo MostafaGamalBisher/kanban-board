@@ -180,4 +180,10 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
   sync with the `--text-*` tokens in `src/app/globals.css`.
 - Styling uses semantic tokens (`bg-primary`, `border-border`, …). Raw brand colors (`--kanban-*`) are private to
   `globals.css`.
+- Contrast (WCAG AA, 4.5:1 in both themes): coloured **text** uses `text-primary-text` / `text-destructive-text`;
+  `primary` / `destructive` are for fills (buttons, the checkbox). Secondary text is `text-muted-foreground`. A new
+  text colour needs its ratio checked against every background it sits on, in both themes.
+- Touch targets are at least 44×44px. A control drawn smaller (an icon button, a switch) gets the `touch-target`
+  utility (`globals.css`), which enlarges its hit area without changing the layout; rows and menu items get the
+  height directly (`min-h-11`, `py-3`).
 - Dependencies are pinned to exact versions. Do not add a dependency without the owner's approval.

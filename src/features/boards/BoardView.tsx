@@ -52,7 +52,7 @@ export function BoardView({ board }: { board: Board }) {
           <button
             type="button"
             onClick={addColumn}
-            className="w-column text-heading-xl text-muted-foreground from-new-column-from to-new-column-to hover:text-primary focus-visible:ring-ring/50 mt-10 flex shrink-0 snap-start items-center justify-center gap-2 rounded-md bg-linear-to-b outline-none focus-visible:ring-3"
+            className="w-column text-heading-xl text-muted-foreground from-new-column-from to-new-column-to hover:text-primary-text focus-visible:ring-ring/50 mt-10 flex shrink-0 snap-start items-center justify-center gap-2 rounded-md bg-linear-to-b outline-none focus-visible:ring-3"
           >
             <IconAddTask className="size-3" />
             {dict.board.newColumn}

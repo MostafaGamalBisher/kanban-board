@@ -44,7 +44,7 @@ export function FieldInput({
       {error && (
         <p
           id={errorId}
-          className="text-body-l text-destructive pointer-events-none absolute inset-y-0 end-4 flex items-center"
+          className="text-body-l text-destructive-text pointer-events-none absolute inset-y-0 end-4 flex items-center"
         >
           {error}
         </p>
@@ -78,7 +78,7 @@ export function FieldTextarea({
       {error && (
         <p
           id={errorId}
-          className="text-body-l text-destructive pointer-events-none absolute end-4 bottom-2"
+          className="text-body-l text-destructive-text pointer-events-none absolute end-4 bottom-2"
         >
           {error}
         </p>
@@ -100,7 +100,7 @@ export function RemoveButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="text-muted-foreground hover:text-destructive focus-visible:ring-ring/50 -m-2 rounded-sm p-2 outline-none focus-visible:ring-3"
+      className="text-muted-foreground hover:text-destructive-text focus-visible:ring-ring/50 touch-target -m-2 rounded-sm p-2 outline-none focus-visible:ring-3"
     >
       <IconCross />
     </button>

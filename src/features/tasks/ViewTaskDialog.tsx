@@ -137,7 +137,7 @@ export function ViewTaskDialog({
             <ul className="flex flex-col gap-2">
               {task.subtasks.map((subtask) => (
                 <li key={subtask.id}>
-                  <label className="bg-background hover:bg-accent flex cursor-pointer items-center gap-4 rounded-sm p-3">
+                  <label className="bg-background hover:bg-accent flex min-h-11 cursor-pointer items-center gap-4 rounded-sm p-3">
                     <Checkbox
                       checked={subtask.isCompleted}
                       onCheckedChange={(checked) =>

@@ -256,7 +256,7 @@ function DeleteBoardDialog({
         className="sm:p-8"
       >
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-destructive">
+          <AlertDialogTitle className="text-destructive-text">
             {dict.board.deleteTitle}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-body-l text-muted-foreground">

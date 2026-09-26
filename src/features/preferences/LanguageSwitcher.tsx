@@ -71,7 +71,7 @@ export function LanguageSwitcher() {
                 writePreferenceCookie(LOCALE_COOKIE, target);
               }
             }}
-            className="text-body-l text-primary hover:bg-secondary rounded-full px-4 py-2 font-bold"
+            className="text-body-l text-primary-text hover:bg-secondary hover:text-primary touch-target rounded-full px-4 py-2 font-bold"
           >
             {nativeName(target)}
           </Link>

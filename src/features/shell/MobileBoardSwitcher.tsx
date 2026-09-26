@@ -33,7 +33,7 @@ export function MobileBoardSwitcher({ board }: { board: Board | undefined }) {
   const trigger = (
     <DialogTrigger
       ref={triggerRef}
-      className="text-heading-l focus-visible:ring-ring/50 flex max-w-full min-w-0 items-center gap-2 rounded-sm outline-none focus-visible:ring-3"
+      className="text-heading-l focus-visible:ring-ring/50 touch-target flex max-w-full min-w-0 items-center gap-2 rounded-sm outline-none focus-visible:ring-3"
     >
       {/* dir="auto": an English name in /ar truncates at its own end. */}
       <span dir="auto" className="truncate">
@@ -41,7 +41,7 @@ export function MobileBoardSwitcher({ board }: { board: Board | undefined }) {
       </span>
       <IconChevronDown
         className={cn(
-          'text-primary shrink-0 transition-transform',
+          'text-primary-text shrink-0 transition-transform',
           open && 'rotate-180'
         )}
       />
