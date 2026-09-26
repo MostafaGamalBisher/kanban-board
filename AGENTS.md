@@ -140,6 +140,9 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
 - During a drag, keep only the intended drop position (`DropPosition`), never a copy of the board: the board shown is
   `previewMove()` and the drop dispatches the same `moveTask`. Where a drop lands is decided in `core/board/drag.ts`
   (tested); the UI only measures (pointer, rectangles).
+- On phones (below `md`), each column's task list scrolls on its own and `ColumnStrip` shows which column is in view
+  (measured by an `IntersectionObserver`, so it needs no direction handling). The board area scrolls only sideways
+  there. Keep both if the board layout changes; from `md` up, the board scrolls as one.
 - Collision detection is column-first (`boardCollisionDetection`), and Left/Right keys move between columns as seen
   on screen (`boardKeyboardCoordinates`, live DOM measurements). Keep both if the layout changes.
 - Libraries must not put English in the page: pass dnd-kit's `screenReaderInstructions`, `announcements` and

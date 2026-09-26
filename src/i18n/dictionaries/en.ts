@@ -50,6 +50,7 @@ export const en = {
     empty: 'This board is empty. Create a new column to get started.',
     addColumn: 'Add New Column',
     newColumn: 'New Column',
+    columnsNav: 'Columns',
     createBoard: '+ Create New Board',
     addBoardTitle: 'Add New Board',
     createBoardSubmit: 'Create New Board',

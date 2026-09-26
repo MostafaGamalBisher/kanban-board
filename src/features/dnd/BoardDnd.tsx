@@ -279,8 +279,9 @@ const boardKeyboardCoordinates: KeyboardCoordinateGetter = (event, args) => {
  *   restore (to the old button) lands nowhere; the card is found again by
  *   `data-task-id`.
  * - On phones, snap scrolling comes back on after the drop and can pull
- *   the board back to where the drag started, leaving the card off screen;
- *   its column is scrolled into view (a no-op when already visible).
+ *   the board back to where the drag started, leaving the card off screen.
+ *   The card is scrolled into view, which scrolls both its column's list
+ *   and the board (a no-op when already visible).
  */
 function refocusCard(taskId: string) {
   requestAnimationFrame(() =>
@@ -293,7 +294,7 @@ function refocusCard(taskId: string) {
       if (!focused || focused === document.body || !focused.isConnected) {
         button.focus({ preventScroll: true });
       }
-      button.closest('section')?.scrollIntoView({
+      (button.closest('li') ?? button).scrollIntoView({
         block: 'nearest',
         inline: 'nearest',
       });

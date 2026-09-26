@@ -43,6 +43,7 @@ export const ar: Dictionary = {
     empty: 'هذه اللوحة فارغة. أنشئ عمودًا جديدًا للبدء.',
     addColumn: 'إضافة عمود جديد',
     newColumn: 'عمود جديد',
+    columnsNav: 'الأعمدة',
     createBoard: '+ إنشاء لوحة جديدة',
     addBoardTitle: 'إضافة لوحة جديدة',
     createBoardSubmit: 'إنشاء اللوحة',

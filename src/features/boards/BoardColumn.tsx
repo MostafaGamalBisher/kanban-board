@@ -22,6 +22,10 @@ import { cn } from '@/lib/utils';
  * place to drop a task. The task list is a sortable list, and the whole
  * column a drop target: dropping below the last card, or into an empty
  * column, lands at the end.
+ *
+ * On phones the column fills the board's height and its task list scrolls
+ * on its own, so the heading stays in view and each column keeps its own
+ * scroll position (the list's padding leaves room for the focus ring).
  */
 export function BoardColumn({
   boardId,
@@ -41,7 +45,7 @@ export function BoardColumn({
     <section
       ref={setNodeRef}
       aria-labelledby={headingId}
-      className="w-column flex shrink-0 snap-start flex-col gap-6"
+      className="w-column flex shrink-0 snap-start flex-col gap-6 max-md:min-h-0"
     >
       <h2
         id={headingId}
@@ -67,7 +71,7 @@ export function BoardColumn({
         strategy={verticalListSortingStrategy}
       >
         {column.tasks.length > 0 ? (
-          <ul className="flex flex-col gap-5">
+          <ul className="flex flex-col gap-5 max-md:-m-1 max-md:min-h-0 max-md:flex-1 max-md:overflow-y-auto max-md:p-1">
             {column.tasks.map((task) => (
               <li key={task.id}>
                 <SortableTaskCard
