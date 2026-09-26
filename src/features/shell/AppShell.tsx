@@ -6,6 +6,7 @@ import { useRef, type ReactNode } from 'react';
 import { BoardDialogsProvider } from '@/features/boards/BoardDialogs';
 import { useBoard } from '@/features/boards/BoardsProvider';
 import { setSidebarState } from '@/features/preferences/sidebar';
+import { TaskDialogsProvider } from '@/features/tasks/TaskDialogs';
 
 import { Header } from './Header';
 import { ShowSidebarButton } from './ShowSidebarButton';
@@ -37,20 +38,22 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <BoardDialogsProvider>
-      <div className="flex h-dvh flex-col">
-        <Header board={board} />
-        <div className="flex min-h-0 flex-1">
-          <Sidebar
-            currentBoardId={board?.id}
-            onHide={hideSidebar}
-            hideButtonRef={hideButton}
-          />
-          <div className="flex min-w-0 flex-1 flex-col overflow-auto">
-            {children}
+      <TaskDialogsProvider>
+        <div className="flex h-dvh flex-col">
+          <Header board={board} />
+          <div className="flex min-h-0 flex-1">
+            <Sidebar
+              currentBoardId={board?.id}
+              onHide={hideSidebar}
+              hideButtonRef={hideButton}
+            />
+            <div className="flex min-w-0 flex-1 flex-col overflow-auto">
+              {children}
+            </div>
           </div>
+          <ShowSidebarButton ref={showButton} onShow={showSidebar} />
         </div>
-        <ShowSidebarButton ref={showButton} onShow={showSidebar} />
-      </div>
+      </TaskDialogsProvider>
     </BoardDialogsProvider>
   );
 }

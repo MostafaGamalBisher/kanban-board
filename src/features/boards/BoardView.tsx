@@ -38,7 +38,12 @@ export function BoardView({ board }: { board: Board }) {
   return (
     <main className="flex min-h-0 flex-1 snap-x snap-mandatory scroll-ps-4 gap-6 overflow-auto p-4 pt-6 md:snap-none md:p-6">
       {board.columns.map((column, index) => (
-        <BoardColumn key={column.id} column={column} index={index} />
+        <BoardColumn
+          key={column.id}
+          boardId={board.id}
+          column={column}
+          index={index}
+        />
       ))}
       <button
         type="button"

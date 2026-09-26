@@ -3,6 +3,7 @@
 import { useId } from 'react';
 
 import { columnDotClass } from '@/config/board';
+import type { BoardId } from '@/core/board/ids';
 import type { Column } from '@/core/board/schema';
 import { TaskCard } from '@/features/tasks/TaskCard';
 import { useI18n } from '@/i18n/provider';
@@ -15,9 +16,11 @@ import { cn } from '@/lib/utils';
  * from node 7.1, a place to drop a task).
  */
 export function BoardColumn({
+  boardId,
   column,
   index,
 }: {
+  boardId: BoardId;
   column: Column;
   index: number;
 }) {
@@ -51,7 +54,7 @@ export function BoardColumn({
         <ul className="flex flex-col gap-5">
           {column.tasks.map((task) => (
             <li key={task.id}>
-              <TaskCard task={task} />
+              <TaskCard boardId={boardId} task={task} />
             </li>
           ))}
         </ul>

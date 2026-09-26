@@ -66,4 +66,11 @@ export const ar: Dictionary = {
     deleteConfirm:
       'هل أنت متأكد من حذف لوحة «{name}»؟ سيؤدي ذلك إلى حذف جميع الأعمدة والمهام، ولا يمكن التراجع عنه.',
   },
+  task: {
+    subtasksHeading: 'المهام الفرعية ({done} من {total})',
+    status: 'الحالة الحالية',
+    menu: 'خيارات المهمة',
+    edit: 'تعديل المهمة',
+    delete: 'حذف المهمة',
+  },
 };

@@ -65,6 +65,13 @@ export const en = {
     deleteConfirm:
       'Are you sure you want to delete the ‘{name}’ board? This action will remove all columns and tasks and cannot be reversed.',
   },
+  task: {
+    subtasksHeading: 'Subtasks ({done} of {total})',
+    status: 'Current Status',
+    menu: 'Task options',
+    edit: 'Edit Task',
+    delete: 'Delete Task',
+  },
 };
 
 export type Dictionary = typeof en;

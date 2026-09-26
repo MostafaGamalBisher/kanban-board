@@ -44,7 +44,7 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 - [x] **5.1** Board form + Add Board + language-switch guard
 - [x] **5.2** Edit Board
 - [x] **5.3** Delete Board
-- [ ] **6.1** View Task (subtasks, status)
+- [x] **6.1** View Task (subtasks, status)
 - [ ] **6.2** Add / Edit Task
 - [ ] **6.3** Delete Task
 - [ ] **7.1** DnD context, sensors, overlay
@@ -319,11 +319,11 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 
 ### Phase 6 — Tasks
 
-| Node | Work                                                                                                  | Done when                                                |
-| ---- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| 6.1  | View Task: description, subtask checkboxes, status select (also the non-drag path for accessibility). | Toggles and moves update the card counts live.           |
-| 6.2  | Shared `TaskForm`: Add Task and Edit Task, dynamic subtasks, status.                                  | Create and edit work; validation messages are localized. |
-| 6.3  | Delete Task confirmation.                                                                             | The task is removed; counts update.                      |
+| Node | Work                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Done when                                                |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| 6.1  | View Task: description, subtask checkboxes, status select (also the non-drag path for accessibility). **Delivered:** the whole card opens the task (title button stretched over the card, so cards keep their `<h3>`); `ViewTaskDialog` via `TaskDialogsProvider` (focus starts on the dialog; returns to the card, also after it moved column); `findTask()` / `subtaskProgress()` in `core/board/selectors.ts` (tested). Status change moves the task to the end of the chosen column. Edit/Delete Task menu items disabled until 6.2/6.3. Select primitive sized to the brief. | Toggles and moves update the card counts live.           |
+| 6.2  | Shared `TaskForm`: Add Task and Edit Task, dynamic subtasks, status.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Create and edit work; validation messages are localized. |
+| 6.3  | Delete Task confirmation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | The task is removed; counts update.                      |
 
 ### Phase 7 — Drag and drop
 
