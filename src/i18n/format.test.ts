@@ -54,8 +54,17 @@ describe('format', () => {
     assert.equal(english.format('Hi {name}', {}), 'Hi {name}');
   });
 
-  test('inserts strings as-is (user content is never reformatted)', () => {
-    assert.equal(english.format('{name}', { name: '42' }), '42');
+  test('isolates inserted text (bidi) without changing it', () => {
+    assert.equal(
+      english.format('Delete {name}?', { name: 'Q3 Launch 2.0' }),
+      'Delete \u2068Q3 Launch 2.0\u2069?'
+    );
+    // A numeric-looking string is still text: isolated, not reformatted.
+    assert.equal(arabic.format('{name}', { name: '42' }), '\u206842\u2069');
+  });
+
+  test('does not isolate numbers (they are already locale-formatted)', () => {
+    assert.equal(arabic.format('{n}', { n: 42 }), '٤٢');
   });
 });
 

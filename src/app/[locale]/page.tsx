@@ -109,6 +109,21 @@ export default async function ShowcasePage() {
         <PluralsClient />
       </Section>
 
+      <Section title={sections.bidi}>
+        {showcase.bidi.names.map((name) => (
+          <div key={name} className="text-body-l flex flex-col gap-1">
+            <p className="text-body-m text-muted-foreground">
+              {showcase.bidi.naive}
+            </p>
+            <p>{dict.board.deleteConfirm.replace('{name}', name)}</p>
+            <p className="text-body-m text-muted-foreground">
+              {showcase.bidi.isolated}
+            </p>
+            <p>{format(dict.board.deleteConfirm, { name })}</p>
+          </div>
+        ))}
+      </Section>
+
       <Section title={sections.type}>
         <ul className="flex flex-col gap-3">
           {showcase.typeScale.map((sample) => (

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { AppProviders } from '@/components/providers';
 import { isLocale, LOCALE_DIRECTION, LOCALES } from '@/config/i18n';
 import { siteConfig } from '@/config/site';
-import { I18nProvider } from '@/i18n/provider';
 import { getDictionary, getI18n } from '@/i18n/server';
 import { cn } from '@/lib/utils';
 
@@ -48,9 +48,9 @@ export default async function LocaleLayout({
       className={cn('dark', fontSans.variable, fontArabic.variable)}
     >
       <body className="antialiased">
-        <I18nProvider locale={locale} dictionary={dictionary}>
+        <AppProviders locale={locale} dictionary={dictionary}>
           {children}
-        </I18nProvider>
+        </AppProviders>
       </body>
     </html>
   );

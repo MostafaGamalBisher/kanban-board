@@ -4,13 +4,28 @@ import type { Plural } from './plural.ts';
 
 export type MessageValues = Readonly<Record<string, string | number>>;
 
+/**
+ * Unicode "first strong isolate" … "pop directional isolate". Text inserted
+ * into a message is usually user content (a board name) whose direction
+ * may differ from the interface: an English name inside an Arabic sentence
+ * would otherwise pull the surrounding punctuation into the wrong place.
+ * Isolating it makes the browser lay the value out by its own direction,
+ * as one unit. Invisible; safe in both directions.
+ */
+const FSI = '\u2068';
+const PDI = '\u2069';
+export const isolate = (text: string) => `${FSI}${text}${PDI}`;
+
 export interface I18n {
   readonly locale: Locale;
   readonly dir: 'ltr' | 'rtl';
   readonly dict: Dictionary;
   /** 1234 → "1,234" or "١٬٢٣٤", per the locale's configured digits. */
   number(value: number): string;
-  /** Fills {placeholders}; numbers are formatted with the locale's digits. */
+  /**
+   * Fills {placeholders}: numbers get the locale's digits; text values are
+   * bidi-isolated, so user content cannot scramble the sentence around it.
+   */
   format(message: string, values?: MessageValues): string;
   /** Picks the plural form for `count`, then fills {count} and any other values. */
   plural(forms: Plural, count: number, values?: MessageValues): string;
@@ -34,7 +49,7 @@ export function createI18n(locale: Locale, dict: Dictionary): I18n {
       if (value === undefined) {
         return placeholder;
       }
-      return typeof value === 'number' ? number(value) : value;
+      return typeof value === 'number' ? number(value) : isolate(value);
     });
 
   const plural = (forms: Plural, count: number, values: MessageValues = {}) =>

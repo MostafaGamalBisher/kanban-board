@@ -14,6 +14,7 @@ export const showcase = {
     columnDots: 'Column dots (repeat after six)',
     pluralsServer: 'Plurals, rendered on the server',
     pluralsClient: 'Plurals, rendered in the browser',
+    bidi: 'User content inside a sentence',
     type: 'Type scale',
     buttons: 'Buttons',
     forms: 'Form controls',
@@ -68,6 +69,12 @@ export const showcase = {
   },
 
   pluralCounts: [0, 1, 2, 3, 11, 100, 103],
+
+  bidi: {
+    names: ['Q3 Launch v2.0!', 'إطلاق المنصة 2.0!'],
+    naive: 'Without isolation (plain text replace):',
+    isolated: 'With isolation (format):',
+  },
 
   overlays: {
     dialogTrigger: 'Open dialog',

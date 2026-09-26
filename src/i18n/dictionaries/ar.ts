@@ -31,5 +31,7 @@ export const ar: Dictionary = {
     }),
     // Phrased to avoid plural agreement with a changing total.
     subtaskProgress: 'المهام الفرعية: {done} من {total}',
+    deleteConfirm:
+      'هل أنت متأكد من حذف لوحة «{name}»؟ سيؤدي ذلك إلى حذف جميع الأعمدة والمهام، ولا يمكن التراجع عنه.',
   },
 };

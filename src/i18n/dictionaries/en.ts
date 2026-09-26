@@ -30,6 +30,8 @@ export const en = {
     allBoards: 'All boards ({count})',
     taskCount: englishPlural({ one: '{count} task', other: '{count} tasks' }),
     subtaskProgress: '{done} of {total} subtasks',
+    deleteConfirm:
+      'Are you sure you want to delete the ‘{name}’ board? This action will remove all columns and tasks and cannot be reversed.',
   },
 };
 

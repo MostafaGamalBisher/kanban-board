@@ -35,7 +35,7 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 - [x] **2.5** `config/` constants
 - [x] **3.1** `[locale]` root layout + `proxy.ts` negotiation
 - [x] **3.2** Typed dictionaries, `useT()`, Arabic plurals
-- [ ] **3.3** RTL rules + physical-class check
+- [x] **3.3** RTL rules + physical-class check
 - [ ] **3.4** Theme cookie + toggle; language switcher
 - [ ] **4.1** `BoardsProvider` seeded from the server
 - [ ] **4.2** Header + mobile board switcher
@@ -288,12 +288,12 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 
 ### Phase 3 — Language, direction, theme
 
-| Node | Work                                                                                                                                                                                                                     | Done when                                                                                    |
-| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
-| 3.1  | `[locale]` segment as the root layout (`<html lang dir>` rendered on the server); an unknown locale gives a 404. `proxy.ts`: `NEXT_LOCALE` cookie → `Accept-Language` → `en`, excluding `_next`, icons and static files. | `/` redirects correctly; `/ar` renders `dir="rtl"`; `/xx` gives a 404.                       |
-| 3.2  | Typed dictionaries; `getDictionary()` on the server; `I18nProvider` + `useT()` on the client; Arabic plurals via `Intl.PluralRules`.                                                                                     | A missing `ar` key fails `typecheck`; Arabic counts 0 / 1 / 2 / 3 / 11 / 100 read correctly. |
-| 3.3  | RTL rules: logical utilities only, mirrored directional icons, Radix `DirectionProvider`, `dir="auto"` on user content. `check` greps for physical `ml-/mr-/pl-/pr-/left-/right-` classes.                               | A planted `ml-4` fails `check`.                                                              |
-| 3.4  | Theme cookie (no cookie → dark) + `ThemeToggle`. `LanguageSwitcher` keeps the current path and sets `NEXT_LOCALE`. (The guard dialog arrives at 5.1, once there are edits to protect.)                                   | No flash on reload; both preferences survive a reload.                                       |
+| Node | Work                                                                                                                                                                                                                                                                                                                                                       | Done when                                                                                    |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| 3.1  | `[locale]` segment as the root layout (`<html lang dir>` rendered on the server); an unknown locale gives a 404. `proxy.ts`: `NEXT_LOCALE` cookie → `Accept-Language` → `en`, excluding `_next`, icons and static files.                                                                                                                                   | `/` redirects correctly; `/ar` renders `dir="rtl"`; `/xx` gives a 404.                       |
+| 3.2  | Typed dictionaries; `getDictionary()` on the server; `I18nProvider` + `useT()` on the client; Arabic plurals via `Intl.PluralRules`.                                                                                                                                                                                                                       | A missing `ar` key fails `typecheck`; Arabic counts 0 / 1 / 2 / 3 / 11 / 100 read correctly. |
+| 3.3  | RTL rules: the ESLint rule `rtl/no-physical-direction` (rejects `ml-`/`left-`/`text-right`… anywhere in UI code and suggests the logical class, keeping variants); Radix `Direction.Provider` in `AppProviders`; text inserted by `format()` is bidi-isolated (FSI/PDI); `Input`/`Textarea` default to `dir="auto"`; standalone user content uses `<bdi>`. | A planted `ml-4` fails lint; on `/ar` `align="end"` menus open on the left.                  |
+| 3.4  | Theme cookie (no cookie → dark) + `ThemeToggle`. `LanguageSwitcher` keeps the current path and sets `NEXT_LOCALE`. (The guard dialog arrives at 5.1, once there are edits to protect.)                                                                                                                                                                     | No flash on reload; both preferences survive a reload.                                       |
 
 **Decided at 3.2:** Arabic-Indic digits (٣ ١١ ١٠٠) in the Arabic interface.
 
@@ -357,8 +357,7 @@ docs/PLAN.md                    # this plan, with a status checkbox per node
 
 ## Verification
 
-- **Every node:** `npm run check` — typecheck; lint (layer rules, `jsx-no-literals`); greps (physical RTL classes,
-  attribute literals); `node:test`; build (which includes the `server-only` guard).
+- **Every node:** `npm run check` — typecheck; lint (layer rules, `jsx-no-literals`); the RTL rule (physical direction classes); `node:test`; build (which includes the `server-only` guard).
 - **From 1.4 on:** the preview URL on a phone (375px) and on desktop (1440px), in `/en` and `/ar`, in dark and light.
 
 ---

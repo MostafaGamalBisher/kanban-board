@@ -106,8 +106,13 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
 
 - Reads: Server Components call `src/server/` functions directly. Never `fetch` our own API from the server.
 - No API routes, TanStack Query or localStorage in Part A (front-end). Part B adds Server Actions.
-- RTL: use logical Tailwind utilities (`ms-`, `me-`, `ps-`, `pe-`, `start-`, `end-`, `text-start`); never `ml-`,
-  `mr-`, `pl-`, `pr-`, `left-`, `right-`. User content gets `dir="auto"`.
+- RTL: logical Tailwind utilities only (`ms-`, `me-`, `ps-`, `pe-`, `start-`, `end-`, `text-start`, `border-s`, …).
+  ESLint's `rtl/no-physical-direction` rejects physical ones everywhere in UI code; an explicit `ltr:`/`rtl:` variant
+  marks an intentional exception. Directional icons (chevrons, arrows) get `rtl:rotate-180`.
+- User content (board/column/task names, descriptions) may be in either language: render it standalone in `<bdi>`
+  (inline) or with `dir="auto"` (block). Inside translated sentences, always insert it through `format()`, which
+  isolates it. `Input` and `Textarea` already default to `dir="auto"`.
+- Radix reads direction from `Direction.Provider` (in `src/components/providers.tsx`), not from `<html dir>`.
 - Import `cn` from `@/lib/utils`, never from the `cn` package (ESLint enforces it). `lib/utils.ts` registers the
   custom text sizes (`text-heading-*`, `text-body-*`); without that, merging drops color classes. Keep its list in
   sync with the `--text-*` tokens in `src/app/globals.css`.

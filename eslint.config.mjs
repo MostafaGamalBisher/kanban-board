@@ -56,6 +56,104 @@ const noUiLiterals = {
   ],
 };
 
+/**
+ * RTL: physical direction utilities (ml-4, left-0, text-right, …) break the
+ * Arabic layout. This rule rejects them in any string (className, cn()
+ * arguments, config arrays) and suggests the logical equivalent. Classes
+ * with an explicit `ltr:` or `rtl:` variant are intentional and allowed.
+ */
+const PHYSICAL_TO_LOGICAL = {
+  ml: 'ms',
+  mr: 'me',
+  pl: 'ps',
+  pr: 'pe',
+  left: 'start',
+  right: 'end',
+  'scroll-ml': 'scroll-ms',
+  'scroll-mr': 'scroll-me',
+  'scroll-pl': 'scroll-ps',
+  'scroll-pr': 'scroll-pe',
+  'border-l': 'border-s',
+  'border-r': 'border-e',
+  'rounded-l': 'rounded-s',
+  'rounded-r': 'rounded-e',
+  'rounded-tl': 'rounded-ss',
+  'rounded-tr': 'rounded-se',
+  'rounded-bl': 'rounded-es',
+  'rounded-br': 'rounded-ee',
+  'text-left': 'text-start',
+  'text-right': 'text-end',
+  'float-left': 'float-start',
+  'float-right': 'float-end',
+  'clear-left': 'clear-start',
+  'clear-right': 'clear-end',
+};
+const PHYSICAL_CLASS = new RegExp(
+  `^(${Object.keys(PHYSICAL_TO_LOGICAL)
+    .sort((a, b) => b.length - a.length)
+    .join('|')})(?=-|$)`
+);
+
+/**
+ * `md:hover:!-ml-4` → { variants: ['md', 'hover'], prefix: 'md:hover:!-',
+ * utility: 'ml-4' }. Colons inside [arbitrary] values do not split.
+ */
+function splitClass(token) {
+  const parts = token.split(/:(?![^[]*\])/);
+  const last = parts.pop() ?? '';
+  const modifiers = /^!?-?/.exec(last)?.[0] ?? '';
+  const variants = parts.length ? `${parts.join(':')}:` : '';
+  return {
+    variants: parts,
+    prefix: variants + modifiers,
+    utility: last.slice(modifiers.length),
+  };
+}
+
+const rtlPlugin = {
+  rules: {
+    'no-physical-direction': {
+      meta: {
+        type: 'problem',
+        messages: {
+          physical:
+            '`{{token}}` is a physical direction and breaks the Arabic (RTL) layout. Use `{{logical}}` instead.',
+        },
+        schema: [],
+      },
+      create(context) {
+        const check = (node, text) => {
+          for (const token of text.split(/\s+/)) {
+            if (!token) continue;
+            const { variants, prefix, utility } = splitClass(token);
+            if (variants.some((v) => v === 'ltr' || v === 'rtl')) continue;
+            const match = PHYSICAL_CLASS.exec(utility);
+            if (!match) continue;
+            // Keep variants and modifiers: md:hover:!-ml-2 → md:hover:!-ms-2
+            const logical =
+              prefix +
+              PHYSICAL_TO_LOGICAL[match[1]] +
+              utility.slice(match[1].length);
+            context.report({
+              node,
+              messageId: 'physical',
+              data: { token, logical },
+            });
+          }
+        };
+        return {
+          Literal(node) {
+            if (typeof node.value === 'string') check(node, node.value);
+          },
+          TemplateElement(node) {
+            check(node, node.value.cooked ?? '');
+          },
+        };
+      },
+    },
+  },
+};
+
 export default defineConfig([
   ...nextVitals,
   ...nextTs,
@@ -124,5 +222,15 @@ export default defineConfig([
   {
     files: ['src/app/**/*.tsx', 'src/features/**/*.tsx'],
     rules: noUiLiterals,
+  },
+  {
+    files: [
+      'src/app/**/*.{ts,tsx}',
+      'src/features/**/*.{ts,tsx}',
+      'src/components/**/*.{ts,tsx}',
+      'src/config/**/*.ts',
+    ],
+    plugins: { rtl: rtlPlugin },
+    rules: { 'rtl/no-physical-direction': 'error' },
   },
 ]);
