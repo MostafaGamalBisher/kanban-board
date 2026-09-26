@@ -4,7 +4,7 @@ A task-management board in English and Arabic: boards, columns and tasks with su
 mouse, a finger or the keyboard. Built on Next.js 16, TypeScript and Tailwind CSS 4, based on the kanban task
 management challenge from [Frontend Mentor](https://www.frontendmentor.io).
 
-**Live:** https://kanban-board-bice-seven-69.vercel.app
+**Live:** https://mostafa-kanban.vercel.app
 
 ## Features
 
