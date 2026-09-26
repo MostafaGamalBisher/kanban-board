@@ -39,3 +39,22 @@ function formatPath(path: readonly PropertyKey[]): string {
     )
     .join('');
 }
+
+export type EntityKind = 'board' | 'column' | 'task' | 'subtask';
+
+/**
+ * An operation referenced an ID that does not exist. Inside an operation
+ * this means a bug or stale UI state, so it fails loudly instead of
+ * silently doing nothing.
+ */
+export class NotFoundError extends Error {
+  readonly entity: EntityKind;
+  readonly id: string;
+
+  constructor(entity: EntityKind, id: string) {
+    super(`${entity} not found: ${id}`);
+    this.name = 'NotFoundError';
+    this.entity = entity;
+    this.id = id;
+  }
+}

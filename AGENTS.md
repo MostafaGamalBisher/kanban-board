@@ -57,6 +57,9 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
 - Validation messages are `ValidationKey` codes (`src/core/validation.ts`), never sentences. The UI translates them;
   map unknown messages with `toValidationKey()`.
 - Input schemas (what forms submit) are separate from entity schemas: new items carry no ID.
+- Every change goes through the pure functions in `core/board/operations.ts` (`(boards, input) → boards`). They never
+  mutate, keep unchanged objects identical, and throw `NotFoundError` for unknown IDs. Creating operations take an
+  `IdFactory`: pass `createId` from `src/lib/ids.ts` in the app, a counter in tests.
 - Stored data enters the app only through `parseBoards()` (`core/board/parse.ts`), which throws `InvalidDataError`
   listing every problem. `src/server/boards/queries.ts` parses the seed once and caches it; pages call `getBoards()` /
   `getBoard(id)` (`undefined` for an unknown ID).
