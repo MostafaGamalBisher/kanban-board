@@ -31,7 +31,7 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 - [x] **2.1** Domain schemas (`core/board/schema.ts`)
 - [x] **2.2** Seed data (`data/boards.json`) + server queries (`server-only`)
 - [x] **2.3** Pure board operations + HTTP-safe ids
-- [ ] **2.4** `node:test` suite for the operations
+- [x] **2.4** `node:test` suite for the operations
 - [ ] **2.5** `config/` constants
 - [ ] **3.1** `[locale]` root layout + `proxy.ts` negotiation
 - [ ] **3.2** Typed dictionaries, `useT()`, Arabic plurals

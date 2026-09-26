@@ -21,14 +21,15 @@ Next.js 16 (App Router) · TypeScript 6.0 · Tailwind CSS 4 · AR/EN with RTL. T
 
 ## Commands
 
-| Command             | Does                                                                                                                                      |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run dev`       | Dev server on http://localhost:3000                                                                                                       |
-| `npm run check`     | typecheck → lint → format:check → test → build. The gate for every commit.                                                                |
-| `npm run typecheck` | `next typegen` (fresh route types) then `tsc --noEmit` (strict, `noUncheckedIndexedAccess`, `verbatimModuleSyntax`, `erasableSyntaxOnly`) |
-| `npm run lint`      | ESLint, including the architecture and i18n rules below                                                                                   |
-| `npm test`          | `node:test` over `src/**/*.test.ts` — Node ≥ 22.18 runs TypeScript natively, no test framework                                            |
-| `npm run format`    | Prettier (with the Tailwind class-sorting plugin)                                                                                         |
+| Command                 | Does                                                                                                                                      |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run dev`           | Dev server on http://localhost:3000                                                                                                       |
+| `npm run check`         | typecheck → lint → format:check → test → build. The gate for every commit.                                                                |
+| `npm run typecheck`     | `next typegen` (fresh route types) then `tsc --noEmit` (strict, `noUncheckedIndexedAccess`, `verbatimModuleSyntax`, `erasableSyntaxOnly`) |
+| `npm run lint`          | ESLint, including the architecture and i18n rules below                                                                                   |
+| `npm test`              | `node:test` over `src/**/*.test.ts` — Node ≥ 22.18 runs TypeScript natively, no test framework                                            |
+| `npm run test:coverage` | Same tests with Node's built-in line/branch coverage report                                                                               |
+| `npm run format`        | Prettier (with the Tailwind class-sorting plugin)                                                                                         |
 
 ## Architecture — enforced by `eslint.config.mjs`
 
@@ -63,6 +64,14 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
 - Stored data enters the app only through `parseBoards()` (`core/board/parse.ts`), which throws `InvalidDataError`
   listing every problem. `src/server/boards/queries.ts` parses the seed once and caches it; pages call `getBoards()` /
   `getBoard(id)` (`undefined` for an unknown ID).
+
+## Tests
+
+- `node:test` + `node:assert/strict`, next to the code (`*.test.ts`). No test framework.
+- Tests in `core/` may import only relative paths, `zod`, `node:test` and `node:assert` (ESLint enforces it).
+- Use small inline fixtures parsed with `parseBoards()`, never the seed file: parsed fixtures are frozen, so any
+  mutation fails the test. Pass a counter `IdFactory` for predictable IDs.
+- A new rule or operation needs a test that fails without it.
 
 ## Data and text are never hard-coded in components
 

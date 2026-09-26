@@ -86,6 +86,25 @@ export default defineConfig([
     ),
   },
   {
+    // Tests in core/ may also use Node's test runner and assertions.
+    // Production core/ code may not: it must run in the browser too.
+    files: ['src/core/**/*.test.ts'],
+    rules: layer(
+      'core/ tests: relative imports, `zod`, `node:test` and `node:assert` only.',
+      '^(?!zod$)(?!node:test$)(?!node:assert(/strict)?$)(?!\\.{1,2}/)',
+      escapesInto(
+        'app',
+        'features',
+        'server',
+        'components',
+        'lib',
+        'config',
+        'i18n',
+        'data'
+      )
+    ),
+  },
+  {
     files: ['src/server/**/*.ts'],
     rules: layer(
       'server/ must not depend on UI code.',
