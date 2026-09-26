@@ -94,7 +94,7 @@ export const ar: Dictionary = {
     instructions:
       'لنقل مهمة، اضغط مفتاح المسافة لالتقاطها، وحرّكها بمفاتيح الأسهم، ثم اضغط المسافة لإفلاتها أو Escape للإلغاء. اضغط Enter لفتح المهمة.',
     pickedUp: 'تم التقاط المهمة {title}.',
-    over: 'المهمة {title} فوق العمود {column}.',
+    over: 'المهمة {title} فوق العمود {column}، الموضع {position} من {total}.',
     dropped:
       'نُقلت المهمة {title} إلى العمود {column}، الموضع {position} من {total}.',
     cancelled: 'أُلغي النقل. عادت المهمة {title} إلى مكانها.',

@@ -117,35 +117,35 @@ export function BoardDnd({
 
   const titleOf = (taskId: UniqueIdentifier) =>
     findTask(board, String(taskId))?.task.title ?? '';
-  const columnNameOf = (over: Over | null) => {
-    const data = over?.data.current as DndData | undefined;
-    return board.columns.find((column) => column.id === data?.columnId)?.name;
+
+  /** Column, position and total where the task would land, for announcements. */
+  const landingOf = (active: Active, over: Over | null) => {
+    const position = positionOf(active, over);
+    const task = findTask(board, String(active.id))?.task;
+    if (!position || !task) return undefined;
+    const column = previewMove(shown, task.id, position).columns.find(
+      (c) => c.id === position.toColumnId
+    );
+    return {
+      title: task.title,
+      column: column?.name ?? '',
+      position: position.toIndex + 1,
+      total: column?.tasks.length ?? 0,
+    };
   };
 
   const announcements: Announcements = {
     onDragStart: ({ active }) =>
       format(dict.dnd.pickedUp, { title: titleOf(active.id) }),
     onDragOver: ({ active, over }) => {
-      const column = columnNameOf(over);
-      return column === undefined
-        ? undefined
-        : format(dict.dnd.over, { title: titleOf(active.id), column });
+      const landing = landingOf(active, over);
+      return landing && format(dict.dnd.over, landing);
     },
     onDragEnd: ({ active, over }) => {
-      const position = positionOf(active, over);
-      const task = findTask(board, String(active.id))?.task;
-      if (!position || !task) {
-        return format(dict.dnd.cancelled, { title: titleOf(active.id) });
-      }
-      const column = previewMove(shown, task.id, position).columns.find(
-        (c) => c.id === position.toColumnId
-      );
-      return format(dict.dnd.dropped, {
-        title: task.title,
-        column: column?.name ?? '',
-        position: position.toIndex + 1,
-        total: column?.tasks.length ?? 0,
-      });
+      const landing = landingOf(active, over);
+      return landing
+        ? format(dict.dnd.dropped, landing)
+        : format(dict.dnd.cancelled, { title: titleOf(active.id) });
     },
     onDragCancel: ({ active }) =>
       format(dict.dnd.cancelled, { title: titleOf(active.id) }),
@@ -273,20 +273,30 @@ const boardKeyboardCoordinates: KeyboardCoordinateGetter = (event, args) => {
 };
 
 /**
- * After a drop, keep keyboard focus on the moved card. A card that changed
- * column is a new element, so dnd-kit's own focus restore (to the old
- * button) lands nowhere; the card is found again by `data-task-id`.
+ * After a drop, keep the moved card focused and on screen.
+ *
+ * - A card that changed column is a new element, so dnd-kit's own focus
+ *   restore (to the old button) lands nowhere; the card is found again by
+ *   `data-task-id`.
+ * - On phones, snap scrolling comes back on after the drop and can pull
+ *   the board back to where the drag started, leaving the card off screen;
+ *   its column is scrolled into view (a no-op when already visible).
  */
 function refocusCard(taskId: string) {
   requestAnimationFrame(() =>
     requestAnimationFrame(() => {
+      const button = document.querySelector<HTMLElement>(
+        `[data-task-id="${CSS.escape(taskId)}"] button`
+      );
+      if (!button) return;
       const focused = document.activeElement;
-      if (focused && focused !== document.body && focused.isConnected) return;
-      document
-        .querySelector<HTMLElement>(
-          `[data-task-id="${CSS.escape(taskId)}"] button`
-        )
-        ?.focus();
+      if (!focused || focused === document.body || !focused.isConnected) {
+        button.focus({ preventScroll: true });
+      }
+      button.closest('section')?.scrollIntoView({
+        block: 'nearest',
+        inline: 'nearest',
+      });
     })
   );
 }
