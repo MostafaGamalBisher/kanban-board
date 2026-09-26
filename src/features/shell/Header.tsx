@@ -1,5 +1,7 @@
 'use client';
 
+import { useRef } from 'react';
+
 import { Logo } from '@/components/brand/Logo';
 import { IconAddTask, IconVerticalEllipsis } from '@/components/icons';
 import { Button } from '@/components/ui/button';
@@ -10,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import type { Board } from '@/core/board/schema';
+import { useBoardDialogs } from '@/features/boards/BoardDialogs';
 import { useI18n } from '@/i18n/provider';
 
 import { MobileBoardSwitcher } from './MobileBoardSwitcher';
@@ -23,11 +26,14 @@ import { MobileBoardSwitcher } from './MobileBoardSwitcher';
  * cell lines up with the sidebar. Only one of the two headings is ever
  * displayed, so assistive technology sees a single <h1>.
  *
- * Add task, Edit and Delete stay disabled until their dialogs exist
- * (nodes 6.2, 5.2 and 5.3).
+ * Add task and Delete stay disabled until their dialogs exist (nodes 6.2
+ * and 5.3).
  */
 export function Header({ board }: { board: Board | undefined }) {
   const { dict } = useI18n();
+  const { openEditBoard } = useBoardDialogs();
+  // The menu closes as its dialog opens; focus comes back to ⋮ afterwards.
+  const menuTrigger = useRef<HTMLButtonElement>(null);
 
   return (
     <header className="bg-card border-border h-header md:h-header-md xl:h-header-xl flex shrink-0 items-center border-b">
@@ -60,6 +66,7 @@ export function Header({ board }: { board: Board | undefined }) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
+                  ref={menuTrigger}
                   variant="ghost"
                   size="icon"
                   aria-label={dict.board.menu}
@@ -69,7 +76,15 @@ export function Header({ board }: { board: Board | undefined }) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem disabled>{dict.board.edit}</DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() =>
+                    openEditBoard(board.id, {
+                      returnFocusTo: menuTrigger.current,
+                    })
+                  }
+                >
+                  {dict.board.edit}
+                </DropdownMenuItem>
                 <DropdownMenuItem disabled variant="destructive">
                   {dict.board.delete}
                 </DropdownMenuItem>

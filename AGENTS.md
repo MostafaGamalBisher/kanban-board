@@ -119,7 +119,8 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
 - A message placed inside a field follows the field's text direction (`textDirection()` in `src/lib/`), not the
   page's.
 - Board dialogs have one instance each in `BoardDialogsProvider` (inside `AppShell`); open them with
-  `useBoardDialogs()`.
+  `useBoardDialogs()`. The provider returns focus to whatever was focused when a dialog opened; a caller that
+  disappears as the dialog opens (a menu, the mobile switcher) passes `returnFocusTo`.
 - Until Part B, a language switch discards session changes: `LanguageSwitcher` asks first when
   `useSessionChanges().hasChanges`, and leaves a session-created board for the home page.
 

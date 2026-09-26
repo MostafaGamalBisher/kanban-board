@@ -6,17 +6,20 @@ import type { Board } from '@/core/board/schema';
 import { useI18n } from '@/i18n/provider';
 
 import { BoardColumn } from './BoardColumn';
+import { useBoardDialogs } from './BoardDialogs';
 
 /**
  * A board's columns side by side. The board scrolls horizontally; on
  * phones each column snaps into place. Logical scroll padding and flex
  * order mirror it in Arabic (the first column on the right).
  *
- * "+ New Column" and "+ Add New Column" open Edit Board, which arrives in
- * node 5.2; until then they are disabled.
+ * "+ New Column" and "+ Add New Column" open Edit Board with a new, empty,
+ * focused column.
  */
 export function BoardView({ board }: { board: Board }) {
   const { dict } = useI18n();
+  const { openEditBoard } = useBoardDialogs();
+  const addColumn = () => openEditBoard(board.id, { addColumn: true });
 
   if (board.columns.length === 0) {
     return (
@@ -24,7 +27,7 @@ export function BoardView({ board }: { board: Board }) {
         <p className="text-heading-l text-muted-foreground max-w-md">
           {dict.board.empty}
         </p>
-        <Button size="lg" disabled>
+        <Button size="lg" onClick={addColumn}>
           <IconAddTask className="size-3" />
           {dict.board.addColumn}
         </Button>
@@ -39,8 +42,8 @@ export function BoardView({ board }: { board: Board }) {
       ))}
       <button
         type="button"
-        disabled
-        className="w-column text-heading-xl text-muted-foreground from-new-column-from to-new-column-to hover:text-primary mt-10 flex shrink-0 snap-start items-center justify-center gap-2 rounded-md bg-linear-to-b disabled:cursor-not-allowed disabled:opacity-50"
+        onClick={addColumn}
+        className="w-column text-heading-xl text-muted-foreground from-new-column-from to-new-column-to hover:text-primary focus-visible:ring-ring/50 mt-10 flex shrink-0 snap-start items-center justify-center gap-2 rounded-md bg-linear-to-b outline-none focus-visible:ring-3"
       >
         <IconAddTask className="size-3" />
         {dict.board.newColumn}
