@@ -89,4 +89,13 @@ export const ar: Dictionary = {
     addSubtask: 'إضافة مهمة فرعية',
     statusLabel: 'الحالة',
   },
+  dnd: {
+    roleDescription: 'مهمة قابلة للسحب',
+    instructions:
+      'لنقل مهمة، اضغط مفتاح المسافة لالتقاطها، وحرّكها بمفاتيح الأسهم، ثم اضغط المسافة لإفلاتها أو Escape للإلغاء. اضغط Enter لفتح المهمة.',
+    pickedUp: 'تم التقاط المهمة {title}.',
+    over: 'المهمة {title} فوق العمود {column}.',
+    dropped: 'تم إفلات المهمة {title}.',
+    cancelled: 'أُلغي النقل. عادت المهمة {title} إلى مكانها.',
+  },
 };

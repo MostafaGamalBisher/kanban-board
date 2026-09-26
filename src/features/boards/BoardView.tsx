@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import type { Board } from '@/core/board/schema';
 import { useI18n } from '@/i18n/provider';
 
+import { BoardDnd, DndScrollArea } from '@/features/dnd/BoardDnd';
+
 import { BoardColumn } from './BoardColumn';
 import { useBoardDialogs } from './BoardDialogs';
 
@@ -36,23 +38,25 @@ export function BoardView({ board }: { board: Board }) {
   }
 
   return (
-    <main className="flex min-h-0 flex-1 snap-x snap-mandatory scroll-ps-4 gap-6 overflow-auto p-4 pt-6 md:snap-none md:p-6">
-      {board.columns.map((column, index) => (
-        <BoardColumn
-          key={column.id}
-          boardId={board.id}
-          column={column}
-          index={index}
-        />
-      ))}
-      <button
-        type="button"
-        onClick={addColumn}
-        className="w-column text-heading-xl text-muted-foreground from-new-column-from to-new-column-to hover:text-primary focus-visible:ring-ring/50 mt-10 flex shrink-0 snap-start items-center justify-center gap-2 rounded-md bg-linear-to-b outline-none focus-visible:ring-3"
-      >
-        <IconAddTask className="size-3" />
-        {dict.board.newColumn}
-      </button>
-    </main>
+    <BoardDnd board={board}>
+      <DndScrollArea className="flex min-h-0 flex-1 snap-x snap-mandatory scroll-ps-4 gap-6 overflow-auto p-4 pt-6 data-dragging:snap-none md:snap-none md:p-6">
+        {board.columns.map((column, index) => (
+          <BoardColumn
+            key={column.id}
+            boardId={board.id}
+            column={column}
+            index={index}
+          />
+        ))}
+        <button
+          type="button"
+          onClick={addColumn}
+          className="w-column text-heading-xl text-muted-foreground from-new-column-from to-new-column-to hover:text-primary focus-visible:ring-ring/50 mt-10 flex shrink-0 snap-start items-center justify-center gap-2 rounded-md bg-linear-to-b outline-none focus-visible:ring-3"
+        >
+          <IconAddTask className="size-3" />
+          {dict.board.newColumn}
+        </button>
+      </DndScrollArea>
+    </BoardDnd>
   );
 }

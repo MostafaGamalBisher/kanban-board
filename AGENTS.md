@@ -132,6 +132,14 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
 - Until Part B, a language switch discards session changes: `LanguageSwitcher` asks first when
   `useSessionChanges().hasChanges`, and leaves a session-created board for the home page.
 
+## Drag and drop (`src/features/dnd/`)
+
+- `@dnd-kit/core` + `sortable` (owner's choice). `BoardDnd` wraps a board: `DndContext` with `id={useId()}` (dnd-kit's
+  own IDs differ between server and browser), sensors, `DragOverlay`. Cards are `SortableTaskCard`; the title button
+  is the drag handle. Every draggable and droppable carries `DndData` (`type`, `columnId`).
+- Libraries must not put English in the page: pass dnd-kit's `screenReaderInstructions`, `announcements` and
+  `roleDescription` from the dictionaries (`dnd.*`). Check any new library for built-in text.
+
 ## Tests
 
 - `node:test` + `node:assert/strict`, next to the code (`*.test.ts`). No test framework.

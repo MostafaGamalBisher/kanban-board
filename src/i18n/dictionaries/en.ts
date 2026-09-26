@@ -88,6 +88,15 @@ export const en = {
     addSubtask: 'Add New Subtask',
     statusLabel: 'Status',
   },
+  dnd: {
+    roleDescription: 'draggable task',
+    instructions:
+      'To move a task, press Space to pick it up, use the arrow keys to move it, then press Space to drop it or Escape to cancel. Press Enter to open the task.',
+    pickedUp: 'Picked up task {title}.',
+    over: 'Task {title} is over column {column}.',
+    dropped: 'Dropped task {title}.',
+    cancelled: 'Move cancelled. Task {title} is back in its place.',
+  },
 };
 
 export type Dictionary = typeof en;

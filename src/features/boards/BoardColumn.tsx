@@ -1,19 +1,26 @@
 'use client';
 
+import { useDroppable } from '@dnd-kit/core';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { useId } from 'react';
 
 import { columnDotClass } from '@/config/board';
 import type { BoardId } from '@/core/board/ids';
 import type { Column } from '@/core/board/schema';
-import { TaskCard } from '@/features/tasks/TaskCard';
+import type { DndData } from '@/features/dnd/BoardDnd';
+import { SortableTaskCard } from '@/features/dnd/SortableTaskCard';
 import { useI18n } from '@/i18n/provider';
 import { cn } from '@/lib/utils';
 
 /**
  * One column: status dot, "NAME (count)", then its tasks in order. The dot
  * colour comes from the column's position (config/board.ts). An empty
- * column keeps its height as a dashed area, so it is still visible (and,
- * from node 7.1, a place to drop a task).
+ * column keeps its height as a dashed area, so it is still visible and a
+ * place to drop a task. The task list is a sortable list, and the column
+ * a drop target (needed when it is empty).
  */
 export function BoardColumn({
   boardId,
@@ -26,6 +33,8 @@ export function BoardColumn({
 }) {
   const { dict, format } = useI18n();
   const headingId = useId();
+  const data: DndData = { type: 'column', columnId: column.id };
+  const { setNodeRef } = useDroppable({ id: column.id, data });
 
   return (
     <section
@@ -50,17 +59,30 @@ export function BoardColumn({
           })}
         </span>
       </h2>
-      {column.tasks.length > 0 ? (
-        <ul className="flex flex-col gap-5">
-          {column.tasks.map((task) => (
-            <li key={task.id}>
-              <TaskCard boardId={boardId} task={task} />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div className="border-border h-40 rounded-lg border-2 border-dashed" />
-      )}
+      <SortableContext
+        id={column.id}
+        items={column.tasks.map((task) => task.id)}
+        strategy={verticalListSortingStrategy}
+      >
+        {column.tasks.length > 0 ? (
+          <ul ref={setNodeRef} className="flex flex-col gap-5">
+            {column.tasks.map((task) => (
+              <li key={task.id}>
+                <SortableTaskCard
+                  boardId={boardId}
+                  columnId={column.id}
+                  task={task}
+                />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div
+            ref={setNodeRef}
+            className="border-border h-40 rounded-lg border-2 border-dashed"
+          />
+        )}
+      </SortableContext>
     </section>
   );
 }
