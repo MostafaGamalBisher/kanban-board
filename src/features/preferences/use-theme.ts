@@ -8,7 +8,7 @@ import { writePreferenceCookie } from './cookies';
 
 /**
  * The current theme is the `dark` class on <html> (set by the server and
- * corrected before paint by themeScript). useSyncExternalStore reads it
+ * corrected before paint by preferencesScript). useSyncExternalStore reads it
  * from the DOM, using the server's default during hydration, so the
  * server and client renders never disagree.
  */

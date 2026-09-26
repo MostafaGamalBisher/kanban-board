@@ -5,7 +5,7 @@ import { AppProviders } from '@/components/providers';
 import { isLocale, LOCALE_DIRECTION, LOCALES } from '@/config/i18n';
 import { siteConfig } from '@/config/site';
 import { BoardsProvider } from '@/features/boards/BoardsProvider';
-import { themeScript } from '@/features/preferences/theme-script';
+import { preferencesScript } from '@/features/preferences/preferences-script';
 import { getDictionary, getI18n } from '@/i18n/server';
 import { cn } from '@/lib/utils';
 import { getBoards } from '@/server/boards/queries';
@@ -36,7 +36,7 @@ export function generateStaticParams() {
  * layout flip after loading.
  *
  * The server always renders the default theme (dark), so pages stay
- * static; themeScript applies a saved preference before the first paint.
+ * static; preferencesScript applies saved preferences before the first paint.
  *
  * The boards are read here, on the server, straight from the data layer
  * (no HTTP request), and handed to BoardsProvider, which keeps the
@@ -58,13 +58,13 @@ export default async function LocaleLayout({
       lang={locale}
       dir={LOCALE_DIRECTION[locale]}
       className={cn('dark', fontSans.variable, fontArabic.variable)}
-      // themeScript may change the class before React hydrates (a saved
-      // light theme). Suppresses the warning for this element only.
+      // preferencesScript may change the class and data-sidebar before React
+      // hydrates. Suppresses the warning for this element only.
       suppressHydrationWarning
     >
       <head>
-        {/* Must run before the first paint: applies the saved theme. */}
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {/* Must run before the first paint: applies saved preferences. */}
+        <script dangerouslySetInnerHTML={{ __html: preferencesScript }} />
       </head>
       <body className="antialiased">
         <AppProviders locale={locale} dictionary={dictionary}>

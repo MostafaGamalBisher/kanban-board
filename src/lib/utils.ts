@@ -16,6 +16,7 @@ const FONT_SIZES = [
   'heading-s',
   'body-l',
   'body-m',
+  'logo',
 ];
 
 export const cn = createCn({

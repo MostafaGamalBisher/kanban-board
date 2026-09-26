@@ -21,6 +21,8 @@ export const ar: Dictionary = {
   },
   preferences: {
     darkTheme: 'الوضع الداكن',
+    hideSidebar: 'إخفاء الشريط الجانبي',
+    showSidebar: 'إظهار الشريط الجانبي',
   },
   board: {
     noBoards: 'لا توجد لوحات بعد.',

@@ -3,6 +3,11 @@ import { describe, test } from 'node:test';
 
 import { COLUMN_DOT_CLASSES, columnDotClass } from './board.ts';
 import { DEFAULT_LOCALE, LOCALE_DIRECTION, LOCALES, isLocale } from './i18n.ts';
+import {
+  DEFAULT_SIDEBAR_STATE,
+  SIDEBAR_STATES,
+  isSidebarState,
+} from './sidebar.ts';
 import { DEFAULT_THEME, THEMES, isTheme } from './theme.ts';
 
 describe('i18n config', () => {
@@ -43,6 +48,17 @@ describe('columnDotClass', () => {
   test('never returns undefined, even for odd input', () => {
     for (const index of [-1, 2.7, 1000]) {
       assert.ok(COLUMN_DOT_CLASSES.includes(columnDotClass(index) as never));
+    }
+  });
+});
+
+describe('sidebar config', () => {
+  test('shown is the default and isSidebarState narrows correctly', () => {
+    assert.equal(DEFAULT_SIDEBAR_STATE, 'shown');
+    assert.deepEqual([...SIDEBAR_STATES], ['shown', 'hidden']);
+    assert.equal(isSidebarState('hidden'), true);
+    for (const value of ['Hidden', 'open', '', undefined, null, 0]) {
+      assert.equal(isSidebarState(value), false, String(value));
     }
   });
 });

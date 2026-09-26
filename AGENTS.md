@@ -67,8 +67,12 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
 
 - Theme and language choices are cookies (`THEME_COOKIE`, `LOCALE_COOKIE`), written with `writePreferenceCookie()`.
   No localStorage.
-- Never read cookies in a layout or page: it would make every page dynamic. The theme is applied by `themeScript`
-  (inline in `<head>`, before paint); components read it with `useTheme()`. The language is in the URL.
+- Never read cookies in a layout or page: it would make every page dynamic. The theme (`dark` class) and the sidebar state
+  (`data-sidebar`) are applied to `<html>` by `preferencesScript` (inline in `<head>`, before paint). Components read the
+  theme with `useTheme()`; the sidebar is hidden by CSS (`sidebar-hidden:` variant) and changed with `setSidebarState()`.
+  The language is in the URL.
+- A new saved preference follows the same pattern: a cookie + a value in `src/config/`, applied to `<html>` by
+  `preferencesScript`, styled with a custom variant in `globals.css`.
 
 ## Interface text (`src/i18n/`)
 

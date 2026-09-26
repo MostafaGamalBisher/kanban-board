@@ -28,6 +28,8 @@ export const en = {
   } satisfies Record<ValidationKey, string>,
   preferences: {
     darkTheme: 'Dark theme',
+    hideSidebar: 'Hide Sidebar',
+    showSidebar: 'Show Sidebar',
   },
   board: {
     noBoards: 'There are no boards yet.',

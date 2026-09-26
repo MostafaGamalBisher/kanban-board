@@ -30,7 +30,7 @@ export function BoardNav({
     <nav aria-labelledby={headingId} className="flex flex-col gap-2">
       <h2
         id={headingId}
-        className="text-heading-s text-muted-foreground px-6 uppercase"
+        className="text-heading-s text-muted-foreground px-6 uppercase xl:px-8"
       >
         {format(dict.board.allBoards, { count: boards.length })}
       </h2>
@@ -44,7 +44,7 @@ export function BoardNav({
                 aria-current={isCurrent ? 'page' : undefined}
                 onClick={onNavigate}
                 className={cn(
-                  'text-heading-m me-6 flex items-center gap-3 rounded-e-full px-6 py-3.5',
+                  'text-heading-m me-6 flex items-center gap-3 rounded-e-full px-6 py-3.5 xl:px-8',
                   isCurrent
                     ? 'bg-primary text-primary-foreground'
                     : 'text-muted-foreground hover:bg-secondary hover:text-primary'

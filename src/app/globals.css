@@ -5,6 +5,9 @@
 /* `dark:` utilities apply inside `.dark`. The root layout renders <html class="dark"> by default. */
 @custom-variant dark (&:is(.dark *));
 
+/* `sidebar-hidden:` utilities apply while the user has hidden the sidebar (data-sidebar on <html>, set before paint). */
+@custom-variant sidebar-hidden (&:is([data-sidebar='hidden'] *));
+
 /*
  * Theme tokens
  *
@@ -48,6 +51,10 @@
   --text-body-m: 0.75rem;
   --text-body-m--line-height: 0.9375rem;
   --text-body-m--font-weight: 700;
+  --text-logo: 2rem; /* the "kanban" wordmark */
+  --text-logo--line-height: 1;
+  --text-logo--font-weight: 800;
+  --text-logo--letter-spacing: -0.03em;
 
   /* Colors */
   --color-background: var(--background);
