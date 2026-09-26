@@ -3,17 +3,35 @@ import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
 
 /**
- * Architecture rules. The dependency direction is:
+ * Import rules.
+ *
+ * Architecture — the dependency direction is:
  *
  *   app/  ->  features/  ->  core/  <-  server/
  *
  * Each layer below lists what it must NOT import. `server-only` (node 2.2)
  * adds a build-time guard for indirect import chains that lint cannot see.
+ *
+ * ESLint gives each file the options of the LAST matching block, so every
+ * block must repeat the project-wide restrictions: `layer()` appends them.
  */
+const projectWide = [
+  {
+    regex: '^cn(/.*)?$',
+    message:
+      "Import `cn` from '@/lib/utils': it knows the custom text sizes, the raw package does not.",
+  },
+];
+
 const layer = (message, ...regexes) => ({
   'no-restricted-imports': [
     'error',
-    { patterns: regexes.map((regex) => ({ regex, message })) },
+    {
+      patterns: [
+        ...regexes.map((regex) => ({ regex, message })),
+        ...projectWide,
+      ],
+    },
   ],
 });
 
@@ -43,6 +61,12 @@ export default defineConfig([
   ...nextTs,
 
   globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
+
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/lib/utils.ts'],
+    rules: { 'no-restricted-imports': ['error', { patterns: projectWide }] },
+  },
 
   {
     files: ['src/core/**/*.ts'],

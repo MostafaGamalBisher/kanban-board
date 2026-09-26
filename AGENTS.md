@@ -43,7 +43,9 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
 - **`src/features/`** and **`src/components/`** — UI. Never import `server/` or `data/`. Data arrives as props from
   Server Components.
 - **`src/app/`** — routes and layouts. Thin composition only; no business logic.
-- **`src/components/ui/`** — shadcn/ui primitives. Do not put feature logic in them.
+- **`src/components/ui/`** — shadcn/ui primitives (Radix). Do not put feature logic in them. They contain no English:
+  any built-in text (e.g. a dialog's screen-reader "Close") is a required prop such as `closeLabel`. After
+  `npx shadcn add`, re-check new files for text and physical direction classes.
 
 ## Data and text are never hard-coded in components
 
@@ -58,4 +60,9 @@ app/ (routes)  ->  features/ (UI)  ->  core/ (pure domain)  <-  server/ (data ac
 - No API routes, TanStack Query or localStorage in Part A (front-end). Part B adds Server Actions.
 - RTL: use logical Tailwind utilities (`ms-`, `me-`, `ps-`, `pe-`, `start-`, `end-`, `text-start`); never `ml-`,
   `mr-`, `pl-`, `pr-`, `left-`, `right-`. User content gets `dir="auto"`.
+- Import `cn` from `@/lib/utils`, never from the `cn` package (ESLint enforces it). `lib/utils.ts` registers the
+  custom text sizes (`text-heading-*`, `text-body-*`); without that, merging drops color classes. Keep its list in
+  sync with the `--text-*` tokens in `src/app/globals.css`.
+- Styling uses semantic tokens (`bg-primary`, `border-border`, …). Raw brand colors (`--kanban-*`) are private to
+  `globals.css`.
 - Dependencies are pinned to exact versions. Do not add a dependency without the owner's approval.
