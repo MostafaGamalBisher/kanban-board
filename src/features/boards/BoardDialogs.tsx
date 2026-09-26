@@ -26,7 +26,9 @@ import { boardToOpenAfterDeleting } from '@/core/board/navigation';
 import { useI18n } from '@/i18n/provider';
 import { routes } from '@/lib/routes';
 
-import { BoardFormDialog } from './BoardFormDialog';
+import { FormDialog } from '@/features/forms/FormDialog';
+
+import { BoardForm } from './BoardForm';
 import { useBoard, useBoardActions, useBoards } from './BoardsProvider';
 
 /**
@@ -156,26 +158,25 @@ function CreateBoardDialog({
   const router = useRouter();
 
   return (
-    <BoardFormDialog
-      {...props}
-      open={open}
-      title={dict.board.addBoardTitle}
-      submitLabel={dict.board.createBoardSubmit}
-      initial={{
-        name: '',
-        columns: dict.board.defaultColumns.map((name) => ({ name })),
-      }}
-      onSubmit={(values) => {
-        props.onOpenChange(false);
-        startTransition(() => {
-          const id = createBoard({
-            name: values.name,
-            columns: values.columns.map(({ name }) => ({ name })),
+    <FormDialog {...props} open={open} title={dict.board.addBoardTitle}>
+      <BoardForm
+        initial={{
+          name: '',
+          columns: dict.board.defaultColumns.map((name) => ({ name })),
+        }}
+        submitLabel={dict.board.createBoardSubmit}
+        onSubmit={(values) => {
+          props.onOpenChange(false);
+          startTransition(() => {
+            const id = createBoard({
+              name: values.name,
+              columns: values.columns.map(({ name }) => ({ name })),
+            });
+            router.push(routes.board(locale, id));
           });
-          router.push(routes.board(locale, id));
-        });
-      }}
-    />
+        }}
+      />
+    </FormDialog>
   );
 }
 
@@ -197,22 +198,25 @@ function EditBoardDialog({
     : [];
 
   return (
-    <BoardFormDialog
+    <FormDialog
       {...props}
       open={board !== undefined}
       title={dict.board.edit}
-      submitLabel={dict.common.save}
-      initial={{
-        name: board?.name ?? '',
-        columns: addColumn ? [...columns, { name: '' }] : columns,
-      }}
       initialFocus={addColumn ? `columns.${columns.length}.name` : undefined}
-      onSubmit={(values) => {
-        if (!board) return;
-        updateBoard({ boardId: board.id, ...values });
-        props.onOpenChange(false);
-      }}
-    />
+    >
+      <BoardForm
+        initial={{
+          name: board?.name ?? '',
+          columns: addColumn ? [...columns, { name: '' }] : columns,
+        }}
+        submitLabel={dict.common.save}
+        onSubmit={(values) => {
+          if (!board) return;
+          updateBoard({ boardId: board.id, ...values });
+          props.onOpenChange(false);
+        }}
+      />
+    </FormDialog>
   );
 }
 

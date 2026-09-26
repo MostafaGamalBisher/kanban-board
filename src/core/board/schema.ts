@@ -203,13 +203,31 @@ export const UpdateBoardInputSchema = boardFormShape
 
 export const DeleteBoardInputSchema = z.object({ boardId: BoardIdSchema });
 
-const taskFields = {
-  boardId: BoardIdSchema,
+const taskContentFields = {
   /** The task's status: the column it belongs in. */
   columnId: ColumnIdSchema,
   title: requiredText(LIMITS.taskTitle),
   description: optionalText(LIMITS.taskDescription),
 };
+
+const taskFields = {
+  boardId: BoardIdSchema,
+  ...taskContentFields,
+};
+
+/**
+ * What the shared task form validates, for both Add and Edit Task. New
+ * subtasks have no `id`; on Add every subtask is new.
+ */
+export const TaskFormSchema = z.object({
+  ...taskContentFields,
+  subtasks: z.array(
+    z.object({
+      id: SubtaskIdSchema.optional(),
+      title: requiredText(LIMITS.subtaskTitle),
+    })
+  ),
+});
 
 export const CreateTaskInputSchema = z.object({
   ...taskFields,
@@ -217,15 +235,9 @@ export const CreateTaskInputSchema = z.object({
 });
 
 /** Subtasks with an `id` are kept (and may be renamed); without one they are new; missing ones are removed. */
-export const UpdateTaskInputSchema = z.object({
-  ...taskFields,
+export const UpdateTaskInputSchema = TaskFormSchema.extend({
+  boardId: BoardIdSchema,
   taskId: TaskIdSchema,
-  subtasks: z.array(
-    z.object({
-      id: SubtaskIdSchema.optional(),
-      title: requiredText(LIMITS.subtaskTitle),
-    })
-  ),
 });
 
 export const DeleteTaskInputSchema = z.object({
@@ -251,6 +263,7 @@ export const SetSubtaskCompletedInputSchema = z.object({
 export type CreateBoardInput = z.infer<typeof CreateBoardInputSchema>;
 export type UpdateBoardInput = z.infer<typeof UpdateBoardInputSchema>;
 export type BoardFormValues = z.infer<typeof BoardFormSchema>;
+export type TaskFormValues = z.infer<typeof TaskFormSchema>;
 export type DeleteBoardInput = z.infer<typeof DeleteBoardInputSchema>;
 export type CreateTaskInput = z.infer<typeof CreateTaskInputSchema>;
 export type UpdateTaskInput = z.infer<typeof UpdateTaskInputSchema>;

@@ -1,38 +1,32 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, type ReactNode } from 'react';
 
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import type { BoardFormValues } from '@/core/board/schema';
-
-import { BoardForm, type BoardFormInitial } from './BoardForm';
 
 /**
- * The dialog around BoardForm, for Add Board and Edit Board. The form lives
- * inside the dialog content, which unmounts on close, so every opening
- * starts from `initial`.
+ * The dialog around a form (Add/Edit Board, Add/Edit Task). The form is a
+ * child of the dialog content, which unmounts on close, so every opening
+ * starts from the form's initial values.
  *
- * `initialFocus`: the form field to focus on opening (e.g. the empty
- * column added by "+ New Column"); by default Radix focuses the first one.
+ * `initialFocus`: the `name` of the field to focus on opening (e.g. the
+ * empty column added by "+ New Column"); by default Radix focuses the
+ * first field.
  */
-export function BoardFormDialog({
+export function FormDialog({
   open,
   onOpenChange,
   onCloseAutoFocus,
   title,
-  submitLabel,
-  initial,
   initialFocus,
-  onSubmit,
+  children,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onCloseAutoFocus?: (event: Event) => void;
   title: string;
-  submitLabel: string;
-  initial: BoardFormInitial;
   initialFocus?: string | undefined;
-  onSubmit: (values: BoardFormValues) => void;
+  children: ReactNode;
 }) {
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -56,11 +50,7 @@ export function BoardFormDialog({
         className="sm:p-8"
       >
         <DialogTitle>{title}</DialogTitle>
-        <BoardForm
-          initial={initial}
-          submitLabel={submitLabel}
-          onSubmit={onSubmit}
-        />
+        {children}
       </DialogContent>
     </Dialog>
   );

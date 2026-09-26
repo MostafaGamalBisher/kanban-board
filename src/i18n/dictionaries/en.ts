@@ -71,6 +71,19 @@ export const en = {
     menu: 'Task options',
     edit: 'Edit Task',
     delete: 'Delete Task',
+    addTitle: 'Add New Task',
+    createSubmit: 'Create Task',
+    titleLabel: 'Title',
+    titlePlaceholder: 'e.g. Take coffee break',
+    descriptionLabel: 'Description',
+    descriptionPlaceholder:
+      'e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little.',
+    subtasksLabel: 'Subtasks',
+    subtaskPlaceholders: ['e.g. Make coffee', 'e.g. Drink coffee & smile'],
+    subtaskInput: 'Subtask {number}',
+    removeSubtask: 'Remove subtask {number}',
+    addSubtask: 'Add New Subtask',
+    statusLabel: 'Status',
   },
 };
 

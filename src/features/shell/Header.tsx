@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import type { Board } from '@/core/board/schema';
 import { useBoardDialogs } from '@/features/boards/BoardDialogs';
+import { useTaskDialogs } from '@/features/tasks/TaskDialogs';
 import { useI18n } from '@/i18n/provider';
 
 import { MobileBoardSwitcher } from './MobileBoardSwitcher';
@@ -26,11 +27,12 @@ import { MobileBoardSwitcher } from './MobileBoardSwitcher';
  * cell lines up with the sidebar. Only one of the two headings is ever
  * displayed, so assistive technology sees a single <h1>.
  *
- * Add task stays disabled until its dialog exists (node 6.2).
+ * "+ Add New Task" is disabled while the board has no columns.
  */
 export function Header({ board }: { board: Board | undefined }) {
   const { dict } = useI18n();
   const { openEditBoard, openDeleteBoard } = useBoardDialogs();
+  const { openAddTask } = useTaskDialogs();
   // The menu closes as its dialog opens; focus comes back to ⋮ afterwards.
   const menuTrigger = useRef<HTMLButtonElement>(null);
 
@@ -54,7 +56,9 @@ export function Header({ board }: { board: Board | undefined }) {
         {board && (
           <div className="ms-auto flex shrink-0 items-center gap-1 md:gap-2">
             <Button
-              disabled
+              // A task needs a column to go in (as in the brief).
+              disabled={board.columns.length === 0}
+              onClick={() => openAddTask(board.id)}
               className="md:text-heading-m h-8 px-4.5 md:h-12 md:px-6"
             >
               <IconAddTask className="size-3" />

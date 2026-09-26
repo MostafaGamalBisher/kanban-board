@@ -111,7 +111,9 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
 
 ## Forms and dialogs
 
-- A form validates with its schema from `core/` (e.g. `BoardFormSchema`) and turns issues into per-field messages with
+- Forms are built from `src/features/forms/`: `useSchemaForm` (validation, messages, focus on the first error),
+  `useEditableList` (add/remove rows with focus), `FieldInput` / `FieldTextarea` / `RemoveButton`, `FormDialog`.
+- A form validates with its schema from `core/` (e.g. `BoardFormSchema`, `TaskFormSchema`) and turns issues into per-field messages with
   `fieldErrors()` → `dict.validation[key]`. Show errors after the first submit, then live; on a failed submit, focus the
   first invalid field. Inputs carry a `name` equal to the issue path (`columns.1.name`) so focus can find them.
 - When an action removes the focused element (removing a row, closing a menu that opened a dialog), move focus

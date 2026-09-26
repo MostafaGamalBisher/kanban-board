@@ -7,7 +7,9 @@ import {
   CreateBoardInputSchema,
   CreateTaskInputSchema,
   MoveTaskInputSchema,
+  TaskFormSchema,
   UpdateBoardInputSchema,
+  UpdateTaskInputSchema,
 } from './schema.ts';
 
 /** `path: code` for every issue, or [] when the input is valid. */
@@ -102,6 +104,37 @@ describe('CreateTaskInputSchema (the Add Task form)', () => {
       subtasks: [],
     });
     assert.deepEqual(problems(result), ['title: tooLong']);
+  });
+});
+
+describe('TaskFormSchema (the shared Add/Edit Task form)', () => {
+  test('requires a title and every subtask title; description may be empty', () => {
+    const result = TaskFormSchema.safeParse({
+      columnId: 'todo',
+      title: '  ',
+      description: '',
+      subtasks: [{ title: 'One' }, { title: ' ' }],
+    });
+    assert.deepEqual(problems(result), [
+      'title: required',
+      'subtasks.1.title: required',
+    ]);
+  });
+
+  test('keeps the IDs of existing subtasks', () => {
+    const result = UpdateTaskInputSchema.safeParse({
+      boardId: 'b1',
+      taskId: 't1',
+      columnId: 'todo',
+      title: 'Task',
+      description: '',
+      subtasks: [{ id: 's1', title: 'Kept' }, { title: 'New' }],
+    });
+    assert.ok(result.success);
+    assert.deepEqual(result.data.subtasks, [
+      { id: 's1', title: 'Kept' },
+      { title: 'New' },
+    ]);
   });
 });
 

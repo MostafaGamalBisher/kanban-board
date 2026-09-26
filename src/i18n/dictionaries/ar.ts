@@ -72,5 +72,18 @@ export const ar: Dictionary = {
     menu: 'خيارات المهمة',
     edit: 'تعديل المهمة',
     delete: 'حذف المهمة',
+    addTitle: 'إضافة مهمة جديدة',
+    createSubmit: 'إنشاء المهمة',
+    titleLabel: 'العنوان',
+    titlePlaceholder: 'مثال: استراحة قهوة',
+    descriptionLabel: 'الوصف',
+    descriptionPlaceholder:
+      'مثال: من الجيد دائمًا أخذ استراحة. ربع ساعة من الراحة تجدد النشاط قليلًا.',
+    subtasksLabel: 'المهام الفرعية',
+    subtaskPlaceholders: ['مثال: تحضير القهوة', 'مثال: شرب القهوة والابتسام'],
+    subtaskInput: 'المهمة الفرعية {number}',
+    removeSubtask: 'حذف المهمة الفرعية {number}',
+    addSubtask: 'إضافة مهمة فرعية',
+    statusLabel: 'الحالة',
   },
 };
