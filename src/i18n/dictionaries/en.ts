@@ -1,0 +1,36 @@
+import type { ValidationKey } from '../../core/validation.ts';
+import { englishPlural } from '../plural.ts';
+
+/**
+ * English interface text: the source of truth. ar.ts is typed from this
+ * object, so a key missing (or extra) in Arabic is a compile error.
+ *
+ * Placeholders are written {name} and filled by i18n.format / i18n.plural;
+ * numbers are formatted with the locale's digits. Every language must use
+ * the same placeholders (checked by dictionaries.test.ts).
+ */
+export const en = {
+  meta: {
+    description: 'Plan work on boards, columns and tasks.',
+  },
+  common: {
+    close: 'Close',
+    cancel: 'Cancel',
+    delete: 'Delete',
+    save: 'Save Changes',
+  },
+  validation: {
+    required: 'Can’t be empty',
+    tooLong: 'Too long',
+    duplicateName: 'Already used',
+    duplicateId: 'Duplicate entry',
+    invalid: 'Invalid value',
+  } satisfies Record<ValidationKey, string>,
+  board: {
+    allBoards: 'All boards ({count})',
+    taskCount: englishPlural({ one: '{count} task', other: '{count} tasks' }),
+    subtaskProgress: '{done} of {total} subtasks',
+  },
+};
+
+export type Dictionary = typeof en;

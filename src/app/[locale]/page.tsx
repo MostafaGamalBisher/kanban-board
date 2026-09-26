@@ -40,15 +40,18 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { COLUMN_DOT_CLASSES, columnDotClass } from '@/config/board';
 import { siteConfig } from '@/config/site';
+import { getI18n } from '@/i18n/server';
 
 import { showcase } from './_showcase/content';
+import { PluralsClient } from './_showcase/PluralsClient';
 
 /**
  * Design-system showcase for node 1.3. TEMPORARY: replaced by the real
  * board route in node 4.1. Every primitive renders here against the
  * Kanban tokens, so the theme can be reviewed in dark and light.
  */
-export default function ShowcasePage() {
+export default async function ShowcasePage() {
+  const { dict, plural, format } = await getI18n();
   const { sections, forms, overlays, buttons } = showcase;
 
   return (
@@ -90,6 +93,20 @@ export default function ShowcasePage() {
             </li>
           ))}
         </ul>
+      </Section>
+
+      <Section title={sections.pluralsServer}>
+        <ul className="text-body-l flex flex-col gap-1">
+          {showcase.pluralCounts.map((count) => (
+            <li key={count}>{plural(dict.board.taskCount, count)}</li>
+          ))}
+          <li>{format(dict.board.subtaskProgress, { done: 2, total: 3 })}</li>
+          <li>{format(dict.board.allBoards, { count: 3 })}</li>
+        </ul>
+      </Section>
+
+      <Section title={sections.pluralsClient}>
+        <PluralsClient />
       </Section>
 
       <Section title={sections.type}>
@@ -169,7 +186,7 @@ export default function ShowcasePage() {
             <DialogTrigger asChild>
               <Button size="sm">{overlays.dialogTrigger}</Button>
             </DialogTrigger>
-            <DialogContent closeLabel={overlays.closeLabel}>
+            <DialogContent closeLabel={dict.common.close}>
               <DialogHeader>
                 <DialogTitle>{overlays.dialogTitle}</DialogTitle>
                 <DialogDescription className="text-body-l">

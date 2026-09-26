@@ -3,15 +3,17 @@ import { notFound } from 'next/navigation';
 
 import { isLocale, LOCALE_DIRECTION, LOCALES } from '@/config/i18n';
 import { siteConfig } from '@/config/site';
+import { I18nProvider } from '@/i18n/provider';
+import { getDictionary, getI18n } from '@/i18n/server';
 import { cn } from '@/lib/utils';
 
 import { fontArabic, fontSans } from '../fonts';
 import '../globals.css';
 
-export const metadata: Metadata = {
-  title: siteConfig.name,
-  description: siteConfig.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { dict } = await getI18n();
+  return { title: siteConfig.name, description: dict.meta.description };
+}
 
 /** Prerender /en and /ar at build time. */
 export function generateStaticParams() {
@@ -37,6 +39,7 @@ export default async function LocaleLayout({
   if (!isLocale(locale)) {
     notFound();
   }
+  const { dictionary } = await getDictionary();
 
   return (
     <html
@@ -44,7 +47,11 @@ export default async function LocaleLayout({
       dir={LOCALE_DIRECTION[locale]}
       className={cn('dark', fontSans.variable, fontArabic.variable)}
     >
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <I18nProvider locale={locale} dictionary={dictionary}>
+          {children}
+        </I18nProvider>
+      </body>
     </html>
   );
 }

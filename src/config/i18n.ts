@@ -21,3 +21,18 @@ export const LOCALE_COOKIE = 'NEXT_LOCALE';
 export function isLocale(value: unknown): value is Locale {
   return (LOCALES as readonly unknown[]).includes(value);
 }
+
+/**
+ * Digits for each locale, set explicitly: the default for plain `ar`
+ * differs between browsers and data versions (Western 1,2,3 in newer ICU
+ * data, Arabic-Indic ١,٢,٣ in older), so it is never left to chance.
+ */
+export const NUMBERING_SYSTEM: Record<Locale, 'latn' | 'arab'> = {
+  en: 'latn',
+  ar: 'arab', // owner's decision (node 3.2): Arabic-Indic, ١٢٣
+};
+
+/** BCP 47 tag for Intl APIs, with the numbering system pinned (e.g. ar-u-nu-arab). */
+export function intlLocale(locale: Locale): string {
+  return `${locale}-u-nu-${NUMBERING_SYSTEM[locale]}`;
+}

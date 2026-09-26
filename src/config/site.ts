@@ -1,8 +1,7 @@
 /**
- * Site-wide identity. Used for document metadata.
- * Localized UI text lives in the i18n dictionaries (node 3.2), not here.
+ * Site-wide identity. The product name is a brand and is not translated;
+ * the description is localized in the i18n dictionaries (meta.description).
  */
 export const siteConfig = {
   name: 'Kanban',
-  description: 'Kanban task manager with boards, columns, tasks and subtasks.',
 } as const;

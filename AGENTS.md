@@ -58,6 +58,16 @@ false` makes any other first segment a 404. The layout renders `<html lang dir>`
 - One font stack for both languages, chosen per character: Plus Jakarta Sans for Latin, IBM Plex Sans Arabic for
   Arabic (fetched only when Arabic text is present). Do not switch fonts by locale.
 
+## Interface text (`src/i18n/`)
+
+- `dictionaries/en.ts` is the source of truth; `ar.ts` is typed from it (missing or extra keys fail to compile).
+  Plurals use `englishPlural({ one, other })` / `arabicPlural({ zero, one, two, few, many, other })`.
+- Read text as typed properties, never string keys: Server Components `const { dict, plural, format } = await
+getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx`).
+- Fill placeholders with `format(dict.x, { name })` and counts with `plural(dict.x, count)`: numbers get the
+  locale's digits (Arabic-Indic for `ar`). Never concatenate translated fragments.
+- A new string goes into both dictionaries in the same commit; `dictionaries.test.ts` checks keys and placeholders.
+
 ## Domain model (`src/core/board/`)
 
 - `schema.ts` is the single source of truth: zod schemas give both validation and types. Never hand-write a type that

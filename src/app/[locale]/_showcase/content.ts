@@ -12,6 +12,8 @@ export const showcase = {
   sections: {
     palette: 'Semantic colors',
     columnDots: 'Column dots (repeat after six)',
+    pluralsServer: 'Plurals, rendered on the server',
+    pluralsClient: 'Plurals, rendered in the browser',
     type: 'Type scale',
     buttons: 'Buttons',
     forms: 'Form controls',
@@ -65,12 +67,13 @@ export const showcase = {
     ],
   },
 
+  pluralCounts: [0, 1, 2, 3, 11, 100, 103],
+
   overlays: {
     dialogTrigger: 'Open dialog',
     dialogTitle: 'Add New Board',
     dialogDescription:
       'Dialogs sit on the card surface, 480px wide, with a localized close label.',
-    closeLabel: 'Close',
     alertTrigger: 'Delete board',
     alertTitle: 'Delete this board?',
     alertDescription:
