@@ -25,7 +25,7 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 
 - [x] **0.1** Commit this plan as `docs/PLAN.md`
 - [x] **1.1** Scaffold Next 16 + TS 6.0; remove the Vite app; icons, fonts, Node version pin
-- [ ] **1.2** Strict TS, ESLint (layer rules, `jsx-no-literals`), Prettier, `check` script
+- [x] **1.2** Strict TS, ESLint (layer rules, `jsx-no-literals`), Prettier, `check` script
 - [ ] **1.3** shadcn/ui init, Kanban tokens, dark by default, primitives
 - [ ] **1.4** Vercel connected; first preview build verified
 - [ ] **2.1** Domain schemas (`core/board/schema.ts`)
@@ -128,16 +128,16 @@ Each node is one commit. A box is ticked in the same commit that completes its n
 
 ### 1.7 Dependencies — the complete Part A list
 
-| Package                                                                                         | Why                                                                                                                                               |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `next` 16.3, `react` / `react-dom` 19                                                           | Framework.                                                                                                                                        |
-| `typescript` **~6.0.3**                                                                         | Pinned: npm `latest` is 7.0, which the ESLint TypeScript parser does not support (`<6.1`).                                                        |
-| `tailwindcss` 4.3 + `@tailwindcss/postcss`                                                      | Styling.                                                                                                                                          |
-| shadcn/ui → `@radix-ui/*`, `clsx`, `tailwind-merge`, `class-variance-authority`, `lucide-react` | Accessible primitives.                                                                                                                            |
-| `@dnd-kit/core` 6.3, `@dnd-kit/sortable` 10, `@dnd-kit/utilities`                               | Drag and drop with touch and keyboard support.                                                                                                    |
-| `zod` 4                                                                                         | Validates the seed at load and forms at submit, with one schema per shape.                                                                        |
-| `server-only` 0.0.1                                                                             | First line of every `server/` module. If browser code imports it, directly or through a chain of imports, the **build fails**. Zero runtime cost. |
-| dev: `eslint`, `eslint-config-next`, `prettier`, `prettier-plugin-tailwindcss`, `@types/*`      | Tooling.                                                                                                                                          |
+| Package                                                                                                                                                                                              | Why                                                                                                                                               |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `next` 16.3, `react` / `react-dom` 19                                                                                                                                                                | Framework.                                                                                                                                        |
+| `typescript` **~6.0.3**                                                                                                                                                                              | Pinned: npm `latest` is 7.0, which the ESLint TypeScript parser does not support (`<6.1`).                                                        |
+| `tailwindcss` 4.3 + `@tailwindcss/postcss`                                                                                                                                                           | Styling.                                                                                                                                          |
+| shadcn/ui → `@radix-ui/*`, `clsx`, `tailwind-merge`, `class-variance-authority`, `lucide-react`                                                                                                      | Accessible primitives.                                                                                                                            |
+| `@dnd-kit/core` 6.3, `@dnd-kit/sortable` 10, `@dnd-kit/utilities`                                                                                                                                    | Drag and drop with touch and keyboard support.                                                                                                    |
+| `zod` 4                                                                                                                                                                                              | Validates the seed at load and forms at submit, with one schema per shape.                                                                        |
+| `server-only` 0.0.1                                                                                                                                                                                  | First line of every `server/` module. If browser code imports it, directly or through a chain of imports, the **build fails**. Zero runtime cost. |
+| dev: `eslint` **9.39** (the react/import/jsx-a11y plugins bundled by `eslint-config-next` do not support ESLint 10 yet), `eslint-config-next`, `prettier`, `prettier-plugin-tailwindcss`, `@types/*` | Tooling.                                                                                                                                          |
 
 **Built in, no dependency:** `next/font` (Plus Jakarta Sans + IBM Plex Sans Arabic), `Intl.PluralRules`,
 `useReducer`, `node:test`, Web Crypto.
