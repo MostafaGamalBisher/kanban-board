@@ -45,17 +45,19 @@ const labelClass = 'text-body-m text-muted-foreground dark:text-foreground';
  *
  * The status select is also the way to move a task without dragging
  * (keyboard, screen readers): the task goes to the end of the chosen
- * column. Delete arrives in node 6.3.
+ * column.
  */
 export function ViewTaskDialog({
   target,
   onEdit,
+  onDelete,
   onOpenChange,
   onCloseAutoFocus,
 }: {
   target: TaskRef | undefined;
-  /** Replaces this dialog with Edit Task. */
+  /** Replace this dialog with Edit Task / Delete Task. */
   onEdit: (task: TaskRef) => void;
+  onDelete: (task: TaskRef) => void;
   onOpenChange: (open: boolean) => void;
   onCloseAutoFocus: (event: Event) => void;
 }) {
@@ -108,7 +110,10 @@ export function ViewTaskDialog({
               <DropdownMenuItem onSelect={() => onEdit(ids)}>
                 {dict.task.edit}
               </DropdownMenuItem>
-              <DropdownMenuItem disabled variant="destructive">
+              <DropdownMenuItem
+                variant="destructive"
+                onSelect={() => onDelete(ids)}
+              >
                 {dict.task.delete}
               </DropdownMenuItem>
             </DropdownMenuContent>

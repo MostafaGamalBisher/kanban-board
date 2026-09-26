@@ -71,6 +71,9 @@ export const en = {
     menu: 'Task options',
     edit: 'Edit Task',
     delete: 'Delete Task',
+    deleteTitle: 'Delete this task?',
+    deleteConfirm:
+      'Are you sure you want to delete the ‘{title}’ task and its subtasks? This action cannot be reversed.',
     addTitle: 'Add New Task',
     createSubmit: 'Create Task',
     titleLabel: 'Title',

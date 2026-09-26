@@ -124,7 +124,8 @@ getI18n()` (`i18n/server.ts`); Client Components `useI18n()` (`i18n/provider.tsx
   `useBoardDialogs()`. The provider returns focus to whatever was focused when a dialog opened; a caller that
   disappears as the dialog opens (a menu, the mobile switcher) passes `returnFocusTo`.
 - Task dialogs live in `TaskDialogsProvider` (`useTaskDialogs()`); a card is found again by `data-task-id` when it
-  moved while its dialog was open.
+  moved while its dialog was open. After a delete, focus goes to a neighbour chosen with `neighbourAfterRemoving()`
+  (`core/board/navigation.ts`), never to `<body>`.
 - A change that also navigates (create, delete) runs the navigation and the dispatch in one `startTransition`, so
   React commits them together and the page being left never renders the new data on its own. After a delete, use
   `router.replace` so Back cannot return to the deleted item.

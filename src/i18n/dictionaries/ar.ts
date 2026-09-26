@@ -72,6 +72,9 @@ export const ar: Dictionary = {
     menu: 'خيارات المهمة',
     edit: 'تعديل المهمة',
     delete: 'حذف المهمة',
+    deleteTitle: 'حذف هذه المهمة؟',
+    deleteConfirm:
+      'هل أنت متأكد من حذف مهمة «{title}» ومهامها الفرعية؟ لا يمكن التراجع عن ذلك.',
     addTitle: 'إضافة مهمة جديدة',
     createSubmit: 'إنشاء المهمة',
     titleLabel: 'العنوان',

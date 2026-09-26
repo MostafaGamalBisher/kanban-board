@@ -58,6 +58,8 @@ export function Header({ board }: { board: Board | undefined }) {
             <Button
               // A task needs a column to go in (as in the brief).
               disabled={board.columns.length === 0}
+              // Focus fallback after a task is deleted (TaskDialogs).
+              data-add-task
               onClick={() => openAddTask(board.id)}
               className="md:text-heading-m h-8 px-4.5 md:h-12 md:px-6"
             >

@@ -10,11 +10,13 @@ import {
 } from 'react';
 
 import type { BoardId, TaskId } from '@/core/board/ids';
+import { taskToFocusAfterDeleting } from '@/core/board/navigation';
 import { findTask } from '@/core/board/selectors';
 import { useBoard, useBoardActions } from '@/features/boards/BoardsProvider';
 import { FormDialog } from '@/features/forms/FormDialog';
 import { useI18n } from '@/i18n/provider';
 
+import { DeleteTaskDialog } from './DeleteTaskDialog';
 import { TaskForm } from './TaskForm';
 import { ViewTaskDialog, type TaskRef } from './ViewTaskDialog';
 
@@ -27,18 +29,20 @@ export interface TaskDialogs {
 type OpenDialog =
   | ({ type: 'view' } & TaskRef)
   | ({ type: 'edit' } & TaskRef)
+  | ({ type: 'delete' } & TaskRef)
   | { type: 'add'; boardId: BoardId }
   | null;
 
 const TaskDialogsContext = createContext<TaskDialogs | null>(null);
 
 /**
- * One instance of each task dialog for the whole frame. Delete Task joins
- * it in node 6.3. Edit Task opens from the View Task menu, replacing it.
+ * One instance of each task dialog for the whole frame. Edit and Delete
+ * Task open from the View Task menu, replacing it.
  *
  * Focus returns to what opened the first dialog (the card, or "+ Add New
- * Task"). If the task changed column meanwhile, its card was re-created
- * elsewhere on the board, so focus goes to the card in its new place.
+ * Task"). If that card is gone, focus goes, in order, to the task's card
+ * in its new place (it changed column), to the neighbouring card chosen
+ * when the task was deleted, and finally to "+ Add New Task".
  */
 export function TaskDialogsProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState<OpenDialog>(null);
@@ -72,10 +76,11 @@ export function TaskDialogsProvider({ children }: { children: ReactNode }) {
     const taskId = lastTaskId.current;
     const target = opener.current?.isConnected
       ? opener.current
-      : taskId &&
-        document.querySelector<HTMLElement>(
-          `[data-task-id="${CSS.escape(taskId)}"] button`
-        );
+      : (taskId &&
+          document.querySelector<HTMLElement>(
+            `[data-task-id="${CSS.escape(taskId)}"] button`
+          )) ||
+        document.querySelector<HTMLElement>('[data-add-task]');
     if (target) {
       event.preventDefault();
       target.focus();
@@ -88,6 +93,7 @@ export function TaskDialogsProvider({ children }: { children: ReactNode }) {
       <ViewTaskDialog
         target={open?.type === 'view' ? open : undefined}
         onEdit={(task) => setOpen({ type: 'edit', ...task })}
+        onDelete={(task) => setOpen({ type: 'delete', ...task })}
         onOpenChange={close}
         onCloseAutoFocus={restoreFocus}
       />
@@ -98,6 +104,16 @@ export function TaskDialogsProvider({ children }: { children: ReactNode }) {
       />
       <EditTaskDialog
         target={open?.type === 'edit' ? open : undefined}
+        onOpenChange={close}
+        onCloseAutoFocus={restoreFocus}
+      />
+      <DeleteTaskDialog
+        target={open?.type === 'delete' ? open : undefined}
+        onDeleting={({ task, column }) => {
+          // The card is about to go: focus moves to a neighbour instead.
+          lastTaskId.current =
+            taskToFocusAfterDeleting(column, task.id) ?? null;
+        }}
         onOpenChange={close}
         onCloseAutoFocus={restoreFocus}
       />
